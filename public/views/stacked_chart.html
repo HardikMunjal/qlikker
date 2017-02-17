@@ -1,0 +1,69 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+    <title>FusionCharts</title>
+    <!--<script type="text/javascript" src="fusioncharts/fusioncharts.js"></script>
+    <script type="text/javascript" src="/fusioncharts/fusioncharts.charts.js"></script>-->
+    <script src="/scripts/fusioncharts.js"></script>
+    <script src="/scripts/fusioncharts.charts.js"></script>
+    <script src="/scripts/fusioncharts.theme.fint.js"></script>
+
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script type="text/javascript">
+			function chartLoad(data) {
+
+			    var revenueChart = new FusionCharts({
+			        type: 'doughnut2d',
+			        renderAt: 'chart-container',
+			        width: '200',
+			        height: '175',
+			        dataFormat: 'json',
+			        dataSource: {
+			            "chart": {
+			                "caption": "",
+			                "subCaption": "",
+			                "numberPrefix": "$",
+			                "paletteColors": "#66b032",
+			                "bgColor": "#ffffff",
+			                "showBorder": "0",
+			                "use3DLighting": "0",
+			                "showShadow": "0",
+			                "enableSmartLabels": "0",
+			                "startingAngle": "310",
+			                "showLabels": "0",
+			                "showPercentValues": "0",
+			                "showLegend": "0",
+			                "legendShadow": "0",
+			                "legendBorderAlpha": "0",
+			                "defaultCenterLabel": "$23.45M",
+			                "centerLabel": "",
+			                "centerLabelBold": "1",
+			                "centerLabelFontSize" : "6",
+			                "showTooltip": "0",
+			                "decimals": "0",
+			                "captionFontSize": "14",
+			                "subcaptionFontSize": "14",
+			                "subcaptionFontBold": "0"
+			            },
+			            "data": [
+                            {
+                                "label": "Food",
+                                "value": "28504"
+                            }
+			            ]
+			        }
+			    }).render();
+			}
+    </script>
+</head>
+<body style="background-color:transparent;overflow: hidden;" onload="chartLoad();">
+    <div id="chart-container">      
+    </div>
+</body>
+</html>

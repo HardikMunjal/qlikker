@@ -1,0 +1,26 @@
+/* numbered buttons */
+#status-buttons                 { color : blue;}
+#status-buttons a               { color:blue; display:inline-block; font-size:12px; margin-right:10px; text-align:center; text-transform:uppercase; }
+#status-buttons a:hover         { text-decoration:none; }
+/* active buttons */
+#status-buttons a.active span   { background:lightblue; }
+
+
+
+label
+{
+    display: block;
+    width: 156px;
+    cursor: pointer;
+    padding-right: 6px;
+    padding-bottom: 1px;
+    color: #FFFFFF;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color: #00FFFF;
+    font-family: verdana;
+}
+
+#element1 {display:inline-block;margin-right:10px; width:200px; background-color:red;} 
+#inputMessage {display:inline-block; width:200px; background-color:red;} 

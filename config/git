@@ -1,0 +1,9 @@
+git init                      it will create .git folder in your project
+git config --list             
+git branch
+git status
+git add .  or   git add filename
+git commit -m 'commit message'
+git remote add origin https://github.com/HardikMunjal/swift-market-frontend.git
+git push -u origin master
+
