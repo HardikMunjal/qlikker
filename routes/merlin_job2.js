@@ -57,10 +57,7 @@ var qlik = {
         request('http://10.2.5.160:4011/nscr/qlikdata/user/'+usrList[counter].ADDomain+'/'+usrList[counter].USERNAME, function (error, response, body) {
           var dynamicTicket=body;
         
-          //console.log(dynamicTicket);
-          
-
-          
+                   
           if (!error && response.statusCode == 200) {
 
             var bodyObject =JSON.parse(body);
