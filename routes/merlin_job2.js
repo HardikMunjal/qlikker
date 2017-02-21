@@ -54,7 +54,7 @@ var qlik = {
 
      function fetchDetails(){
         
-        request('http://10.2.5.160:4011/nscr/qlikdata/user/'+usrList[counter].ADDomain+'/'+usrList[counter].USERNAME, function (error, response, body) {
+        request('http://10.2.5.160:4011/nscr/qlikoptdata/user/'+usrList[counter].ADDomain+'/'+usrList[counter].USERNAME, function (error, response, body) {
           var dynamicTicket=body;
         
                    

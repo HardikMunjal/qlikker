@@ -27,7 +27,8 @@ app.get('/fusion/demo2',function(req,res){res.render('stacked_chart2.ejs');});
 app.get('/fetch/business/insights', mjob.extractBI);
 app.get('/nscr/qlikdata/user/:user_directory/:user_id',extractor.qlikdata);
 
-
+//************* Optimized web socket services***************************************
+app.get('/nscr/qlikoptdata/user/:user_directory/:user_id',extractor.qlikdataOptimized);
 
 };
 //I hope this is how comments work in js. Hello Hardik! What's up!!!!
