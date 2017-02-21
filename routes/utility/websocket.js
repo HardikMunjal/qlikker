@@ -5,6 +5,7 @@ var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
 var WebSocket = require('ws');
+var qendpoint = require('../../config/endpoint');
 
 var opendoc= {"method":"OpenDoc","params":["4f9d54a0-007c-4873-a7e2-fef56dda55db","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
 var getobject= {"method":"GetObject","handle":1,"params":["QwRpdK"],"id":2,"jsonrpc":"2.0"};
@@ -27,14 +28,14 @@ console.log(data);
 if(data.target=='TICKET'){
 
       var ws = new WebSocket(
-                  'ws://10.2.5.160/ps/app/4f9d54a0-007c-4873-a7e2-fef56dda55db?reloadUri=http://10.2.5.160/ps/dev-hub/engine-api-explorer&QlikTicket='+data.token
+                  qendpoint.qlik_ws+'app/4f9d54a0-007c-4873-a7e2-fef56dda55db?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer&QlikTicket='+data.token
               );
 
     }
     else if(data.target=='SESSION'){
       
       var ws = new WebSocket(
-                'ws://10.2.5.160/ps/app/4f9d54a0-007c-4873-a7e2-fef56dda55db?reloadUri=http://10.2.5.160/ps/dev-hub/engine-api-explorer',
+                qendpoint.qlik_ws+'app/4f9d54a0-007c-4873-a7e2-fef56dda55db?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer',
                 [],
                 {
                     'headers': {
@@ -55,7 +56,7 @@ if(data.target=='TICKET'){
                       
               var wsres = JSON.parse(data);
               console.log(wsres);
-              if(wsres.params && wsres.params.logoutUri == 'ws://10.2.5.160:80/ps/qps/user'){
+              if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
                 console.log('user is successfully logged in sales performance with session')
               }
               if(wsres.id==1){

@@ -7,7 +7,9 @@ var util = require('util');
 var urljoin = require('url-join');
 var _ = require("underscore");
 
-var restProxy = "http://10.2.5.160:4243/qps/ps/";
+var qendpoint = require('../../config/endpoint')
+
+var restProxy = qendpoint.rest_PROXY;
 
 function getFileRealPath(s) {
     try {
@@ -85,7 +87,7 @@ module.exports = {
         options.Certificate = options.Certificate || 'client.pfx';
         options.CertificateKey = options.CertificateKey || 'client_key.pfx';
         options.PassPhrase = options.PassPhrase || '';
-        options.ProxyRestUri = 'http://10.2.5.160:4243/qps/ps/';
+        options.ProxyRestUri = qendpoint.rest_PROXY;
         options.TargetId = options.TargetId || url.parse(req.url, true).query.targetId;
        // console.log(options.ProxyRestUri);
         restProxy= options.ProxyRestUri;
@@ -180,7 +182,7 @@ module.exports = {
         options.CertificateKey = options.CertificateKey || 'client_key.pfx';
         options.PassPhrase = options.PassPhrase || '';
         //options.ProxyRestUri = options.ProxyRestUri || restProxy;
-        options.ProxyRestUri = 'http://10.2.5.160:4243/qps/ps/';
+        options.ProxyRestUri = qendpoint.rest_PROXY;
         
         if(!restProxy){
             res.send('Rest Proxy is null!');

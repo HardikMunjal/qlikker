@@ -6,13 +6,16 @@ var ejs = require('ejs');
 var fs = require('fs');
 var WebSocket = require('ws');
 var websocketUtility = require('../utility/websocket')
+var qendpoint = require('../../config/endpoint')
 
 
 var qlik = {
 
 
 checkSession: function(integerator, cb) {
-  request('http://10.2.5.160:4011/scr/session/user/'+integerator.user_directory+'/'+integerator.user_id+'?client_id=merlin&scope=session', function (error, response, body) {
+
+  
+  request(qendpoint.qlik_pt+'scr/session/user/'+integerator.user_directory+'/'+integerator.user_id+'?client_id=merlin&scope=session', function (error, response, body) {
 
       if (!error && response.statusCode == 200) {
 
@@ -26,7 +29,7 @@ checkSession: function(integerator, cb) {
 
 
   checkTicket: function(integerator, cb) {
-  request('http://10.2.5.160:4011/scr/ticket/user/'+integerator.user_directory+'/'+integerator.user_id+'?client_id=merlin&scope=ticket', function (error, response, body) {
+  request(qendpoint.qlik_pt+'scr/ticket/user/'+integerator.user_directory+'/'+integerator.user_id+'?client_id=merlin&scope=ticket', function (error, response, body) {
 
       if (!error && response.statusCode == 200) {
 

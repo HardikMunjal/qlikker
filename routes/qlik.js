@@ -4,6 +4,7 @@ var qlikauth = require('./qlik-auth');
 var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
+var qendpoint = require('../config/endpoint');
 
 
 
@@ -74,7 +75,7 @@ var qlik = {
 
   userQlikTicket: function(req, res, next) {
 
-    var destination = "http://10.2.5.160/ps/hub/";
+    var destination = qendpoint.qlik_proxy_pt+"hub/";
     
 
     if(!req.params.user_id && !req.params.user_directory){
@@ -102,11 +103,11 @@ var qlik = {
     if(req.query.open){
       destination = req.query.open;
 
-      if(destination.indexOf("http://10.2.5.160/ps/") == -1){
+      if(destination.indexOf(qendpoint.qlik_proxy_pt) == -1){
         res.send("Invalid URL in open parameter",400);
         return;
       }
-      if(destination == "http://10.2.5.160/ps/hub/"){
+      if(destination == qendpoint.qlik_proxy_pt+"hub/"){
         res.send("To open hub, You need to exclude / from the end",400);
         return;
       }
@@ -183,14 +184,14 @@ var qlik = {
            if(req.query.open){
             destination = req.query.open
            }else{
-             destination= "http://10.2.5.160/ps/hub/"
+             destination= qendpoint.qlik_proxy_pt+"hub/"
            }
             
            getTicket(destination);
           } else {
           console.log('Ticket Rqst successfully cmpltd for '+bodyObject.UserId); 
 
-          if(bodyObject.TargetUri != "http://10.2.5.160/ps/hub/"){
+          if(bodyObject.TargetUri != qendpoint.qlik_proxy_pt+"hub/"){
             res.render('qlikhub.ejs',{data: dynamicTicket});
             return;
           }

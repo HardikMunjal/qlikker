@@ -6,6 +6,7 @@ var ejs = require('ejs');
 var fs = require('fs');
 var WebSocket = require('ws');
 var Converter = require("csvtojson").Converter;
+var qendpoint = require('../config/endpoint');
 
 
 
@@ -54,7 +55,7 @@ var qlik = {
 
      function fetchDetails(){
         
-        request('http://10.2.5.160:4011/nscr/qlikoptdata/user/'+usrList[counter].ADDomain+'/'+usrList[counter].USERNAME, function (error, response, body) {
+        request(qendpoint.qlik_pt+'nscr/qlikoptdata/user/'+usrList[counter].ADDomain+'/'+usrList[counter].USERNAME, function (error, response, body) {
           var dynamicTicket=body;
         
                    

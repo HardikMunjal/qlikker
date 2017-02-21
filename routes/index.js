@@ -6,7 +6,7 @@ var fs = require('fs');
 var qlik = require('./qlik');
 var ipsec = require('./ip_securer');
 var delivery = require('./delivery');
-var mjob = require('./merlin_job');
+var mjob = require('./merlin_job2');
 var extractor = require('./qlik_extractor_red');
 module.exports = function (app) {
 
