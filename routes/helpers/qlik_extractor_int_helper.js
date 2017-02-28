@@ -39,6 +39,8 @@ var ehelper = {
               socketIntegerator.token= bodyObject.Ticket;
               socketIntegerator.target='TICKET';
               socketIntegerator.scope='BI';
+              socketIntegerator.user_id= integerator.user_id;
+              socketIntegerator.user_directory= integerator.user_directory;
               
 
                utility.getSocketData(socketIntegerator,function(err,bomb){
@@ -56,6 +58,8 @@ var ehelper = {
             socketIntegerator.token= bodyObject[0].SessionId;
             socketIntegerator.target='SESSION';
             socketIntegerator.scope='BI';
+            socketIntegerator.user_id= integerator.user_id;
+            socketIntegerator.user_directory= integerator.user_directory;
             
             utility.getSocketData(socketIntegerator,function(err,bomb){
 

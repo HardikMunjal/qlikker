@@ -58,24 +58,28 @@ var qlik = {
         request(qendpoint.qlik_pt+'nscr/qlikoptdata/user/'+usrList[counter].ADDomain+'/'+usrList[counter].USERNAME, function (error, response, body) {
           var dynamicTicket=body;
         
-                   
           if (!error && response.statusCode == 200) {
 
             var bodyObject =JSON.parse(body);
-            bhai.push(bodyObject);
+
+            var userBody = {};
+            userBody.user_id = usrList[counter].USERNAME;
+            userBody.user_directory = usrList[counter].ADDomain;
+            userBody.qlikData = bodyObject;
+            bhai.push(userBody);
           
-        counter--;
-        if (counter > -1) {
+            counter--;
+            if (counter > -1) {
 
-          console.log('requestt initiated');
-          setTimeout(fetchDetails, 100);    
-       }
-       if(counter == 0){
-        console.log(bhai);
-         res.json(bhai);
-       }
+              console.log('requestt initiated');
+              setTimeout(fetchDetails, 100);    
+           }
+           if(counter == -1){
+            console.log(bhai);
+             res.json(bhai);
+           }
 
-      }
+          }
       
     });
   }

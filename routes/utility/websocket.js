@@ -7,10 +7,10 @@ var fs = require('fs');
 var WebSocket = require('ws');
 var qendpoint = require('../../config/endpoint');
 
-var opendoc= {"method":"OpenDoc","params":["4f9d54a0-007c-4873-a7e2-fef56dda55db","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
-var getobject= {"method":"GetObject","handle":1,"params":["QwRpdK"],"id":2,"jsonrpc":"2.0"};
+var opendoc= {"method":"OpenDoc","params":["ad50b54a-38f0-4d6f-aae3-7c77d91d4940","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
+var getobject= {"method":"GetObject","handle":1,"params":["wJscr"],"id":2,"jsonrpc":"2.0"};
 var gethypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCubeDef",[
-{"qTop":0,"qLeft":0,"qHeight":8,"qWidth":7}
+{"qTop":0,"qLeft":0,"qHeight":12,"qWidth":9}
 ]],"id":3,"jsonrpc":"2.0"}
 
 
@@ -28,14 +28,14 @@ console.log(data);
 if(data.target=='TICKET'){
 
       var ws = new WebSocket(
-                  qendpoint.qlik_ws+'app/4f9d54a0-007c-4873-a7e2-fef56dda55db?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer&QlikTicket='+data.token
+                  qendpoint.qlik_ws+'app/ad50b54a-38f0-4d6f-aae3-7c77d91d4940?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer&QlikTicket='+data.token
               );
 
     }
     else if(data.target=='SESSION'){
       
       var ws = new WebSocket(
-                qendpoint.qlik_ws+'app/4f9d54a0-007c-4873-a7e2-fef56dda55db?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer',
+                qendpoint.qlik_ws+'app/ad50b54a-38f0-4d6f-aae3-7c77d91d4940?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer',
                 [],
                 {
                     'headers': {
@@ -77,6 +77,7 @@ if(data.target=='TICKET'){
                    biarray.insightTitle = null;
                    biarray.count = null;
                    biarray.value = null;
+                   biarray.status = null;
                    biarray.url = null;
                    businessInsights.push(biarray);
                    biarray={};
@@ -88,13 +89,14 @@ if(data.target=='TICKET'){
                 for(var i=0;i<wsres.result.qDataPages[0].qMatrix.length;i++){
                    
                    var biarray = {};
-                   biarray.index = wsres.result.qDataPages[0].qMatrix[i][0].qText;
-                   biarray.underlyingLogic = wsres.result.qDataPages[0].qMatrix[i][1].qText;
-                   biarray.category = wsres.result.qDataPages[0].qMatrix[i][2].qText;
-                   biarray.insightTitle = wsres.result.qDataPages[0].qMatrix[i][3].qText;
-                   biarray.count = wsres.result.qDataPages[0].qMatrix[i][4].qText;
-                   biarray.value = wsres.result.qDataPages[0].qMatrix[i][5].qText;
-                   biarray.url = wsres.result.qDataPages[0].qMatrix[i][6].qText;
+                   biarray.index = wsres.result.qDataPages[0].qMatrix[i][1].qText;
+                   biarray.underlyingLogic = wsres.result.qDataPages[0].qMatrix[i][2].qText;
+                   biarray.category = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+                   biarray.Title = wsres.result.qDataPages[0].qMatrix[i][4].qText;
+                   biarray.count = wsres.result.qDataPages[0].qMatrix[i][5].qText;
+                   biarray.value = wsres.result.qDataPages[0].qMatrix[i][6].qText;
+                   biarray.status = wsres.result.qDataPages[0].qMatrix[i][7].qText;
+                   biarray.url = wsres.result.qDataPages[0].qMatrix[i][8].qText;
                    businessInsights.push(biarray);
                    biarray={};
                 }
