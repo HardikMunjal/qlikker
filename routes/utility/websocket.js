@@ -9,9 +9,6 @@ var qendpoint = require('../../config/endpoint');
 
 var opendoc= {"method":"OpenDoc","params":["ad50b54a-38f0-4d6f-aae3-7c77d91d4940","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
 var getobject= {"method":"GetObject","handle":1,"params":["wJscr"],"id":2,"jsonrpc":"2.0"};
-var gethypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCubeDef",[
-{"qTop":0,"qLeft":0,"qHeight":12,"qWidth":9}
-]],"id":3,"jsonrpc":"2.0"}
 
 
 
@@ -124,7 +121,7 @@ if(data.target=='TICKET'){
             ws.on('message', function(data, flags) {
                       
               var wsres = JSON.parse(data);
-              if(wsres.params && wsres.params.logoutUri == 'ws://10.2.5.160:80/ps/qps/user'){
+              if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout'qps/user'){
                 console.log('user is successfully logged in sales performance with session')
               }
               if(wsres.id==1){
