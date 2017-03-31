@@ -43,7 +43,13 @@ var ipsec = {
       console.log('Client Remote Address(req.connection.remoteAddress)', req.connection.remoteAddress);
       // if(allowedHosts.indexOf(req.headers.origin) > -1){
       // }
-      res.header('Access-Control-Allow-Origin','*');
+
+      var modulator='*';
+
+      if(req.headers.origin && req.headers.origin=='http://10.2.5.158'){
+        modulator='http://10.2.5.158';
+      }
+      res.header('Access-Control-Allow-Origin',modulator);
       res.header('Access-Control-Allow-Credentials', true);
       res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT');
       res.header('Access-Control-Allow-Headers', 'Content-Type');

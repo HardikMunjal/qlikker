@@ -1,7 +1,7 @@
 'use strict';
 
 var qlikauth = require('./qlik-auth');
-var ehelper = require('./helpers/qlik_extractor_helper')
+//var ehelper = require('./helpers/qlik_extractor_helper')
 var einthelper = require('./helpers/qlik_extractor_int_helper')
 var request = require('request');
 var ejs = require('ejs');

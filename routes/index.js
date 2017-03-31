@@ -24,9 +24,9 @@ app.get('/fusion/demo',function(req,res){res.render('stacked_chart.ejs');});
 app.get('/fusion/demo2',function(req,res){res.render('stacked_chart2.ejs');});
 
 app.get('/get/session_id',function(req,res){
-	 var x= JSON.stringify(req.cookies);
-	 console.log(x);
-	 res.json(x)
+	 //var x= JSON.stringify(req.cookies);
+	 console.log(req.cookies);
+	 res.json(req.cookies)
       // var y = JSON.parse(x);
       
       // for (var cookieName in y) {
@@ -141,6 +141,27 @@ app.get('/nscr/qlikdata/user/:user_directory/:user_id',extractor.qlikdata);
 
 //************* Optimized web socket services***************************************
 app.get('/nscr/qlikoptdata/user/:user_directory/:user_id',extractor.qlikdataOptimized);
+
+
+app.get('/get/mashup_object',function(req,res,next){
+
+  
+
+      var configFile = fs.readFileSync('./mashup-id.json');
+              var config = JSON.parse(configFile);
+              res.json(config);
+              // var configFile = fs.readFileSync('./ticket_user.json');
+              // console.log(configFile)
+              // var config = JSON.stringify(configFile);
+              // console.log(config);
+              // res.json(configFile);
+              //config.push(obj);
+              //var configJSON = JSON.stringify(config);
+              //fs.writeFileSync('./user_log.json', configJSON);
+
+           
+});
+
 
 };
 //I hope this is how comments work in js. Hello Hardik! What's up!!!!
