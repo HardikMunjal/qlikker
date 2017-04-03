@@ -5,7 +5,7 @@ var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
 var qendpoint = require('../config/endpoint');
-//var nano = require('nano')('http://10.112.177.96:5984');
+var nano = require('nano')('http://10.112.177.96:5984');
 
 
 
@@ -30,7 +30,6 @@ var qlik = {
 
   userExistingSession: function(req, res, next) {
 
-    
     // var user_ids = ['u1', 'u2', 'u3', 'u4','u5'];
     // var users = nano.use('qlikuser');
     // user_ids.forEach(function(element) {
