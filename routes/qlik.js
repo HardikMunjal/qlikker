@@ -109,7 +109,7 @@ var qlik = {
       return;
     }
 
-    if(req.query.client_id != 'merlin' && req.query.client_id != 'delivery'){
+    if(req.query.client_id != 'merlin' && req.query.client_id != 'delivery' && req.query.client_id != 'hcllive'){
     
       res.send('Invalid client_id', 412);
       return;

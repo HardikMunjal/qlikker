@@ -85,7 +85,7 @@ var R2Map = ['PM','SPM','PortfolioDirector','ProgramManager','ProgramDirector','
     //Pivot chart for #CD1 data monthly wise 
     var pivotTablePhase1 ={}
     pivotTablePhase1.object_no =1;
-    pivotTablePhase1.object_id = "jZbxgz";
+    pivotTablePhase1.object_id = "nGtzs";
     pivotTablePhase1.object_type = "pivot";
     pivotTablePhase1.scope = "data" ;
     pivotTablePhase1.groupDeepDive = "";
@@ -114,7 +114,7 @@ var R2Map = ['PM','SPM','PortfolioDirector','ProgramManager','ProgramDirector','
     var pivotTablePhase3 ={}
     
     pivotTablePhase3.object_no =3;
-    pivotTablePhase3.object_id = "cfmPNB";
+    pivotTablePhase3.object_id = "kufpa";
     pivotTablePhase3.object_type = "textbox";
     pivotTablePhase3.scope = "Business Insight" ;
     pivotTablePhase3.groupDeepDive = [];

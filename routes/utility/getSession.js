@@ -50,9 +50,16 @@ checkSession: function(integerator, cb) {
           return cb(null,bomb);
          })
       }
+
+    else if(data.scope=='Leaderboard'){
+      websocketUtility.extractLeaderData(data,function(err, bomb){
+          return cb(null,bomb);
+         })
+      }
+
     else if(data.scope=='CARD'){
       websocketUtility.extractCardData(data,function(err, bomb){
-          return
+          return 
          })
       }
    }

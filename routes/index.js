@@ -16,6 +16,7 @@ module.exports = function (app) {
 
 app.get('/authenticate', qlik.proxyRedirectFromQlik);
 //app.all('/scr/*',ipsec.whitelistIp);
+
 app.post('/nscr/qlikauth/user/:user_directory/:user_id',delivery.secure_redirection);
 app.get('/scr/session/user/:user_directory/:user_id', qlik.userExistingSession);
 app.get('/scr/ticket/user/:user_directory/:user_id',qlik.userQlikTicket);
@@ -27,11 +28,13 @@ app.get('/get/session_id',admin.getSession);
 app.get('/user/history/:user_id/:sheet_name',admin.saveHistory);
 app.get('/get/history',admin.getHistory);
 //***************** Scheduler Services *********************************************
+
 app.get('/fetch/business/insights', mjob.extractBI);
 app.get('/nscr/qlikdata/user/:user_directory/:user_id',extractor.qlikdata);
 
 //************* Optimized web socket services***************************************
-app.get('/nscr/qlikoptdata/user/:user_directory/:user_id',extractor.qlikdataOptimized);
+app.get('/nscr/qlikoptdata/user/:user_directory/:user_id', extractor.qlikdataOptimized);
+app.get('/nscr/fetch/leaderbd/user/:user_directory/:user_id', extractor.qlikLeaderData);
 app.get('/get/mashup_object',admin.mashupDynamiser);
 
 
