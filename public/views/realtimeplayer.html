@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello Bubble Chart</title>
+  <meta charset="utf-8">
+
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,200italic,600italic&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+
+  <script src="http://phuonghuynh.github.io/js/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/d3/d3.min.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/d3-transform/src/d3-transform.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  <script>
+
+var data= {"nodes":[
+  {"x":80, "r":80, "label":"Merlin"}, 
+  {"x":400, "r":80, "label":"Symphony"}, 
+  {"x":750, "r":80, "label":"HCLLIVE"}
+]} 
+var width = 960,
+    height = 500;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+
+d3.json(data, function(json) {
+    /* Define the data for the circles */
+    var elem = svg.selectAll("g")
+        .data(json.nodes)
+
+    /*Create and place the "blocks" containing the circle and the text */  
+    var elemEnter = elem.enter()
+        .append("g")
+        .attr("transform", function(d){return "translate("+d.x+",80)"})
+
+    /*Create the circle for each block */
+    var circle = elemEnter.append("circle")
+        .attr("r", function(d){return d.r} )
+        .attr("stroke","black")
+        .attr("fill", "white")
+
+    /* Create the text for each block */
+    elemEnter.append("text")
+        .attr("dx", function(d){return -20})
+        .text(function(d){return d.label})
+})
+</script>
+</head>
+<body style="background: #000000">
+<!-- <div class="bubbleChart"/> -->
+<!-- <div class="bubbleChartMerlin"/> -->
+<h1> Merlin <h1>
+<h3>275</h3>
+<svg width="960" height="500">
+    <g transform="translate(80,80)">
+        <circle r="40" stroke="black" fill="white"></circle>
+        <text dx="-20">Node 1</text>
+    </g>
+    <g transform="translate(200,80)">
+        <circle r="60" stroke="black" fill="white"></circle>
+        <text dx="-20">Node 2</text>
+    </g>
+    <g transform="translate(380,80)">
+        <circle r="80" stroke="black" fill="white"></circle>
+        <text dx="-20">Node 3</text>
+    </g>
+</svg>
+</body>
+</html>

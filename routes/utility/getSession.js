@@ -47,13 +47,13 @@ checkSession: function(integerator, cb) {
 
 
       websocketUtility.extractBusinessInsightsData(data,function(err, bomb){
-          return cb(null,bomb);
+          return cb(err,bomb);
          })
       }
 
     else if(data.scope=='Leaderboard'){
       websocketUtility.extractLeaderData(data,function(err, bomb){
-          return cb(null,bomb);
+          return cb(err,bomb);
          })
       }
 

@@ -4,6 +4,7 @@ var qlikauth = require('./qlik-auth');
 var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
+//var url = require("url");//edited by shivangi
 var qendpoint = require('../config/endpoint');
 var nano = require('nano')('http://10.112.177.96:5984');
 
@@ -14,9 +15,12 @@ var admin = {
 
 
   getSession: function(req, res, next) {
-
+     //var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+     console.log(req.address());
+   console.log(fullUrl);//edited by shivangi
+   //console.log(req.connection.remoteAddress);
    console.log(req.cookies);
-   res.json(req.cookies)
+   res.json(req.cookies);
   },
 
   saveHistory: function(req, res, next) {

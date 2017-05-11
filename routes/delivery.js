@@ -67,6 +67,8 @@ secure_redirection: function(req, res, next) {
 integration_point : function(req, res, next) {
 
 
+
+
     
 var ValueDeliveredSym = [] ;
 
@@ -90,24 +92,24 @@ var R2Map = ['PM','SPM','PortfolioDirector','ProgramManager','ProgramDirector','
     pivotTablePhase1.scope = "data" ;
     pivotTablePhase1.groupDeepDive = "";
 
-    pivotTablePhase1.children = [ {id: 101 , name: "Revenue" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/FinanceSummaryR1/FinanceSummaryR1.html?view=YTD"},
-                {id: 102 , name: "Project Margin" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/FinanceSummaryR1/FinanceSummaryR1.html?view=YTD"},
-                {id:  103 , name: "Resource Expense" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"sense/app/314889d1-1873-423f-8f6c-57b854f599fb/sheet/57dc8c8e-5dab-42fb-b817-6dedf5ca7b25/state/analysis"},
-                {id: 104 , name: "Project Expense" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"sense/app/314889d1-1873-423f-8f6c-57b854f599fb/sheet/57dc8c8e-5dab-42fb-b817-6dedf5ca7b25/state/analysis"},
-                {id: 105 , name: "Travel Expense" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"sense/app/314889d1-1873-423f-8f6c-57b854f599fb/sheet/57dc8c8e-5dab-42fb-b817-6dedf5ca7b25/state/analysis"},
-                {id: 106 , name: "Value Delivered" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ValueCreationR1/ValueCreationR1.html?view=YTD"},
-                {id: 107 , name: "Idea Generated" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ValueCreationR1/ValueCreationR1.html?view=YTD"},
-                {id:  108 , name: "Idea Implemented" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ValueCreationR1/ValueCreationR1.html?view=YTD"} ];
+    pivotTablePhase1.children = [ {id: 101 , name: "Revenue" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/FinanceSummaryCD3/FinanceSummaryCD3.html?view=YTD"},
+                {id: 102 , name: "Project Margin" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/FinanceSummaryCD3/FinanceSummaryCD3.html?view=YTD"},
+                {id:  103 , name: "Resource Expense" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ExpenseResourceCD3/ExpenseResourceCD3.html"},
+                {id: 104 , name: "Project Expense" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ExpenseResourceCD3/ExpenseResourceCD3.html"},
+                {id: 105 , name: "Travel Expense" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ExpenseResourceCD3/ExpenseResourceCD3.html"},
+                {id: 106 , name: "Value Delivered" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ValueCreationCD3/ValueCreationCD3.html?view=YTD"},
+                {id: 107 , name: "Idea Generated" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ValueCreationCD3/ValueCreationCD3.html?view=YTD"},
+                {id:  108 , name: "Idea Implemented" , scope :"data" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/ValueCreationCD3/ValueCreationCD3.html?view=YTD"} ];
     symphonyApp.group_details.push(pivotTablePhase1);
 
 
     // Pivot chart for value creation data
     var pivotTablePhase2 ={}
     pivotTablePhase2.object_no =2;
-    pivotTablePhase2.object_id = "6e8fbe6c-a99e-438e-ba3c-a51a5378263b";
+    pivotTablePhase2.object_id = "nFcVD";
     pivotTablePhase2.object_type = "sheet";
     pivotTablePhase2.scope = "HR" ;
-    pivotTablePhase2.groupDeepDive = qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/HumanResourceR1/HumanResourceR1.html";
+    pivotTablePhase2.groupDeepDive = qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/HumanResourceCD3/HumanResourceCD3.html?toggle=1";
     pivotTablePhase2.children = [];
     symphonyApp.group_details.push(pivotTablePhase2);
 
@@ -121,6 +123,47 @@ var R2Map = ['PM','SPM','PortfolioDirector','ProgramManager','ProgramDirector','
     pivotTablePhase3.children = [ {id: 109 , name: "MarginDepletionBI" , scope :"Business Insights" ,deepdive : qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/BussinessInsightsR1/BussinessInsightsR1.html?view=YTD"}]
 
     symphonyApp.group_details.push(pivotTablePhase3);
+
+    // Pivot chart for value creation data
+    var pivotTablePhase4 ={}
+    pivotTablePhase4.object_no =2;
+    pivotTablePhase4.object_id = "nFcVD";
+    pivotTablePhase4.object_type = "mashup";
+    pivotTablePhase4.scope = "PCI" ;
+    pivotTablePhase4.groupDeepDive = qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/PCIRAGStatus/PCIRAGStatus.html?toggle=ALL";
+    pivotTablePhase4.children = [];
+    symphonyApp.group_details.push(pivotTablePhase4);
+
+
+    // Pivot chart for value creation data
+    var pivotTablePhase5 ={}
+    pivotTablePhase5.object_no =2;
+    pivotTablePhase5.object_id = "nFcVD";
+    pivotTablePhase5.object_type = "mashup";
+    pivotTablePhase5.scope = "PCSAT" ;
+    pivotTablePhase5.groupDeepDive = qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"extensions/PCSATRAGStatus/PCSATRAGStatus.html?toggle=ALL";
+    pivotTablePhase5.children = [];
+    symphonyApp.group_details.push(pivotTablePhase5);
+
+
+    var pivotTablePhase6 ={}
+    pivotTablePhase6.object_no =2;
+    pivotTablePhase6.object_id = "null";
+    pivotTablePhase6.object_type = "sheet";
+    pivotTablePhase6.scope = "PCSAT-sheet" ;
+    pivotTablePhase6.groupDeepDive = qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"sense/app/314889d1-1873-423f-8f6c-57b854f599fb/sheet/KHPDd/state/analysis";
+    pivotTablePhase6.children = [];
+    symphonyApp.group_details.push(pivotTablePhase6);
+
+    var pivotTablePhase7 ={}
+    pivotTablePhase7.object_no =2;
+    pivotTablePhase7.object_id = "null";
+    pivotTablePhase7.object_type = "mashup";
+    pivotTablePhase7.scope = "PCI-sheet" ;
+    pivotTablePhase7.groupDeepDive = qendpoint.qlik_pt+"scr/ticket/user/$user_directory/$user_id?client_id=delivery&scope=ticket&open="+qendpoint.qlik_proxy_pt+"sense/app/314889d1-1873-423f-8f6c-57b854f599fb/sheet/cHNDfX/state/analysis";
+    pivotTablePhase7.children = [];
+    symphonyApp.group_details.push(pivotTablePhase7);
+
 
 
   

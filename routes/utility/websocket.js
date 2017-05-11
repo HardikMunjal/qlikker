@@ -38,19 +38,19 @@ var gethypercubeForBookingFocusLeader = {"method":"GetHyperCubeData","handle":5,
 {"qTop":0,"qLeft":0,"qHeight":10,"qWidth":4}
 ]],"id":10,"jsonrpc":"2.0"}
 
-var getobjectForPipelineFocusLeader= {"method":"GetObject","handle":1,"params":["NyLHWD"],"id":11,"jsonrpc":"2.0"};
-var gethypercubeForPipelineFocusLeader = {"method":"GetHyperCubeData","handle":5,"params":["/qHyperCubeDef",[
+var getobjectForPipelineFocusLeader= {"method":"GetObject","handle":1,"params":["QxShXAr"],"id":11,"jsonrpc":"2.0"};
+var gethypercubeForPipelineFocusLeader = {"method":"GetHyperCubeData","handle":6,"params":["/qHyperCubeDef",[
 {"qTop":0,"qLeft":0,"qHeight":10,"qWidth":4}
 ]],"id":12,"jsonrpc":"2.0"}
 
 
 var getobjectForBookingOppurtunityLeader= {"method":"GetObject","handle":1,"params":["tQujdg"],"id":13,"jsonrpc":"2.0"};
-var gethypercubeForBookingOppurtunityLeader = {"method":"GetHyperCubeData","handle":6,"params":["/qHyperCubeDef",[
+var gethypercubeForBookingOppurtunityLeader = {"method":"GetHyperCubeData","handle":7,"params":["/qHyperCubeDef",[
 {"qTop":0,"qLeft":0,"qHeight":10,"qWidth":7}
 ]],"id":14,"jsonrpc":"2.0"}
 
 var getobjectForPipelineOppurtunityLeader= {"method":"GetObject","handle":1,"params":["PAEwpnZ"],"id":15,"jsonrpc":"2.0"};
-var gethypercubeForPipelineOppurtunityLeader = {"method":"GetHyperCubeData","handle":7,"params":["/qHyperCubeDef",[
+var gethypercubeForPipelineOppurtunityLeader = {"method":"GetHyperCubeData","handle":8,"params":["/qHyperCubeDef",[
 {"qTop":0,"qLeft":0,"qHeight":10,"qWidth":7}
 ]],"id":16,"jsonrpc":"2.0"}
 
@@ -61,12 +61,13 @@ var gethypercubeForPipelineOppurtunityLeader = {"method":"GetHyperCubeData","han
 var businessInsights = [];
 
 
+
 var qlik = {
 
 
 extractBusinessInsightsData: function(data,cb) {
    
-console.log(data);
+//console.log(data);
 
 if(data.target=='TICKET'){
 
@@ -90,7 +91,7 @@ if(data.target=='TICKET'){
     
 
               ws.on('open', function open() {
-                console.log('connection1 opened for sales performance with Session');
+                //console.log('connection1 opened for sales performance with Session');
                   
                 ws.send(JSON.stringify(opendoc));
               });
@@ -98,9 +99,9 @@ if(data.target=='TICKET'){
             ws.on('message', function(data, flags) {
                       
               var wsres = JSON.parse(data);
-              console.log(wsres);
+              //console.log(wsres);
               if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
-                console.log('user is successfully logged in sales performance with session')
+                //console.log('user is successfully logged in sales performance with session')
               }
               if(wsres.id==1){
                 ws.send(JSON.stringify(getobject));
@@ -112,7 +113,7 @@ if(data.target=='TICKET'){
               if(wsres.id==3){
 
                 if (!wsres.result) {
-                  console.log('no records');
+                  //console.log('no records');
                   var biarray = {};
                    biarray.index = null;
                    biarray.underlyingLogic = null;
@@ -145,7 +146,7 @@ if(data.target=='TICKET'){
                 }
                 cb(null,businessInsights);
                 businessInsights=[];
-                console.log('Performance Business insights from sesssion');
+                //console.log('Performance Business insights from sesssion');
                 
               }
             });
@@ -155,8 +156,10 @@ if(data.target=='TICKET'){
 
   extractLeaderData: function(data,cb) {
    
-      console.log(data);
+      //console.log(data);
       var leaderData = {};
+      leaderData.error_id = 0;
+      leaderData.error_message ='Success'
       leaderData.FocusAccounts =[];
       leaderData.TopOpportunityList =[];
 
@@ -182,7 +185,7 @@ if(data.target=='TICKET'){
     
 
               ws.on('open', function open() {
-                console.log('connection1 opened for sales performance with Session');
+                //console.log('connection1 opened for sales performance with Session');
                   
                 ws.send(JSON.stringify(opendocForLeaderboard));
               });
@@ -192,11 +195,23 @@ if(data.target=='TICKET'){
 
                       
               var wsres = JSON.parse(data);
-              console.log(wsres);
+              //console.log(wsres);
               if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
-                console.log('user is successfully logged in sales performance with session')
+                //console.log('user is successfully logged in sales performance with session')
               }
               if(wsres.id==1){
+
+                if(wsres.error && wsres.error.code==403){
+                  var e={};
+                  var emessage = {};
+                  emessage.error_id = 403;
+                  emessage.error_message ='You do not have leaderboard access';
+                  e.status = 403;
+                  e.message = emessage;
+                  
+                  
+                  return cb(e)
+                }
                 ws.send(JSON.stringify(getobjectForLeaderboard));
               }
               if(wsres.id==2){
@@ -286,6 +301,7 @@ if(data.target=='TICKET'){
                 leaderData.FunnelSummary.WinRate=lbPip[3].qText;
                 leaderData.FunnelSummary.FunnelSufficiency=lbPip[7].qText;
                 leaderData.FunnelSummary.FunnelSufficiencyValue=lbPip[6].qText;
+                leaderData.FunnelSummary.AsOnDate=lbPip[8].qText
 
                 ws.send(JSON.stringify(getobjectForBillingFocusLeader));
 
@@ -377,10 +393,11 @@ if(data.target=='TICKET'){
                    bookingOppurtunities.Type = 'BOOKING';
                    bookingOppurtunities.OpportunityName = wsres.result.qDataPages[0].qMatrix[i][2].qText;
                    bookingOppurtunities.Owner = wsres.result.qDataPages[0].qMatrix[i][0].qText;
-                   bookingOppurtunities.Value = wsres.result.qDataPages[0].qMatrix[i][5].qText;
-                   bookingOppurtunities.ValueRaw = wsres.result.qDataPages[0].qMatrix[i][5].qNum;
+                   bookingOppurtunities.Value = wsres.result.qDataPages[0].qMatrix[i][6].qText;
+                   bookingOppurtunities.ValueRaw = wsres.result.qDataPages[0].qMatrix[i][6].qNum;
                    bookingOppurtunities.Stage = wsres.result.qDataPages[0].qMatrix[i][4].qText;
                    bookingOppurtunities.ClosingDate = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+                   bookingOppurtunities.AccountGroup = wsres.result.qDataPages[0].qMatrix[i][5].qText;
                    
                    leaderData.TopOpportunityList.push(bookingOppurtunities);
                    
@@ -401,12 +418,13 @@ if(data.target=='TICKET'){
                    pipelineOppurtunities.Type = 'PIPELINE';
                    pipelineOppurtunities.OpportunityName = wsres.result.qDataPages[0].qMatrix[i][2].qText;
                    pipelineOppurtunities.Owner = wsres.result.qDataPages[0].qMatrix[i][0].qText;
-                   pipelineOppurtunities.Value = wsres.result.qDataPages[0].qMatrix[i][5].qText;
-                   pipelineOppurtunities.ValueRaw = wsres.result.qDataPages[0].qMatrix[i][5].qNum;
+                   pipelineOppurtunities.Value = wsres.result.qDataPages[0].qMatrix[i][6].qText;
+                   pipelineOppurtunities.ValueRaw = wsres.result.qDataPages[0].qMatrix[i][6].qNum;
                    pipelineOppurtunities.Stage = wsres.result.qDataPages[0].qMatrix[i][4].qText;
                    pipelineOppurtunities.ClosingDate = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+                   pipelineOppurtunities.AccountGroup = wsres.result.qDataPages[0].qMatrix[i][5].qText;
                    
-                   console.log(leaderData.TopOpportunityList);
+                   //console.log(leaderData.TopOpportunityList);
                    
                    leaderData.TopOpportunityList.push(pipelineOppurtunities);
 
@@ -416,7 +434,7 @@ if(data.target=='TICKET'){
                 cb(null,leaderData);
                 leaderData=[];
                 //return;
-                console.log('Leaderboard data from sesssion',leaderData);
+                //console.log('Leaderboard data from sesssion',leaderData);
                 
               }
             });

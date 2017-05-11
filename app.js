@@ -8,6 +8,21 @@ var request = require('request');
 var ipsec = require('./routes/ip_securer')
 
 
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+
+
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+// http.listen(3000, function(){
+//   console.log('listening on *:3000');
+// });
+
+
 
 
 app.use('/', ipsec.CrossOriginHeaders);
@@ -27,10 +42,11 @@ require('./routes')(router);
 
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/public/views');
-app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile)
+//app.set('view engine', 'html');
 
 
-var server = app.listen(4011, function () {
+var server = http.listen(4011, function () {
   var host = server.address().address;
   var port = server.address().port;
 

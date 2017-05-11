@@ -28,7 +28,7 @@ var ehelper = {
 
   fetchDetails: function(integerator, cb) {
 
-      console.log('fetch details execution starts');
+      //console.log('fetch details execution starts');
       utility.checkSession(integerator,function(err,result){
 
           if(result == 'Session does not exist for the user'){
@@ -45,7 +45,7 @@ var ehelper = {
 
                utility.getSocketData(socketIntegerator,function(err,bomb){
 
-                return cb(null,bomb);
+                return cb(err,bomb);
                })
 
              })
@@ -63,7 +63,7 @@ var ehelper = {
             
             utility.getSocketData(socketIntegerator,function(err,bomb){
 
-            return cb(null,bomb);
+            return cb(err,bomb);
 
            })
          }

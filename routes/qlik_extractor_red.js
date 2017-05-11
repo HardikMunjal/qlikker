@@ -26,7 +26,7 @@ var qlik = {
        res.send('User must have to pass directory and user_id', 400);
        return;
      }
-     console.log('ehelper execution starts');
+     //console.log('ehelper execution starts');
      ehelper.fetchDetails(req,res);
   },
 
@@ -56,23 +56,71 @@ var qlik = {
     // ws://10.2.5.158/app/3e0df6e8-8809-4fdc-8a88-00e35926db24?reloadUri=http://10.2.5.158/dev-hub/engine-api-explorer
     // CPhuYnm
     // jCmVxbs
-
+    var emessage = {};
+       emessage.error_id = 400;
+       emessage.error_message ='Invalid User Name';
 
     if(!req.params.user_id && !req.params.user_directory){
-       res.send('User must have to pass directory and user_id', 400);
+
+
+       res.send(emessage, 400);
        return;
      }
+     if(req.params.user_id == 'null' || req.params.user_directory == 'null'){
+       res.send(emessage, 400);
+       return;
+     }
+
+     if(req.params.user_id == 'undefined' || req.params.user_directory == 'undefined'){
+       res.send(emessage, 400);
+       return;
+     }
+
+     //console.log(req.params.user_id);
      
      var integerator = {};
+     var qlikstatus = false;
+     var responseStatus = false;
+
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'Leaderboard';
+
+     setTimeout(function(){
+       if(!qlikstatus){
+        
+        var e ={};
+        var emessage = {};
+        emessage.error_id = 403.1;
+        emessage.error_message ='Either you do not have license pass in qliksense or may be qlikservices are down';
+        res.status('403');
+        e.message = emessage;
+        responseStatus=true;
+
+        
+         return res.send(e.message);
+       }
+
+     },12000)
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
-        //console.log('result',result);
-        return res.json(result);
-        //console.log('ho gya');
+
+        if(!responseStatus){
+          qlikstatus=true;
+          //console.log('result',result);
+          return res.json(result);
+        }
+        else{
+          console.log('*************** error captured in set timeout reqquired debugging ***************')
+        }
+      }
+      else{
+        qlikstatus=true;
+        //console.log(err);
+        //res.status(err.status);
         
+        return res.send(err.message);
+        //return next(err)
       }
      })
   }
