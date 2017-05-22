@@ -7,6 +7,8 @@ var fs = require('fs');
 var WebSocket = require('ws');
 var qendpoint = require('../../config/endpoint');
 
+
+//************************************ BUSINESS INSIGHTS DATA SERVICE ***************************************************
 var opendoc= {"method":"OpenDoc","params":["83dc76e7-6d76-455f-9052-e71da06a5c93","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
 var getobject= {"method":"GetObject","handle":1,"params":["wJscr"],"id":2,"jsonrpc":"2.0"};
 var gethypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCubeDef",[
@@ -14,6 +16,29 @@ var gethypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCub
 ]],"id":3,"jsonrpc":"2.0"}
 
 
+//***************************************Symphony Test DATA SERVICE *******************************************************
+var opendocSymphony= {"method":"OpenDoc","params":["314889d1-1873-423f-8f6c-57b854f599fb","","","",false],"handle":-1,"id":101,"jsonrpc":"2.0"}
+var getobjectSymphony= {"method":"GetObject","handle":1,"params":["nGtzs"],"id":102,"jsonrpc":"2.0"};
+var gethypercubeSymphony = {
+                                  "method": "GetHyperCubePivotData",
+                                  "handle": 2,
+                                  "params": [
+                                    "/qHyperCubeDef",
+                                    [
+                                      {
+                                        "qTop": 0,
+                                        "qLeft": 0,
+                                        "qHeight": 200,
+                                        "qWidth": 200
+                                      }
+                                    ]
+                                  ],
+                                  "id": 103,
+                                  "jsonrpc": "2.0",
+                                  "outKey": -1
+                                }
+
+//***************************************LEADERBOARD DATA SERVICE *******************************************************
 var opendocForLeaderboard= {"method":"OpenDoc","params":["3e0df6e8-8809-4fdc-8a88-00e35926db24","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
 
 var getobjectForLeaderboard= {"method":"GetObject","handle":1,"params":["CPhuYnm"],"id":2,"jsonrpc":"2.0"};
@@ -54,6 +79,73 @@ var gethypercubeForPipelineOppurtunityLeader = {"method":"GetHyperCubeData","han
 {"qTop":0,"qLeft":0,"qHeight":10,"qWidth":7}
 ]],"id":16,"jsonrpc":"2.0"}
 
+
+
+//***************************** LEADERBOARD DEEP DIVE DATA SERVICE ************************************
+
+var oppurtunityDeepdiveObject= {"method":"GetObject","handle":1,"params":["nkTtGQ"],"id":17,"jsonrpc":"2.0"};
+var oppurtunityDeepdiveHypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCubeDef",[
+{"qTop":0,"qLeft":0,"qHeight":120,"qWidth":7}
+]],"id":18,"jsonrpc":"2.0"}
+
+
+var FunnelTeamObject = {
+                          "method": "GetObject",
+                          "handle": 1,
+                          "params": [
+                            "aDnTrpX"
+                          ],
+                          "id": 19,
+                          "jsonrpc": "2.0",
+                          "outKey": -1
+                      }
+var FunnelTeamHypercubePivot = {
+                                  "method": "GetHyperCubePivotData",
+                                  "handle": 3,
+                                  "params": [
+                                    "/qHyperCubeDef",
+                                    [
+                                      {
+                                        "qTop": 0,
+                                        "qLeft": 0,
+                                        "qHeight": 20,
+                                        "qWidth": 30
+                                      }
+                                    ]
+                                  ],
+                                  "id": 20,
+                                  "jsonrpc": "2.0",
+                                  "outKey": -1
+                                }
+
+var Focus150Object = {
+                          "method": "GetObject",
+                          "handle": 1,
+                          "params": [
+                            "fFRJAQ"
+                          ],
+                          "id": 21,
+                          "jsonrpc": "2.0",
+                          "outKey": -1
+                      }
+var Focus150HypercubePivot = {
+                                  "method": "GetHyperCubePivotData",
+                                  "handle": 4,
+                                  "params": [
+                                    "/qHyperCubeDef",
+                                    [
+                                      {
+                                        "qTop": 0,
+                                        "qLeft": 0,
+                                        "qHeight": 155,
+                                        "qWidth": 155
+                                      }
+                                    ]
+                                  ],
+                                  "id": 22,
+                                  "jsonrpc": "2.0",
+                                  "outKey": -1
+                                }
 
 
 
@@ -435,6 +527,377 @@ if(data.target=='TICKET'){
                 leaderData=[];
                 //return;
                 //console.log('Leaderboard data from sesssion',leaderData);
+                
+              }
+            });
+
+  
+  },
+
+  extractLeaderDeepdive: function(data,cb) {
+   
+      
+      var leaderDeepDiveData = {};
+      leaderDeepDiveData.error_id = 0;
+      leaderDeepDiveData.error_message ='Success'
+      leaderDeepDiveData.Funnel ={};
+      //leaderDeepDiveData.Funnel.AsOnDate = '2017'
+      leaderDeepDiveData.Funnel.FunnelSummary=[];
+      leaderDeepDiveData.Funnel.FunnelSummaryTeam=[];
+      leaderDeepDiveData.Funnel.TopAccounts=[];
+      leaderDeepDiveData.Funnel.OpportunityListTeam=[];
+
+      
+      if(data.target=='TICKET'){
+
+            var ws = new WebSocket(
+                        qendpoint.qlik_ws+'app/3e0df6e8-8809-4fdc-8a88-00e35926db24?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer&QlikTicket='+data.token
+                    );
+
+          }
+          else if(data.target=='SESSION'){
+            
+            var ws = new WebSocket(
+                      qendpoint.qlik_ws+'app/3e0df6e8-8809-4fdc-8a88-00e35926db24?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer',
+                      [],
+                      {
+                          'headers': {
+                              'Cookie': 'X-Qlik-Session-Node='+data.token
+                          }
+                      }
+                  );
+          }
+    
+
+              ws.on('open', function open() {
+               
+                ws.send(JSON.stringify(opendocForLeaderboard));
+              });
+
+            ws.on('message', function(data, flags) {
+
+              var wsres = JSON.parse(data);
+              
+              if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
+              }
+              if(wsres.id==1){
+
+                if(wsres.error && wsres.error.code==403){
+                  var e={};
+                  var emessage = {};
+                  emessage.error_id = 403;
+                  emessage.error_message ='You do not have leaderboard access';
+                  e.status = 403;
+                  e.message = emessage;
+                  
+                  
+                  return cb(e)
+                }
+                ws.send(JSON.stringify(oppurtunityDeepdiveObject));
+              }
+              if(wsres.id==17){
+                //console.log(wsres);
+                ws.send(JSON.stringify(oppurtunityDeepdiveHypercube));
+              }
+              if(wsres.id==18){
+
+                if (!wsres.result) {
+                  return cb(null,leaderData);
+                }
+                
+                
+
+
+                for(var i=0;i<wsres.result.qDataPages[0].qMatrix.length;i++){
+                  var funnel = {};
+                   
+
+                   funnel.Stage = wsres.result.qDataPages[0].qMatrix[i][0].qText;
+                   funnel.BType = wsres.result.qDataPages[0].qMatrix[i][1].qText;
+                   funnel.ActualValue = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+                   funnel.Type = wsres.result.qDataPages[0].qMatrix[i][2].qText;
+                   funnel.OCount = wsres.result.qDataPages[0].qMatrix[i][4].qText;
+                   
+                   
+
+                   leaderDeepDiveData.Funnel.FunnelSummary.push(funnel);
+                    
+                  }
+                ws.send(JSON.stringify(FunnelTeamObject));
+                //cb(null,leaderDeepDiveData);
+    
+                }
+
+              if(wsres.id==19){
+                //console.log(wsres);
+                ws.send(JSON.stringify(FunnelTeamHypercubePivot));
+              }
+              if(wsres.id==20){
+
+                if (!wsres.result) {
+                  return cb(null,leaderData);
+                }
+                
+                
+
+
+                for(var i=1;i<wsres.result.qDataPages[0].qLeft.length;i++){
+                  var funnelTeam = {};
+                   
+
+                   funnelTeam.EName = wsres.result.qDataPages[0].qLeft[i].qText;
+                   funnelTeam.TQF = wsres.result.qDataPages[0].qData[i][0].qText;
+                   funnelTeam.OCount = wsres.result.qDataPages[0].qData[i][1].qNum;
+                   funnelTeam.WinRate = wsres.result.qDataPages[0].qData[i][2].qText;
+                   funnelTeam.FSKey = wsres.result.qDataPages[0].qData[i][3].qText;
+                   funnelTeam.FSValue = wsres.result.qDataPages[0].qData[i][4].qText;
+
+                   funnelTeam.FunnelList =[];
+
+                   var stage={};
+
+                   stage.Type = 'NF'
+                   stage.FValue = wsres.result.qDataPages[0].qData[i][19].qText
+                   stage.FCount = wsres.result.qDataPages[0].qData[i][13].qText;
+                   stage.BType = 'EE';
+                   funnelTeam.FunnelList.push(stage);
+                   stage={};
+
+                   stage.Type = 'NF'
+                   stage.FValue = wsres.result.qDataPages[0].qData[i][20].qText
+                   stage.FCount = wsres.result.qDataPages[0].qData[i][14].qText;
+                   stage.BType = 'EN';
+                   funnelTeam.FunnelList.push(stage);
+                   stage={};
+
+
+                   stage.Type = 'NF'
+                   stage.FValue = wsres.result.qDataPages[0].qData[i][21].qText
+                   stage.FCount = wsres.result.qDataPages[0].qData[i][15].qText;
+                   stage.BType = 'NN';
+                   funnelTeam.FunnelList.push(stage);
+                   stage={};
+
+                   stage.Type = 'CF'
+                   stage.FValue = wsres.result.qDataPages[0].qData[i][22].qText
+                   stage.FCount = wsres.result.qDataPages[0].qData[i][16].qText;
+                   stage.BType = 'EE';
+                   funnelTeam.FunnelList.push(stage);
+                   stage={};
+
+                   stage.Type = 'CF'
+                   stage.FValue = wsres.result.qDataPages[0].qData[i][23].qText
+                   stage.FCount = wsres.result.qDataPages[0].qData[i][17].qText;
+                   stage.BType = 'EN';
+                   funnelTeam.FunnelList.push(stage);
+                   stage={};
+
+
+                   stage.Type = 'CF'
+                   stage.FValue = wsres.result.qDataPages[0].qData[i][24].qText
+                   stage.FCount = wsres.result.qDataPages[0].qData[i][18].qText;
+                   stage.BType = 'NN';
+                   funnelTeam.FunnelList.push(stage);
+                   stage={};
+
+                   
+                   
+
+                   leaderDeepDiveData.Funnel.FunnelSummaryTeam.push(funnelTeam);
+
+
+                   var opportunity={};
+                   opportunity.EName = wsres.result.qDataPages[0].qLeft[i].qText;
+
+                   opportunity.DataList =[];
+
+                   var stage={};
+
+                   stage.OCount = wsres.result.qDataPages[0].qData[i][6].qText
+                   stage.TypeText = 'L3'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][5].qText;
+                   opportunity.DataList.push(stage);
+                   stage={};
+
+                   stage.OCount = wsres.result.qDataPages[0].qData[i][8].qText
+                   stage.TypeText = 'L2'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][7].qText;
+                   opportunity.DataList.push(stage);
+                   stage={};
+
+                   stage.OCount = wsres.result.qDataPages[0].qData[i][10].qText
+                   stage.TypeText = 'L1'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][9].qText;
+                   opportunity.DataList.push(stage);
+                   stage={};
+
+                   leaderDeepDiveData.Funnel.OpportunityListTeam.push(opportunity)
+                    
+                  }
+                ws.send(JSON.stringify(Focus150Object));
+    
+                }
+
+
+                if(wsres.id==21){
+                //console.log(wsres);
+                ws.send(JSON.stringify(Focus150HypercubePivot));
+              }
+              if(wsres.id==22){
+
+                if (!wsres.result) {
+                  return cb(null,leaderData);
+                }
+                
+                
+
+
+                for(var i=0;i<wsres.result.qDataPages[0].qLeft.length;i++){
+                  var TAccounts = {};
+                   
+
+                   TAccounts.AccGroup = wsres.result.qDataPages[0].qLeft[i].qText;
+                   TAccounts.AccValue = wsres.result.qDataPages[0].qData[i][0].qText;
+                   TAccounts.DataList =[];
+
+                   var stage={};
+
+                   stage.Type = 'L'
+                   stage.TypeText = 'L3'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][1].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+                   stage.Type = 'L'
+                   stage.TypeText = 'L2'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][2].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+                   stage.Type = 'L'
+                   stage.TypeText = 'L1'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][3].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+                   stage.Type = 'B'
+                   stage.TypeText = 'EE'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][4].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+
+                   stage.Type = 'B'
+                   stage.TypeText = 'EN'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][5].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+                   stage.Type = 'B'
+                   stage.TypeText = 'NN'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][6].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+                   stage.Type = 'S'
+                   stage.TypeText = 'INFRA'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][7].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+                   stage.Type = 'S'
+                   stage.TypeText = 'ERS'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][8].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+                   stage.Type = 'S'
+                   stage.TypeText = 'BPO'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][9].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+                   stage.Type = 'S'
+                   stage.TypeText = 'APPS'
+                   stage.RawValue = wsres.result.qDataPages[0].qData[i][10].qText;
+                   TAccounts.DataList.push(stage);
+                   stage={};
+
+
+
+
+                   
+                   
+
+                   leaderDeepDiveData.Funnel.TopAccounts.push(TAccounts);
+                    
+                  }
+                cb(null,leaderDeepDiveData);
+    
+                }
+
+
+
+            });
+},
+
+extractSymphonydata: function(data,cb) {
+   
+console.log(data);
+
+if(data.target=='TICKET'){
+
+      var ws = new WebSocket(
+                  qendpoint.qlik_ws+'app/314889d1-1873-423f-8f6c-57b854f599fb?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer&QlikTicket='+data.token
+              );
+
+    }
+    else if(data.target=='SESSION'){
+      
+      var ws = new WebSocket(
+                qendpoint.qlik_ws+'app/314889d1-1873-423f-8f6c-57b854f599fb?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer',
+                [],
+                {
+                    'headers': {
+                        'Cookie': 'X-Qlik-Session-Node='+data.token
+                    }
+                }
+            );
+    }
+    
+
+              ws.on('open', function open() {
+                //console.log('connection1 opened for sales performance with Session');
+                  
+                ws.send(JSON.stringify(opendocSymphony));
+              });
+
+            ws.on('message', function(data, flags) {
+                      
+              var wsres = JSON.parse(data);
+              console.log(wsres);
+              if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
+                //console.log('user is successfully logged in sales performance with session')
+              }
+              if(wsres.id==101){
+                ws.send(JSON.stringify(getobjectSymphony));
+              }
+              if(wsres.id==102){
+                //console.log(wsres);
+                ws.send(JSON.stringify(gethypercubeSymphony));
+              }
+              if(wsres.id==103){
+
+                if (!wsres.result) {
+                  //console.log('no records');
+                  
+                  cb(null,{oops:'nodata'});
+                  
+                  return;
+                }
+
+                
+                cb(null,wsres.result);
                 
               }
             });

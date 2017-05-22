@@ -16,10 +16,18 @@ var admin = {
 
   getSession: function(req, res, next) {
      //var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-     console.log(req.address());
-   console.log(fullUrl);//edited by shivangi
+    // console.log(req.address());
+   //console.log(fullUrl);//edited by shivangi
    //console.log(req.connection.remoteAddress);
+   console.log(req.headers);
    console.log(req.cookies);
+   //console.log(req);
+  /*fs.writeFile('temp.json', req.cookies,  function(err) {
+  if (err) {
+  return console.error(err);
+  }
+  console.log("Data written successfully!");
+  });*/
    res.json(req.cookies);
   },
 

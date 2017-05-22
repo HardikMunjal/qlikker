@@ -13,15 +13,3 @@ module.exports = function (req,res,next) {
   next();
 };  
 
-
-
-// earlier i was using this directly in app.js
-
-
-// app.use('/', function (req, res, next) {
-// 	console.log('fine');
-//   res.header("Access-Control-Allow-Origin", "http://swift-dev.drakulaaz.com");
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
-//   next();
-// });

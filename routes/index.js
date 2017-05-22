@@ -47,9 +47,18 @@ app.get('/fetch/business/insights', mjob.extractBI);
 app.get('/nscr/qlikdata/user/:user_directory/:user_id',extractor.qlikdata);
 
 
-//************* Optimized web socket services***************************************
+//************* Optimized merlin web socket services***************************************
 app.get('/nscr/qlikoptdata/user/:user_directory/:user_id', extractor.qlikdataOptimized);
+//app.get('/nscr/qlikNewBIdata/user/:user_directory/:user_id', extractor.qlikNewBIData);
 app.get('/nscr/fetch/leaderbd/user/:user_directory/:user_id', extractor.qlikLeaderData);
+app.get('/nscr/fetch/leaderdeepdive/user/:user_directory/:user_id', extractor.qlikLeaderDeepdive);
+
+//************* Optimized Symphony web socket services***************************************
+app.get('/symphony/data/:user_directory/:user_id', extractor.symphonytest);
+
+
+
+
 app.get('/get/mashup_object',admin.mashupDynamiser);
 
 

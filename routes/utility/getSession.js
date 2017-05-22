@@ -56,6 +56,17 @@ checkSession: function(integerator, cb) {
           return cb(err,bomb);
          })
       }
+    else if(data.scope=='Leaderdeepdive'){
+      websocketUtility.extractLeaderDeepdive(data,function(err, bomb){
+          return cb(err,bomb);
+         })
+      }
+
+    else if(data.scope=='symphony'){
+      websocketUtility.extractSymphonydata(data,function(err, bomb){
+          return cb(err,bomb);
+         })
+      }
 
     else if(data.scope=='CARD'){
       websocketUtility.extractCardData(data,function(err, bomb){
