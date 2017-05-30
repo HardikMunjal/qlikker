@@ -5,6 +5,11 @@
   <meta charset="utf-8">
 
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,200italic,600italic&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+  <style>
+    textarea: {
+    color: pink;
+}
+  </style>
 
   <script src="http://phuonghuynh.github.io/js/bower_components/jquery/dist/jquery.min.js"></script>
   <script src="http://phuonghuynh.github.io/js/bower_components/d3/d3.min.js"></script>
@@ -47,24 +52,29 @@ d3.json(data, function(json) {
 })
 </script>
 </head>
-<body style="background: #000000">
+<body style="background: #FFF">
 <!-- <div class="bubbleChart"/> -->
 <!-- <div class="bubbleChartMerlin"/> -->
 <h1> Merlin <h1>
-<h3>275</h3>
+<h3>Total:2275</h3>
+<h3>Today:121</h3>
 <svg width="960" height="500">
+  
     <g transform="translate(80,80)">
-        <circle r="40" stroke="black" fill="white"></circle>
-        <text dx="-20">Node 1</text>
+        <circle r="70" stroke="black" fill="green"></circle>
+        <text dx="-20">1232</text>
     </g>
-    <g transform="translate(200,80)">
-        <circle r="60" stroke="black" fill="white"></circle>
-        <text dx="-20">Node 2</text>
+    <g transform="translate(480,80)">
+        <circle r="70" stroke="black" fill="yellow"></circle>
+        <text dx="-20">343</text>
     </g>
-    <g transform="translate(380,80)">
-        <circle r="80" stroke="black" fill="white"></circle>
-        <text dx="-20">Node 3</text>
+    <g transform="translate(880,80)">
+        <circle r="70" stroke="black" fill="orange"></circle>
+        <text dx="-20">131</text>
     </g>
 </svg>
+<textarea rows="4" cols="150">
+ANUZ GAKHARA HIT FOR PIPELINE AT 6:44:32PM IN MERLIN
+</textarea>
 </body>
 </html>

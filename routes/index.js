@@ -49,7 +49,7 @@ app.get('/nscr/qlikdata/user/:user_directory/:user_id',extractor.qlikdata);
 
 //************* Optimized merlin web socket services***************************************
 app.get('/nscr/qlikoptdata/user/:user_directory/:user_id', extractor.qlikdataOptimized);
-//app.get('/nscr/qlikNewBIdata/user/:user_directory/:user_id', extractor.qlikNewBIData);
+app.get('/nscr/symphonyBIdata/user/:user_directory/:user_id', extractor.qlikNewBIData);
 app.get('/nscr/fetch/leaderbd/user/:user_directory/:user_id', extractor.qlikLeaderData);
 app.get('/nscr/fetch/leaderdeepdive/user/:user_directory/:user_id', extractor.qlikLeaderDeepdive);
 

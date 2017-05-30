@@ -51,6 +51,12 @@ checkSession: function(integerator, cb) {
          })
       }
 
+    else if(data.scope=='NewBI'){
+      websocketUtility.extractNewBIData(data,function(err, bomb){
+      return cb(err,bomb);
+      })
+    }
+
     else if(data.scope=='Leaderboard'){
       websocketUtility.extractLeaderData(data,function(err, bomb){
           return cb(err,bomb);

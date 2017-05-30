@@ -16,6 +16,14 @@ var gethypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCub
 ]],"id":3,"jsonrpc":"2.0"}
 
 
+//************************************ NEW BUSINESS INSIGHTS DATA SERVICE ***************************************************
+var openNewDoc= {"method":"OpenDoc","params":["314889d1-1873-423f-8f6c-57b854f599fb","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
+var getNewObject= {"method":"GetObject","handle":1,"params":["YpPHDC"],"id":2,"jsonrpc":"2.0"};
+var getNewHypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCubeDef",[
+{"qTop":0,"qLeft":0,"qHeight":12,"qWidth":9}
+]],"id":3,"jsonrpc":"2.0"}
+
+
 //***************************************Symphony Test DATA SERVICE *******************************************************
 var opendocSymphony= {"method":"OpenDoc","params":["314889d1-1873-423f-8f6c-57b854f599fb","","","",false],"handle":-1,"id":101,"jsonrpc":"2.0"}
 var getobjectSymphony= {"method":"GetObject","handle":1,"params":["nGtzs"],"id":102,"jsonrpc":"2.0"};
@@ -233,6 +241,91 @@ if(data.target=='TICKET'){
                    biarray.value = wsres.result.qDataPages[0].qMatrix[i][6].qText;
                    biarray.status = wsres.result.qDataPages[0].qMatrix[i][7].qText;
                    biarray.url = wsres.result.qDataPages[0].qMatrix[i][8].qText;
+                   businessInsights.push(biarray);
+                   biarray={};
+                }
+                cb(null,businessInsights);
+                businessInsights=[];
+                //console.log('Performance Business insights from sesssion');
+                
+              }
+            });
+
+  
+  },
+
+  extractNewBIData: function(data,cb) {
+   
+//console.log(data);
+
+if(data.target=='TICKET'){
+
+      var ws = new WebSocket(
+                  qendpoint.qlik_ws+'app/314889d1-1873-423f-8f6c-57b854f599fb?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer&QlikTicket='+data.token
+              );
+
+    }
+    else if(data.target=='SESSION'){
+      
+      var ws = new WebSocket(
+                qendpoint.qlik_ws+'app/314889d1-1873-423f-8f6c-57b854f599fb?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer',
+                [],
+                {
+                    'headers': {
+                        'Cookie': 'X-Qlik-Session-Node='+data.token
+                    }
+                }
+            );
+    }
+    
+
+              ws.on('open', function open() {
+                //console.log('connection1 opened for sales performance with Session');
+                  
+                ws.send(JSON.stringify(openNewDoc));
+              });
+
+            ws.on('message', function(data, flags) {
+                      
+              var wsres = JSON.parse(data);
+              console.log(wsres);
+              if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
+                //console.log('user is successfully logged in sales performance with session')
+              }
+              if(wsres.id==1){
+                ws.send(JSON.stringify(getNewObject));
+              }
+              if(wsres.id==2){
+                //console.log(wsres);
+                ws.send(JSON.stringify(getNewHypercube));
+              }
+              if(wsres.id==3){
+
+                if (!wsres.result) {
+                  //console.log('no records');
+                  var biarray = {};
+                   biarray.biNo = null;
+                   biarray.category = null;
+                   biarray.underlying_logic = null;
+                   biarray.insight_title = null;
+                   biarray.url = null;
+                   biarray.count = null;
+                   businessInsights.push(biarray);
+                   biarray={};
+                  cb(null,businessInsights);
+                  businessInsights=[];
+                  return;
+                }
+
+                for(var i=0;i<wsres.result.qDataPages[0].qMatrix.length;i++){
+                   console.log(wsres.result.qDataPages[0].qMatrix[i][6].qText)
+                   var biarray = {};
+                   biarray.biNo = wsres.result.qDataPages[0].qMatrix[i][0].qText;
+                   biarray.category = wsres.result.qDataPages[0].qMatrix[i][2].qText;
+                   biarray.underlying_logic = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+                   biarray.insight_title = wsres.result.qDataPages[0].qMatrix[i][4].qText;
+                   biarray.url = wsres.result.qDataPages[0].qMatrix[i][5].qText;
+                   biarray.count = wsres.result.qDataPages[0].qMatrix[i][6].qText;
                    businessInsights.push(biarray);
                    biarray={};
                 }
