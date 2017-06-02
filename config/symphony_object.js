@@ -1,8 +1,8 @@
 var engine_object = {
 
-  BillingFocusLeader: 'dfatd';
-  PipelineOppurtunityLeader: 'shgfhg';
-  BookingOppurtunityLeader: 'shss';
+  BillingFocusLeader: 'dfatd',
+  PipelineOppurtunityLeader: 'shgfhg',
+  BookingOppurtunityLeader: 'shss'
 
 }
 

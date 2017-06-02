@@ -6,9 +6,14 @@ var ejs = require('ejs');
 var fs = require('fs');
 var WebSocket = require('ws');
 var qendpoint = require('../../config/endpoint');
+var s_object = require('../../config/symphony_object');
+var m_object = require('../../config/merlin_object');
+var e_function = require('../../config/engine_funct');
 
 
 //************************************ BUSINESS INSIGHTS DATA SERVICE ***************************************************
+
+
 var opendoc= {"method":"OpenDoc","params":["83dc76e7-6d76-455f-9052-e71da06a5c93","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
 var getobject= {"method":"GetObject","handle":1,"params":["wJscr"],"id":2,"jsonrpc":"2.0"};
 var gethypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCubeDef",[
@@ -189,6 +194,8 @@ if(data.target=='TICKET'){
             );
     }
     
+    //var opendoc = e_function.opendoc('1','-1','83dc76e7-6d76-455f-9052-e71da06a5c93');
+    //console.log('opendoc',opendoc);
 
               ws.on('open', function open() {
                 //console.log('connection1 opened for sales performance with Session');

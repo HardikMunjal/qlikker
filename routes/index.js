@@ -54,14 +54,7 @@ app.get('/nscr/fetch/leaderdeepdive/user/:user_directory/:user_id', extractor.ql
 
 //************* Optimized Symphony web socket services***************************************
 app.get('/symphony/data/:user_directory/:user_id', extractor.symphonytest);
-
-
-
-
 app.get('/get/mashup_object',admin.mashupDynamiser);
-
-
-
 //**************** ADMIN LIVE STREAMING DASHBOARD ************************
 app.get('/admin/realtimeplayer',function(req,res){res.render('realtimeplayer.html')})
 };

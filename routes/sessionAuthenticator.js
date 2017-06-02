@@ -12,13 +12,13 @@ var admin = {
   validateSession: function(req, res, next) {
 
 
-  1.	LC – Logged In EmployeeCode
-2.	DI – Device ID
-3.	ET – Expiry TimeSpan
-4.	ST – Session Token
+// 1.	LC – Logged In EmployeeCode
+// 2.	DI – Device ID
+// 3.	ET – Expiry TimeSpan
+// 4.	ST – Session Token
 
   if(!req.query.LC || !req.query.LC || !req.query.LC || !req.query.LC){
-  	var LC= req.query.LC;
+  	 
   }
      
    res.json(req.cookies);
