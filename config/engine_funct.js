@@ -1,23 +1,23 @@
 var engine_func = {
 
   opendoc: function(counter,handle,app_id){
-
-    return {"method":"OpenDoc","params":[app_id,"","","",false],"handle":handle,"id":counter,"jsonrpc":"2.0"}
+    var odoc= {"method":"OpenDoc","params":[app_id,"","","",false],"handle":handle,"id":counter,"jsonrpc":"2.0"};
+    return odoc;
   },
 
   getObject: function(counter,handle,object_id){
-
-    return {"method":"GetObject","handle":handle,"params":[object_id],"id":counter,"jsonrpc":"2.0"}
+    var gobj= {"method":"GetObject","handle":handle,"params":[object_id],"id":counter,"jsonrpc":"2.0"};
+    return gobj;
   },
 
-  getHypercube: function(object){
-
-    return {"method":"OpenDoc","params":[app_id,"","","",false],"handle":handle,"id":counter,"jsonrpc":"2.0"}
+  getHypercube: function(counter,handle,object_id){
+    var gcube= {"method":"OpenDoc","params":[app_id,"","","",false],"handle":handle,"id":counter,"jsonrpc":"2.0"};
+    return gcube;
   },
 
-  getHypercubePivot:function(object){
-
-    return {"method":"OpenDoc","params":[app_id,"","","",false],"handle":handle,"id":counter,"jsonrpc":"2.0"}
+  getHypercubePivot:function(counter,handle,object_id){
+    var gpivot= {"method":"OpenDoc","params":[app_id,"","","",false],"handle":handle,"id":counter,"jsonrpc":"2.0"};
+    return gpivot;
   }
 }
 

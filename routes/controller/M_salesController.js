@@ -1,8 +1,8 @@
 'use strict';
 
-var qlikauth = require('./qlik-auth');
+var qlikauth = require('../qlik-auth');
 //var ehelper = require('./helpers/qlik_extractor_helper')
-var einthelper = require('./helpers/qlik_extractor_int_helper')
+var einthelper = require('../helpers/qlik_extractor_int_helper')
 var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
@@ -36,10 +36,10 @@ var qlik = {
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'BI';
      einthelper.fetchDetails(integerator,function(err,result){
-     	if(!err){
-     		//console.log('result',result);
-     		res.json(result);
-     	}
+      if(!err){
+        //console.log('result',result);
+        res.json(result);
+      }
      })
   },
     qlikNewBIData: function(req, res, next) {

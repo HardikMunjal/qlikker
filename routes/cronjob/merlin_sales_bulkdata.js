@@ -1,12 +1,12 @@
 'use strict';
 
-var qlikauth = require('./qlik-auth');
+var qlikauth = require('../qlik-auth');
 var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
 var WebSocket = require('ws');
 var Converter = require("csvtojson").Converter;
-var qendpoint = require('../config/endpoint');
+var qendpoint = require('../../config/endpoint');
 
 
 
@@ -16,20 +16,13 @@ var qlik = {
   extractBI: function(req, res, next) {
 
 
-    var bhai =[];
+    var bulkdata =[];
     console.log('start scheduling job');
     var users = ['qlikdeveloper4','qlikdeveloper5','apoorvjain','nareshn','ayazk'];
     var userdir = ['associates','associates','associates','hcltech','geo'];
     var counter = 40;
     var usrList= [];
-
-    //var counter = 4;
-
-
-    //CSV File Path or CSV String or Readable Stream Object
     var csvFileName="./UserList.csv";
-
-    //new converter instance
     var csvConverter=new Converter({});
 
     //end_parsed will be emitted once parsing finished
@@ -37,15 +30,9 @@ var qlik = {
         console.log(jsonObj); //here is your result json object
         usrList = jsonObj;
         fetchDetails();
-
-        //var counter = 70;
-        //console.log(counter);
         if(counter == 0){
-         res.json(bhai);
+         res.json(bulkdata);
        }
-
-       //res.end('bhai');
-
     });
 
     //read from file
@@ -66,7 +53,7 @@ var qlik = {
             userBody.user_id = usrList[counter].USERNAME;
             userBody.user_directory = usrList[counter].ADDomain;
             userBody.qlikData = bodyObject;
-            bhai.push(userBody);
+            bulkdata.push(userBody);
           
             counter--;
             if (counter > -1) {
@@ -75,8 +62,7 @@ var qlik = {
               setTimeout(fetchDetails, 100);    
            }
            if(counter == -1){
-            console.log(bhai);
-             res.json(bhai);
+             res.json(bulkdata);
            }
 
           }

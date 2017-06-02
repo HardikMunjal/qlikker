@@ -2,12 +2,6 @@
 
 var allowedHosts = ['10.33.86.30','10.112.17.73','10.112.17.87','10.98.100.59','http://staging2.myhcl.com','10.97.92.26','10.97.32.18','10.97.32.19','10.97.92.35','10.33.86.5','10.112.17.97','10.33.62.77','10.33.66.31','10.33.86.12','10.97.92.138','10.33.86.10'];
 
-// var allowedHosts = [{
-//                       merlin : ['::1'];
-//                     },
-//                     { 
-//                       delivery: ['::1']
-//                     }]
 
 
                     
@@ -41,9 +35,7 @@ var ipsec = {
       console.log(date);
       console.log('Allowing coming IP(req.headers.origin)',  req.headers.origin);
       console.log('Client Remote Address(req.connection.remoteAddress)', req.connection.remoteAddress);
-      // if(allowedHosts.indexOf(req.headers.origin) > -1){
-      // }
-
+      
       var modulator='*';
 
       if(req.headers.origin && req.headers.origin=='http://10.2.5.158'){

@@ -1,10 +1,10 @@
 'use strict';
 
-var qlikauth = require('./qlik-auth');
+var qlikauth = require('../qlik-auth');
 var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
-var qendpoint = require('../config/endpoint');
+var qendpoint = require('../../config/endpoint');
 var nano = require('nano')('http://10.112.177.96:5984');
 
 

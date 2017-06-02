@@ -6,10 +6,9 @@ var fs = require('fs');
 var qlik = require('./qlik');
 var ipsec = require('./ip_securer');
 var delivery = require('./delivery');
-var mjob = require('./merlin_job2');
-var extractor = require('./qlik_extractor_red');
-var nano = require('nano')('http://10.112.177.96:5984');
-var admin = require('./adminController');
+var mjob = require('./cronjob/merlin_sales_bulkdata');
+var extractor = require('./controller/S_deliveryController');
+var admin = require('./controller/adminController');
 
 module.exports = function (app) {
 
