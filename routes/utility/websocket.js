@@ -18,7 +18,7 @@ var gethypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCub
 
 //************************************ NEW BUSINESS INSIGHTS DATA SERVICE ***************************************************
 var openNewDoc= {"method":"OpenDoc","params":["314889d1-1873-423f-8f6c-57b854f599fb","","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
-var getNewObject= {"method":"GetObject","handle":1,"params":["YpPHDC"],"id":2,"jsonrpc":"2.0"};
+var getNewObject= {"method":"GetObject","handle":1,"params":["TyjHp"],"id":2,"jsonrpc":"2.0"};
 var getNewHypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyperCubeDef",[
 {"qTop":0,"qLeft":0,"qHeight":12,"qWidth":9}
 ]],"id":3,"jsonrpc":"2.0"}
