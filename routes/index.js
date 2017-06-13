@@ -48,14 +48,19 @@ app.get('/nscr/qlikdata/user/:user_directory/:user_id',extractor.qlikdata);
 
 //************* Optimized merlin web socket services***************************************
 app.get('/nscr/qlikoptdata/user/:user_directory/:user_id', extractor.qlikdataOptimized);
-app.get('/nscr/symphonyBIdata/user/:user_directory/:user_id', extractor.qlikNewBIData);
 app.get('/nscr/fetch/leaderbd/user/:user_directory/:user_id', extractor.qlikLeaderData);
 app.get('/nscr/fetch/leaderdeepdive/user/:user_directory/:user_id', extractor.qlikLeaderDeepdive);
 
 //************* Optimized Symphony web socket services***************************************
+app.get('/nscr/symphonyBIdata/user/:user_directory/:user_id', extractor.qlikNewBIData);
 app.get('/symphony/data/:user_directory/:user_id', extractor.symphonytest);
+app.get('/nscr/finance/user/:user_directory/:user_id', extractor.financeData);
+//app.get('/nscr/finance/user/:user_directory/:user_id', extractor.symphonytest);
+
+
 app.get('/get/mashup_object',admin.mashupDynamiser);
 //**************** ADMIN LIVE STREAMING DASHBOARD ************************
 app.get('/admin/realtimeplayer',function(req,res){res.render('realtimeplayer.html')})
+
 };
 //I hope this is how comments work in js. Hello Hardik! What's up!!!!

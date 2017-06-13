@@ -1,6 +1,5 @@
 'use strict';
 
-
 var qlikauth = require('../qlik-auth');
 var request = require('request');
 var ejs = require('ejs');
@@ -24,7 +23,7 @@ var getNewHypercube = {"method":"GetHyperCubeData","handle":2,"params":["/qHyper
 
 //***************************************Symphony Test DATA SERVICE *******************************************************
 var opendocSymphony= {"method":"OpenDoc","params":["314889d1-1873-423f-8f6c-57b854f599fb","","","",false],"handle":-1,"id":101,"jsonrpc":"2.0"}
-var getobjectSymphony= {"method":"GetObject","handle":1,"params":["TqWcn"],"id":102,"jsonrpc":"2.0"};
+var getobjectSymphony= {"method":"GetObject","handle":1,"params":["nGtzs"],"id":102,"jsonrpc":"2.0"};
 var gethypercubeSymphony = {
   "method": "GetHyperCubePivotData",
   "handle": 2,

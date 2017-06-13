@@ -6,6 +6,7 @@ var ejs = require('ejs');
 var fs = require('fs');
 var WebSocket = require('ws');
 var websocketUtility = require('../utility/websocket')
+var websocketSymUtility = require('../utility/websocket/symphony_ws')
 var qendpoint = require('../../config/endpoint')
 
 
@@ -70,6 +71,12 @@ checkSession: function(integerator, cb) {
 
     else if(data.scope=='symphony'){
       websocketUtility.extractSymphonydata(data,function(err, bomb){
+          return cb(err,bomb);
+         })
+      }
+
+    else if(data.scope=='financedata'){
+      websocketSymUtility.extractFinanceData(data,function(err, bomb){
           return cb(err,bomb);
          })
       }
