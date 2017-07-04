@@ -1021,7 +1021,7 @@ extractLeaderDeepdive: function(data,cb) {
                     performance.BType= wsres.result.qDataPages[0].qLeft[0].qSubNodes[j].qText;
 
                     if(counter<4){
-                      performance.Quarter= wsres.result.qDataPages[0].qLeft[counter].qText;
+                      performance.Quarter= wsres.result.qDataPages[0].qLeft[counter].qText.substring(0,3);
                     }
                     performance.Actual= wsres.result.qDataPages[0].qData[i][0].qText;
                     performance.Target= wsres.result.qDataPages[0].qData[i][4].qText;
@@ -1062,7 +1062,7 @@ extractLeaderDeepdive: function(data,cb) {
                 }
 
                 //leaderDeepDiveData={};
-                leaderDeepDiveData.PerformanceTeam=[];
+                leaderDeepDiveData.Booking.PerformanceTeam=[];
                 var j=0;
 
                 var counter =1;
@@ -1088,7 +1088,7 @@ extractLeaderDeepdive: function(data,cb) {
                         member.Target = wsres.result.qDataPages[0].qData[l+counter][bilinker+4].qText
                         member.TargetorActual = wsres.result.qDataPages[0].qData[l+counter][bilinker+28].qText
                         console.log(l,counter,member.Actual)
-                        member.Quarter = wsres.result.qDataPages[0].qLeft[j].qSubNodes[counter].qText
+                        member.Quarter = wsres.result.qDataPages[0].qLeft[j].qSubNodes[counter].qText.substring(0,3);
                         member.Dlist=[];
                         var serviceLine = {};
                         serviceLine.SLine = 'APPS'
@@ -1114,7 +1114,7 @@ extractLeaderDeepdive: function(data,cb) {
 
 
 
-                        leaderDeepDiveData.PerformanceTeam.push(member);
+                        leaderDeepDiveData.Booking.PerformanceTeam.push(member);
                         member={};
 
                       }
@@ -1142,19 +1142,19 @@ extractLeaderDeepdive: function(data,cb) {
               if(wsres.id==28){
 
                 //leaderDeepDiveData={};
-                leaderDeepDiveData.WINS=[];
+                leaderDeepDiveData.Booking.WINS=[];
                 for(var i=0;i<wsres.result.qDataPages[0].qMatrix.length;i++){
 
 
                   var winarray = {};
 
                   winarray.BType = wsres.result.qDataPages[0].qMatrix[i][0].qText;
-                  winarray.Quarter = wsres.result.qDataPages[0].qMatrix[i][4].qText;
+                  winarray.Quarter = wsres.result.qDataPages[0].qMatrix[i][4].qText.substring(0,3);
                   winarray.OValue = wsres.result.qDataPages[0].qMatrix[i][6].qText;
                   winarray.OName = wsres.result.qDataPages[0].qMatrix[i][2].qText;
                   winarray.AccountGroup = wsres.result.qDataPages[0].qMatrix[i][3].qText;
 
-                  leaderDeepDiveData.WINS.push(winarray)
+                  leaderDeepDiveData.Booking.WINS.push(winarray)
                   winarray={};
 
 
@@ -1173,7 +1173,7 @@ extractLeaderDeepdive: function(data,cb) {
               if(wsres.id==30){
 
                 //leaderDeepDiveData={};
-                leaderDeepDiveData.WINTEAM=[];
+                leaderDeepDiveData.Booking.WINTEAM=[];
                 var length = wsres.result.qDataPages[0].qMatrix.length;
 
                 var i = 0;
@@ -1188,7 +1188,7 @@ extractLeaderDeepdive: function(data,cb) {
                   deal.DealValue = wsres.result.qDataPages[0].qMatrix[i][3].qText;
                   DataList.push(deal);
                   target.DataList = DataList;
-                  leaderDeepDiveData.WINTEAM.push(target);
+                  leaderDeepDiveData.Booking.WINTEAM.push(target);
                   var j = i;
                   if((length-i >= 2)&&(wsres.result.qDataPages[0].qMatrix[i][0].qText == wsres.result.qDataPages[0].qMatrix[i+1][0].qText)){
                     j = i+1;
@@ -1196,14 +1196,14 @@ extractLeaderDeepdive: function(data,cb) {
                     deal.DealType = wsres.result.qDataPages[0].qMatrix[j][1].qText;
                     deal.DealCount = wsres.result.qDataPages[0].qMatrix[j][2].qText;
                     deal.DealValue = wsres.result.qDataPages[0].qMatrix[j][3].qText;
-                    leaderDeepDiveData.WINTEAM[leaderDeepDiveData.WINTEAM.length-1].DataList.push(deal);
+                    leaderDeepDiveData.Booking.WINTEAM[leaderDeepDiveData.Booking.WINTEAM.length-1].DataList.push(deal);
                     if((length-i >= 3)&&(wsres.result.qDataPages[0].qMatrix[i][0].qText == wsres.result.qDataPages[0].qMatrix[i+2][0].qText)){
                       j = i+2;
                       var deal = {};
                       deal.DealType = wsres.result.qDataPages[0].qMatrix[j][1].qText;
                       deal.DealCount = wsres.result.qDataPages[0].qMatrix[j][2].qText;
                       deal.DealValue = wsres.result.qDataPages[0].qMatrix[j][3].qText;
-                      leaderDeepDiveData.WINTEAM[leaderDeepDiveData.WINTEAM.length-1].DataList.push(deal);
+                      leaderDeepDiveData.Booking.WINTEAM[leaderDeepDiveData.Booking.WINTEAM.length-1].DataList.push(deal);
                     }
                   }
                   i = j+1;
