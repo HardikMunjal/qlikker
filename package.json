@@ -1,6 +1,7 @@
 {
   "name": "swift-market-frontend",
   "description": "frontend module",
+  "main":"app.js",
   "version": "0.0.1",
   "engines": {
     "node": "0.10.24",

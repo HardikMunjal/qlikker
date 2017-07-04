@@ -6,6 +6,68 @@
 	
    	var rows =<%- JSON.stringify(data) %>;
     var row = JSON.parse(rows);
-	window.open(row.redirect,"_self");
+    console.log(row);
+    if(row.roleflag){
+	  //alert('ROLES NEED TO CHECK')
+	  var ws = new WebSocket('ws://10.2.5.158/node/app/f083256e-3ea6-4a4b-97fa-ed72e5700554?reloadUri=http://10.2.5.158/node/dev-hub/engine-api-explorer&QlikTicket='+row.Ticket
+	  );
+	  var opendocIntegrated = {"method":"OpenDoc","params":['f083256e-3ea6-4a4b-97fa-ed72e5700554',"","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
+		var getobject= {
+			"handle": 1,
+			"method": "GetObject",
+			"params": {
+				"qId": "mzwwh"
+			},
+			"id":2
+		}
+	   
+	  var getlayout= {
+						"method": "GetLayout",
+						"handle": 2,
+						"params": [],
+						"outKey": -1,
+						"jsonrpc": "2.0",
+						"id": 3
+					}
+							
+    
+	    ws.onopen= function() {
+		    ws.send(JSON.stringify(opendocIntegrated));
+		};
+		ws.onmessage= function(result) {
+	
+			
+			var s = JSON.parse(result.data);
+            
+			console.log('gggg',s);
+			if(s.id==1){
+        
+		        ws.send(JSON.stringify(getobject));
+		      }
+
+
+		    if(s.id==2){
+		        ws.send(JSON.stringify(getlayout));
+		      }
+		     if(s.id==3){
+		        var role =s.result.qLayout.qHyperCube.qGrandTotalRow[0].qText;
+		        if (role =='Executive'){
+		        	window.open('http://10.2.5.158/node/sense/app/f083256e-3ea6-4a4b-97fa-ed72e5700554/sheet/a0072aff-1354-4855-939d-97c8151ddd85/state/analysis',"_self");
+		        	
+		        } 
+		        else{
+		        	window.open('http://10.2.5.158/node/sense/app/f083256e-3ea6-4a4b-97fa-ed72e5700554/sheet/bMPTA/state/analysis',"_self");
+		        	
+		        }
+		      }
+		};
+      
+
+    }
+    else{
+    	
+		window.open(row.redirect,"_self");
+    }
+    
 </script>
 </body>
