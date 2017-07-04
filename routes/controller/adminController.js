@@ -5,8 +5,9 @@ var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
 var qendpoint = require('../../config/endpoint');
-
-
+var WebSocket = require('ws');
+var Logger = require('../model/userModel');
+var dashboardFinder = require('../../config/dashboard_finder');
 
 
 var admin = {
@@ -17,6 +18,73 @@ var admin = {
    console.log(req.headers);
    console.log(req.cookies);
    res.json(req.cookies);
+  },
+
+  roleverifier: function(ticket,cb){
+    
+    console.log('roleverifier',ticket);
+    
+    var ticket= JSON.parse(ticket);
+    console.log(ticket.Ticket)
+    var ws = new WebSocket('ws://10.2.5.158/node/app/f083256e-3ea6-4a4b-97fa-ed72e5700554?reloadUri=http://10.2.5.158/node/dev-hub/engine-api-explorer&QlikTicket='+ticket.Ticket
+    );
+    var opendocIntegrated = {"method":"OpenDoc","params":['f083256e-3ea6-4a4b-97fa-ed72e5700554',"","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
+    var getobject= {
+      "handle": 1,
+      "method": "GetObject",
+      "params": {
+        "qId": "kKpRS"
+      },
+      "id":2
+    }
+     
+    var getlayout= {
+            "method": "GetLayout",
+            "handle": 2,
+            "params": [],
+            "outKey": -1,
+            "jsonrpc": "2.0",
+            "id": 3
+          }
+              
+    ws.on('open', function open() {
+       ws.send(JSON.stringify(opendocIntegrated));
+    });
+
+    //**************************** INCOMING MESSAGE EVENT *****************************
+    ws.on('message', function(data , flags) {
+      
+     
+     
+      var s = JSON.parse(data);
+            
+      
+      if(s.id==1){
+        
+            ws.send(JSON.stringify(getobject));
+          }
+
+
+        if(s.id==2){
+            ws.send(JSON.stringify(getlayout));
+          }
+         if(s.id==3){
+            var role =s.result.qLayout.qHyperCube.qGrandTotalRow[0].qText;
+            console.log(role);
+            if (role =='Executive'){
+              cb(null,'/scr/ticket/user/associates/qlikdeveloper5?client_id=merlin&scope=ticket&open=http://10.2.5.158/node/sense/app/f083256e-3ea6-4a4b-97fa-ed72e5700554/sheet/a0072aff-1354-4855-939d-97c8151ddd85/state/analysis')
+             
+            } 
+            else{
+              //window.open('http://10.2.5.158/node/sense/app/f083256e-3ea6-4a4b-97fa-ed72e5700554/sheet/bMPTA/state/analysis',"_self");
+              cb(null,'/scr/ticket/user/associates/qlikdeveloper5?client_id=merlin&scope=ticket&open=http://10.2.5.158/node/sense/app/f083256e-3ea6-4a4b-97fa-ed72e5700554/sheet/bMPTA/state/analysis')
+              
+            }
+          }
+    });
+      
+
+
   },
 
   saveHistory: function(req, res, next) {
@@ -55,6 +123,66 @@ var admin = {
     var configFile = fs.readFileSync('./mashup-id.json');
     var config = JSON.parse(configFile);
     res.json(config);
+  },
+
+  saveLogger: function(req, res, next){
+    console.log("params---- ", req.params);
+    var log_json = {
+        user_id:req.params.user_id,
+        user_directory:req.params.user_directory,
+        client_id:req.query.client_id,
+        scope:req.query.scope
+      }
+      console.log("log_json--- ", log_json);
+      var logger = new Logger(log_json);
+      logger.save(function(err, logData){
+        if(err){
+          console.log("in err-- ", err);
+          next();
+        }else{
+          console.log("log saved.");
+          next();
+        }
+      })
+    /*if(!req.params.user_id && !req.params.user_directory && !req.query.client_id){
+      console.log("in if---")
+      next();
+    }else{
+      var log_json = {
+        user_id:req.params.user_id,
+        user_directory:req.params.user_directory,
+        client_id:req.query.client_id,
+        scope:req.query.scope
+      }
+      let open_var = req.query.open;
+      open_var = open_var.split('?')[0];
+      let dashboard_name;
+      let application;
+      if(dashboardFinder.hasOwnProperty(open_var)){
+        dashboard_name = dashboardFinder[open_var][0];
+        application = dashboardFinder[open_var][1];
+      }else{
+        next();
+      }
+      log_json.dashboard_name = dashboard_name;
+      log_json.application = application;
+      if(req.headers.origin){
+        log_json.local_ip = req.headers.origin.substring('::ffff:'.length);
+      }else if(req.connection.remoteAddress){
+        log_json.server_ip = req.connection.remoteAddress.substring('::ffff:'.length);;
+      }
+
+      var logger = new Logger(log_json);
+      logger.save(function(err, logData){
+        if(err){
+          console.log("in err-- ", err);
+          next();
+        }else{
+          console.log("log saved.");
+          next();
+        }
+      })
+    }*/
   }
 };
 module.exports = admin;

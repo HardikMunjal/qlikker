@@ -153,7 +153,75 @@ var Focus150HypercubePivot = {
   "outKey": -1
 }
 
+var getObjectLeaderboardBooking = {
+  "method": "GetObject",
+  "handle": 1,
+  "params": [
+  "tjuJQR"
+  ],
+  "id": 23,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
+var getHypercubePivotLeaderboardBooking = {
+  "method": "GetHyperCubePivotData",
+  "handle": 5,
+  "params": [
+  "/qHyperCubeDef",
+  [
+  {
+    "qTop": 0,
+    "qLeft": 0,
+    "qHeight": 155,
+    "qWidth": 155
+  }
+  ]
+  ],
+  "id": 24,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
 
+var getObjectBookingTeam = {
+  "method": "GetObject",
+  "handle": 1,
+  "params": [
+  "bQdtsmf"
+  ],
+  "id": 25,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
+var getHypercubePivotBookingTeam = {
+  "method": "GetHyperCubePivotData",
+  "handle": 6,
+  "params": [
+  "/qHyperCubeDef",
+  [
+  {
+    "qTop": 0,
+    "qLeft": 0,
+    "qHeight": 155,
+    "qWidth": 155
+  }
+  ]
+  ],
+  "id": 26,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
+
+
+var getobjectForBookingOppurtunity= {"method":"GetObject","handle":1,"params":["EsKpf"],"id":27,"jsonrpc":"2.0"};
+var gethypercubeForBookingOppurtunity = {"method":"GetHyperCubeData","handle":7,"params":["/qHyperCubeDef",[
+{"qTop":0,"qLeft":0,"qHeight":150,"qWidth":10}
+]],"id":28,"jsonrpc":"2.0"}
+
+
+var getobjectForWINSTeam= {"method":"GetObject","handle":1,"params":["PdCjsJY"],"id":29,"jsonrpc":"2.0"};
+var gethypercubeForWINSTeam = {"method":"GetHyperCubeData","handle":8,"params":["/qHyperCubeDef",[
+{"qTop":0,"qLeft":0,"qHeight":100,"qWidth":100}
+]],"id":30,"jsonrpc":"2.0"}
 
 
 var businessInsights = [];
@@ -247,8 +315,8 @@ ws.on('message', function(data, flags) {
                }
                cb(null,businessInsights);
                businessInsights=[];
-              }
-            });
+             }
+           });
 
 
 },
@@ -256,46 +324,46 @@ ws.on('message', function(data, flags) {
 extractNewBIData: function(data,cb) {
 
 
-if(data.target=='TICKET'){
+  if(data.target=='TICKET'){
 
-  var ws = new WebSocket(
-    qendpoint.qlik_ws+'app/314889d1-1873-423f-8f6c-57b854f599fb?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer&QlikTicket='+data.token
-    );
+    var ws = new WebSocket(
+      qendpoint.qlik_ws+'app/314889d1-1873-423f-8f6c-57b854f599fb?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer&QlikTicket='+data.token
+      );
 
-}
-else if(data.target=='SESSION'){
+  }
+  else if(data.target=='SESSION'){
 
-  var ws = new WebSocket(
-    qendpoint.qlik_ws+'app/314889d1-1873-423f-8f6c-57b854f599fb?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer',
-    [],
-    {
-      'headers': {
-        'Cookie': 'X-Qlik-Session-Node='+data.token
+    var ws = new WebSocket(
+      qendpoint.qlik_ws+'app/314889d1-1873-423f-8f6c-57b854f599fb?reloadUri='+qendpoint.qlik_proxy_pt+'dev-hub/engine-api-explorer',
+      [],
+      {
+        'headers': {
+          'Cookie': 'X-Qlik-Session-Node='+data.token
+        }
       }
-    }
-    );
-}
+      );
+  }
 
 
-ws.on('open', function open() {
-  ws.send(JSON.stringify(openNewDoc));
-});
+  ws.on('open', function open() {
+    ws.send(JSON.stringify(openNewDoc));
+  });
 
-ws.on('message', function(data, flags) {
+  ws.on('message', function(data, flags) {
 
-  var wsres = JSON.parse(data);
-  if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
+    var wsres = JSON.parse(data);
+    if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
       //console.log('user is successfully logged in sales performance with session')
-  }
-  if(wsres.id==1){
+    }
+    if(wsres.id==1){
       ws.send(JSON.stringify(getNewObject));
-  }
-  if(wsres.id==2){
+    }
+    if(wsres.id==2){
       ws.send(JSON.stringify(getNewHypercube));
-  }
-  if(wsres.id==3){
+    }
+    if(wsres.id==3){
 
-    if (!wsres.result) {
+      if (!wsres.result) {
                   //console.log('no records');
                   var biarray = {};
                   biarray.biNo = null;
@@ -328,7 +396,7 @@ ws.on('message', function(data, flags) {
                 //console.log('Performance Business insights from sesssion');
                 
               }
-        });
+            });
 
 
 },
@@ -919,9 +987,233 @@ extractLeaderDeepdive: function(data,cb) {
                   leaderDeepDiveData.Funnel.TopAccounts.push(TAccounts);
 
                 }
-                cb(null,leaderDeepDiveData);
+                //return cb(null,leaderDeepDiveData);
+                ws.send(JSON.stringify(getObjectLeaderboardBooking));
 
               }
+
+              if(wsres.id==23){
+
+                ws.send(JSON.stringify(getHypercubePivotLeaderboardBooking));
+              }
+              if(wsres.id==24){
+
+                console.log(wsres.result)
+                if (!wsres.result) {
+                  return cb(null,leaderData);
+                }
+
+                //leaderDeepDiveData={};
+                leaderDeepDiveData.Booking={};
+                leaderDeepDiveData.Booking.Performance=[];
+                var counter =0;
+                for(var i=1;i<wsres.result.qDataPages[0].qData.length;i++){
+
+                  if((i%4)!= 0){
+
+                    if(i<5){
+                      var j=i; 
+                    }else{
+                      var j= i-(4*counter);
+                    }
+
+                    var performance={};
+                    performance.BType= wsres.result.qDataPages[0].qLeft[0].qSubNodes[j].qText;
+
+                    if(counter<4){
+                      performance.Quarter= wsres.result.qDataPages[0].qLeft[counter].qText;
+                    }
+                    performance.Actual= wsres.result.qDataPages[0].qData[i][0].qText;
+                    performance.Target= wsres.result.qDataPages[0].qData[i][4].qText;
+                    performance.TargetorActual = wsres.result.qDataPages[0].qData[i][10].qText;
+
+                    performance.DList=[];
+
+                    for(var m=0;m<4;m++){
+                      var serviceLine={};
+
+                      serviceLine.SLine= wsres.result.qDataPages[0].qTop[6+m].qText;
+                      serviceLine.Value= wsres.result.qDataPages[0].qData[i][6+m].qText;
+                      performance.DList.push(serviceLine);
+                    }
+
+                    leaderDeepDiveData.Booking.Performance.push(performance);
+                  }
+                  else if((i%4)== 0){
+                    counter=counter+1;
+                  }
+                  
+
+                }
+                //return cb(null,leaderDeepDiveData);
+                ws.send(JSON.stringify(getObjectBookingTeam));
+
+              }
+
+              if(wsres.id==25){
+
+                ws.send(JSON.stringify(getHypercubePivotBookingTeam));
+              }
+              if(wsres.id==26){
+
+
+                if (!wsres.result) {
+                  return cb(null,leaderData);
+                }
+
+                //leaderDeepDiveData={};
+                leaderDeepDiveData.PerformanceTeam=[];
+                var j=0;
+
+                var counter =1;
+                for(var i=0;i<wsres.result.qDataPages[0].qData.length;i++){
+
+//Remove l with i , no use of l
+                  var k= i;
+                  var l= i;
+                  if(i<90){
+                    var member={};
+                    var bilinker=1;
+
+                    for(i;i<k+3;i++){
+
+                      for(counter=1;counter< wsres.result.qDataPages[0].qLeft[j].qSubNodes.length;counter++){
+                        member.MemberName = wsres.result.qDataPages[0].qLeft[j].qText;
+
+                        if(bilinker<5){
+                          member.BType = wsres.result.qDataPages[0].qTop[0].qSubNodes[bilinker].qText
+                        }
+
+                        member.Actual = wsres.result.qDataPages[0].qData[l+counter][bilinker].qText
+                        member.Target = wsres.result.qDataPages[0].qData[l+counter][bilinker+4].qText
+                        member.TargetorActual = wsres.result.qDataPages[0].qData[l+counter][bilinker+28].qText
+                        console.log(l,counter,member.Actual)
+                        member.Quarter = wsres.result.qDataPages[0].qLeft[j].qSubNodes[counter].qText
+                        member.Dlist=[];
+                        var serviceLine = {};
+                        serviceLine.SLine = 'APPS'
+                        serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+12].qText
+                        member.Dlist.push(serviceLine);
+                        serviceLine = {};
+
+                        serviceLine.SLine = 'BPO'
+                        serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+16].qText
+                        member.Dlist.push(serviceLine);
+                        serviceLine = {};
+
+                        serviceLine.SLine = 'ERS'
+                        serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+20].qText
+                        member.Dlist.push(serviceLine);
+                        serviceLine = {};
+
+                        serviceLine.SLine = 'INFRA'
+                        serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+24].qText
+                        member.Dlist.push(serviceLine);
+                        serviceLine = {};
+
+
+
+
+                        leaderDeepDiveData.PerformanceTeam.push(member);
+                        member={};
+
+                      }
+                      bilinker=bilinker+1;
+                    }
+
+
+                    j=j+1;
+                    i=i+1;
+                  
+                  
+                }
+
+              }
+              ws.send(JSON.stringify(getobjectForBookingOppurtunity));
+                //return cb(null,leaderDeepDiveData);
+                
+              }
+              if(wsres.id==27){
+
+                ws.send(JSON.stringify(gethypercubeForBookingOppurtunity));
+
+              }
+              
+              if(wsres.id==28){
+
+                //leaderDeepDiveData={};
+                leaderDeepDiveData.WINS=[];
+                for(var i=0;i<wsres.result.qDataPages[0].qMatrix.length;i++){
+
+
+                  var winarray = {};
+
+                  winarray.BType = wsres.result.qDataPages[0].qMatrix[i][0].qText;
+                  winarray.Quarter = wsres.result.qDataPages[0].qMatrix[i][4].qText;
+                  winarray.OValue = wsres.result.qDataPages[0].qMatrix[i][6].qText;
+                  winarray.OName = wsres.result.qDataPages[0].qMatrix[i][2].qText;
+                  winarray.AccountGroup = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+
+                  leaderDeepDiveData.WINS.push(winarray)
+                  winarray={};
+
+
+
+                } 
+                ws.send(JSON.stringify(getobjectForWINSTeam));
+                //return cb(null,leaderDeepDiveData);
+
+              }
+              if(wsres.id==29){
+
+                ws.send(JSON.stringify(gethypercubeForWINSTeam));
+
+              }
+              
+              if(wsres.id==30){
+
+                //leaderDeepDiveData={};
+                leaderDeepDiveData.WINTEAM=[];
+                var length = wsres.result.qDataPages[0].qMatrix.length;
+
+                var i = 0;
+
+                while(i<length){
+                  var DataList = []
+                  var target = {};
+                  var deal = {};
+                  target.Membername = wsres.result.qDataPages[0].qMatrix[i][0].qText;
+                  deal.DealType = wsres.result.qDataPages[0].qMatrix[i][1].qText;
+                  deal.DealCount = wsres.result.qDataPages[0].qMatrix[i][2].qText;
+                  deal.DealValue = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+                  DataList.push(deal);
+                  target.DataList = DataList;
+                  leaderDeepDiveData.WINTEAM.push(target);
+                  var j = i;
+                  if((length-i >= 2)&&(wsres.result.qDataPages[0].qMatrix[i][0].qText == wsres.result.qDataPages[0].qMatrix[i+1][0].qText)){
+                    j = i+1;
+                    var deal = {};
+                    deal.DealType = wsres.result.qDataPages[0].qMatrix[j][1].qText;
+                    deal.DealCount = wsres.result.qDataPages[0].qMatrix[j][2].qText;
+                    deal.DealValue = wsres.result.qDataPages[0].qMatrix[j][3].qText;
+                    leaderDeepDiveData.WINTEAM[leaderDeepDiveData.WINTEAM.length-1].DataList.push(deal);
+                    if((length-i >= 3)&&(wsres.result.qDataPages[0].qMatrix[i][0].qText == wsres.result.qDataPages[0].qMatrix[i+2][0].qText)){
+                      j = i+2;
+                      var deal = {};
+                      deal.DealType = wsres.result.qDataPages[0].qMatrix[j][1].qText;
+                      deal.DealCount = wsres.result.qDataPages[0].qMatrix[j][2].qText;
+                      deal.DealValue = wsres.result.qDataPages[0].qMatrix[j][3].qText;
+                      leaderDeepDiveData.WINTEAM[leaderDeepDiveData.WINTEAM.length-1].DataList.push(deal);
+                    }
+                  }
+                  i = j+1;
+                }
+
+                return cb(null,leaderDeepDiveData);
+
+              }
+              
+              
 
 
 

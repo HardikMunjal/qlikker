@@ -81,6 +81,12 @@ checkSession: function(integerator, cb) {
          })
       }
 
+      else if(data.scope=='valuedata'){
+      websocketSymUtility.extractValueData(data,function(err, bomb){
+          return cb(err,bomb);
+         })
+      }
+
     else if(data.scope=='CARD'){
       websocketUtility.extractCardData(data,function(err, bomb){
           return 

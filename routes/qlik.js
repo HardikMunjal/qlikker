@@ -5,6 +5,7 @@ var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
 var qendpoint = require('../config/endpoint');
+var admin = require('./controller/adminController')
 
 
 
@@ -103,10 +104,11 @@ var qlik = {
 
     if(req.query.open){
       destination = req.query.open;
-
-      if(destination.indexOf(qendpoint.qlik_proxy_pt) == -1){
-        res.send("Invalid URL in open parameter",400);
-        return;
+     if(!req.query.app_name){
+        if(destination.indexOf(qendpoint.qlik_proxy_pt) == -1){
+          res.send("Invalid URL in open parameter",400);
+          return;
+        }
       }
       if(destination == qendpoint.qlik_proxy_pt+"hub/"){
         res.send("To open hub, You need to exclude / from the end",400);
@@ -131,6 +133,10 @@ var qlik = {
       // }
       //console.log(y.X-Qlik-Session-Ps);
       //console.log(req.cookies.X-Qlik-Session-Ps);
+    }
+
+    if(req.query.app_name=='resource'){
+      destination='http://10.2.5.158/node/sense/app/f083256e-3ea6-4a4b-97fa-ed72e5700554'
     }
     
     global.user_id = req.params.user_id.trim();
@@ -176,7 +182,11 @@ var qlik = {
            global.user_id = req.params.user_id.trim();
            global.user_directory = req.params.user_directory.trim();
            if(req.query.open){
-            destination = req.query.open
+            destination = req.query.open;
+              if(req.query.app_name=='resource'){
+                destination='http://10.2.5.158/node/sense/app/f083256e-3ea6-4a4b-97fa-ed72e5700554'
+              }
+
            }else{
              destination= qendpoint.qlik_proxy_pt+"hub/"
            }
@@ -185,9 +195,41 @@ var qlik = {
           } else {
           console.log('Ticket Rqst successfully cmpltd for '+bodyObject.UserId); 
 
+
+// ****************  RESOURCE ROLE VERIFICATION  *********************************
           if(bodyObject.TargetUri != qendpoint.qlik_proxy_pt+"hub/"){
-            res.render('qlikhub.ejs',{data: dynamicTicket});
+            if(req.query.app_name =='resource' && req.query.open){
+              return  res.json('Invalid open parameter for resource')
+
+//************** Role Verfication from QLIKHUB.EJS**********************88
+              
+              // dynamicTicket = JSON.parse(dynamicTicket);
+              // dynamicTicket.roleflag = true;
+              // dynamicTicket =JSON.stringify(dynamicTicket)
+              // dynamicTicket.roleflag = true;
+
+
+//****************** Role Verfication from qliksense **************************************
+
+              // admin.roleverifier(dynamicTicket,function(err,result){
+              //   if(err){
+              //     return res.json('Invalid Handle');
+              //   }
+              //   else{
+
+              //     //Fetch APP URL FROM CONFIG FILE
+              //     console.log('coming',result);
+              //     //return res.redirect('/scr/ticket/user/associates/qlikdeveloper5?client_id=merlin&scope=ticket&open=http://10.2.5.158/node/sense/app/f083256e-3ea6-4a4b-97fa-ed72e5700554/sheet/a0072aff-1354-4855-939d-97c8151ddd85/state/analysis');
+              //      return res.redirect(result);
+              //   }
+              // })
+            }
+            else{
+            console.log('not coming here')
+            res.render('qlikhub.ejs',{data:dynamicTicket});
             return;
+          }
+            
           }
           if(req.query.user == 'hardi'){
 
@@ -201,11 +243,12 @@ var qlik = {
                 qlikauth.getUsersDetails(req, res, profile);
                 return;
               }
-
-          res.json(bodyObject);
-          global.user_id = 'null';
-          global.user_directory = 'null';
-          return;
+             if(!req.query.app_name){
+              res.json(bodyObject);
+              global.user_id = 'null';
+              global.user_directory = 'null';
+              return;
+            }
           }
           }
           

@@ -5,14 +5,21 @@ var ejs = require('ejs');
 var fs = require('fs');
 var qlik = require('./qlik');
 var ipsec = require('./ip_securer');
+var shared = require('./shared');
 var delivery = require('./delivery');
 var mjob = require('./cronjob/merlin_sales_bulkdata');
 var extractor = require('./controller/S_deliveryController');
 var admin = require('./controller/adminController');
+var sessionAuthenticator = require('./sessionAuthenticator');
+
 
 module.exports = function (app) {
 
+//app.all('/*/:', admin.saveLogger);
 
+app.get('/nscr/delivery',delivery.integration_point);
+
+//app.get('/nscr/fetch/*', sessionAuthenticator.validateSession);
 // ************** Node js redirection API ************************
 app.get('/authenticate', qlik.proxyRedirectFromQlik);
 //app.all('/scr/*',ipsec.whitelistIp);
@@ -20,12 +27,12 @@ app.get('/authenticate', qlik.proxyRedirectFromQlik);
 
 //************* Merlin/HCLIVE AUTH Service ***********************
 app.get('/scr/session/user/:user_directory/:user_id', qlik.userExistingSession);
-app.get('/scr/ticket/user/:user_directory/:user_id',qlik.userQlikTicket);
+app.get('/scr/ticket/user/:user_directory/:user_id', qlik.userQlikTicket);
 
 
 //******************** Symphony AUTH Service *************************
 app.post('/nscr/qlikauth/user/:user_directory/:user_id',delivery.secure_redirection);
-app.get('/nscr/delivery',delivery.integration_point);
+
 
 
 //****************** Service not related to merlin,Symphony & HCLLIVE *************************
@@ -55,7 +62,7 @@ app.get('/nscr/fetch/leaderdeepdive/user/:user_directory/:user_id', extractor.ql
 app.get('/nscr/symphonyBIdata/user/:user_directory/:user_id', extractor.qlikNewBIData);
 app.get('/symphony/data/:user_directory/:user_id', extractor.symphonytest);
 app.get('/nscr/finance/user/:user_directory/:user_id', extractor.financeData);
-//app.get('/nscr/finance/user/:user_directory/:user_id', extractor.symphonytest);
+app.get('/nscr/value/user/:user_directory/:user_id', extractor.valueData);
 
 
 app.get('/get/mashup_object',admin.mashupDynamiser);

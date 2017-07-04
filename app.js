@@ -6,6 +6,26 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var request = require('request');
 var ipsec = require('./routes/ip_securer')
+var mysql = require('mysql');
+var mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/QlikDatabase');
+
+var con = mysql.createConnection({
+  host: '10.98.10.13',
+    user: 'Insightsappuser',
+    password : 'India@123',
+    //port : 3306, //port mysql
+    database:'Insights'
+});
+
+con.connect(function(err) {
+  if (err) {
+  	console.log(err)
+  }
+  else{
+  	console.log("Connected!")
+  };
+});
 
 
 var http = require('http').Server(app);

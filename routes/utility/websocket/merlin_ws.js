@@ -152,7 +152,34 @@ var Focus150HypercubePivot = {
   "outKey": -1
 }
 
-
+var getObjectLeaderboardBooking = {
+  "method": "GetObject",
+  "handle": 1,
+  "params": [
+  "pptCqWy"
+  ],
+  "id": 23,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
+var getHypercubePivotLeaderboardBooking = {
+  "method": "GetHyperCubePivotData",
+  "handle": 5,
+  "params": [
+  "/qHyperCubeDef",
+  [
+  {
+    "qTop": 0,
+    "qLeft": 0,
+    "qHeight": 155,
+    "qWidth": 155
+  }
+  ]
+  ],
+  "id": 24,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
 
 
 var businessInsights = [];
@@ -334,7 +361,7 @@ ws.on('message', function(data, flags) {
 
 extractLeaderData: function(data,cb) {
 
-      //console.log(data);
+      console.log("i am here--- ", data);
       var leaderData = {};
       leaderData.error_id = 0;
       leaderData.error_message ='Success'
@@ -373,6 +400,7 @@ extractLeaderData: function(data,cb) {
 
 
         var wsres = JSON.parse(data);
+        console.log("data--- ", wsres);
               //console.log(wsres);
               if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
                 //console.log('user is successfully logged in sales performance with session')
@@ -663,6 +691,7 @@ extractLeaderDeepdive: function(data,cb) {
       ws.on('message', function(data, flags) {
 
         var wsres = JSON.parse(data);
+        console.log(wsres);
 
         if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
         }
@@ -918,10 +947,22 @@ extractLeaderDeepdive: function(data,cb) {
                   leaderDeepDiveData.Funnel.TopAccounts.push(TAccounts);
 
                 }
-                cb(null,leaderDeepDiveData);
+                ws.send(JSON.stringify(getObjectLeaderboardBooking));
 
               }
 
+              if(wsres.id==23){
+                //console.log(wsres);
+                ws.send(JSON.stringify(getHypercubePivotLeaderboardBooking));
+              }
+              if(wsres.id==24){
+
+                console.log(wsres.result)
+                if (!wsres.result) {
+                  return cb(null,leaderData);
+                }
+                console.log(wsres.result)
+              }
 
 
             });
