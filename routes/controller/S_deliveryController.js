@@ -30,11 +30,36 @@ var qlik = {
        res.send('User must have to pass directory and user_id', 400);
        return;
      }
+     console.log('einthelper begin');
      
      var integerator = {};
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'BI';
+     integerator.client_id = "merlin";
+     einthelper.fetchDetails(integerator,function(err,result){
+      if(!err){
+        console.log('result',result);
+        res.json(result);
+      }else{
+        //qlikstatus=true;
+        return res.send(err.message);
+      }
+     })
+  },
+     qlikSalesdata: function(req, res, next) {
+
+
+    if(!req.params.user_id && !req.params.user_directory){
+       res.send('User must have to pass directory and user_id', 400);
+       return;
+     }
+     
+     var integerator = {};
+     integerator.user_id = req.params.user_id;
+     integerator.user_directory = req.params.user_directory;
+     integerator.scope = 'sales';
+     integerator.client_id = "merlin";
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
         //console.log('result',result);
@@ -54,6 +79,7 @@ var qlik = {
     integerator.user_id = req.params.user_id;
     integerator.user_directory = req.params.user_directory;
     integerator.scope = 'NewBI';
+    integerator.client_id = "delivery";
     einthelper.fetchDetails(integerator,function(err,result){
     if(!err){
       //console.log('result',result);
@@ -89,6 +115,7 @@ var qlik = {
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'financedata';
+     integerator.client_id = "delivery";
 
      setTimeout(function(){
        if(!qlikstatus){
@@ -103,13 +130,13 @@ var qlik = {
         return res.send(e.message);
        }
 
-     },29000)
+     },59000)
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
 
         if(!responseStatus){
           qlikstatus=true;
-          console.log('result',result);
+          //console.log('result',result);
           return res.json(result);
         }
         else{
@@ -151,6 +178,7 @@ var qlik = {
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'valuedata';
+     integerator.client_id = "delivery";
 
      setTimeout(function(){
        if(!qlikstatus){
@@ -165,13 +193,13 @@ var qlik = {
         return res.send(e.message);
        }
 
-     },29000)
+     },59000)
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
 
         if(!responseStatus){
           qlikstatus=true;
-          console.log('result',result);
+          // console.log('result',result);
           return res.json(result);
         }
         else{
@@ -214,6 +242,7 @@ var qlik = {
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'Leaderboard';
+     integerator.client_id = "merlin";
 
      setTimeout(function(){
        if(!qlikstatus){
@@ -228,7 +257,7 @@ var qlik = {
         return res.send(e.message);
        }
 
-     },12000)
+     },42000)
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
 
@@ -274,6 +303,7 @@ var qlik = {
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'Leaderdeepdive';
+     integerator.client_id = "merlin";
 
      setTimeout(function(){
        if(!qlikstatus){
@@ -288,7 +318,7 @@ var qlik = {
         return res.send(e.message);
        }
 
-     },25000)
+     },45000)
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
 

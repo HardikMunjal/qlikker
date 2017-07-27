@@ -8,24 +8,26 @@ var request = require('request');
 var ipsec = require('./routes/ip_securer')
 var mysql = require('mysql');
 var mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/QlikDatabase');
+var colors = require('colors');
+mongoose.Promise = Promise;
+mongoose.connect('mongodb://localhost/QlikDatabase');
 
-var con = mysql.createConnection({
-  host: '10.98.10.13',
-    user: 'Insightsappuser',
-    password : 'India@123',
-    //port : 3306, //port mysql
-    database:'Insights'
-});
+// var con = mysql.createConnection({
+//   host: '10.98.10.13',
+//     user: 'Insightsappuser',
+//     password : 'India@123',
+//     //port : 3306, //port mysql
+//     database:'Insights'
+// });
 
-con.connect(function(err) {
-  if (err) {
-  	console.log(err)
-  }
-  else{
-  	console.log("Connected!")
-  };
-});
+// con.connect(function(err) {
+//   if (err) {
+//   	console.log(err)
+//   }
+//   else{
+//   	console.log("Connected!")
+//   };
+// });
 
 
 var http = require('http').Server(app);
@@ -55,12 +57,15 @@ app.set('views', __dirname + '/public/views');
 app.engine('html', require('ejs').renderFile)
 //app.set('view engine', 'html');
 
-
+/*process.on('uncaughtException', function(err,req,res) {
+  console.log('Caught exception: ' + err);
+  //process.exit(1);
+  });*/
 var server = http.listen(4011, function () {
   var host = server.address().address;
   var port = server.address().port;
 
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log('Example app listening at http://%s:%s'.underline.red, host, port);
 });
 
 //http://10.68.128.126

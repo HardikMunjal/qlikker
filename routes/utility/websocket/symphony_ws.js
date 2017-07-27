@@ -50,7 +50,7 @@ var qlik = {
     ws.on('message', function(data, flags) {
       
       var wsres = JSON.parse(data);
-      console.log(wsres)
+      //console.log(wsres)
       if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
           //console.log('user is successfully logged in sales performance with session')
       }
@@ -165,7 +165,7 @@ var qlik = {
       if(wsres.error){
         return;
       }
-      console.log(wsres)
+      //console.log(wsres)
       if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
           //console.log('user is successfully logged in sales performance with session')
       }

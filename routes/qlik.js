@@ -6,6 +6,7 @@ var ejs = require('ejs');
 var fs = require('fs');
 var qendpoint = require('../config/endpoint');
 var admin = require('./controller/adminController')
+//var date = new Date();
 
 
 
@@ -31,7 +32,8 @@ var qlik = {
 
   userExistingSession: function(req, res, next) {
 
-    
+    console.log("Session service started");
+    console.log(req.params,req.query)
     if(!req.params.user_id && !req.params.user_directory){
      res.send('User must have to pass directory and user_id', 400);
      return;
@@ -57,7 +59,7 @@ var qlik = {
     }
 
     profile.UserId = req.params.user_id;
-    console.log('session checking');
+    //console.log('session checking');
     qlikauth.getUserSession(req, res, profile);
   
     },
@@ -70,13 +72,13 @@ var qlik = {
     }
 
     profile.UserId = 'QLIKDEVELOPER5';
-    console.log('users fetching');
+    //console.log('users fetching');
     qlikauth.getUsersDetails(req, res, profile);
   
     },
 
   userQlikTicket: function(req, res, next) {
-
+    console.log("Ticket service started.")
     var destination = qendpoint.qlik_proxy_pt+"hub/";
     
 
@@ -176,9 +178,9 @@ var qlik = {
           var bodyObject =JSON.parse(body);
           if(bodyObject.UserId.toUpperCase().trim() != req.params.user_id.toUpperCase().trim()){
            console.log('######################### coming at danger end ############################')
-           console.log(bodyObject);
+           //console.log(bodyObject);
 
-           console.log(req.params.user_id);
+           //console.log(req.params.user_id);
            global.user_id = req.params.user_id.trim();
            global.user_directory = req.params.user_directory.trim();
            if(req.query.open){
@@ -193,7 +195,8 @@ var qlik = {
             
            getTicket(destination);
           } else {
-          console.log('Ticket Rqst successfully cmpltd for '+bodyObject.UserId); 
+            var date = new Date();
+          console.log('Ticket Rqst successfully cmpltd for '+bodyObject.UserId+'at' +date); 
 
 
 // ****************  RESOURCE ROLE VERIFICATION  *********************************
@@ -224,8 +227,15 @@ var qlik = {
               //   }
               // })
             }
+            // else if(req.query.stream_access && req.query.stream_access='enable' && req.query.open){
+            //   dynamicTicket = JSON.parse(dynamicTicket);
+            //   dynamicTicket.stream_access = true;
+            //   dynamicTicket =JSON.stringify(dynamicTicket)
+
+            // }
+
             else{
-            console.log('not coming here')
+            //console.log('not coming here')
             res.render('qlikhub.ejs',{data:dynamicTicket});
             return;
           }

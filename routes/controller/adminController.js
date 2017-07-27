@@ -8,24 +8,44 @@ var qendpoint = require('../../config/endpoint');
 var WebSocket = require('ws');
 var Logger = require('../model/userModel');
 var dashboardFinder = require('../../config/dashboard_finder');
-
+var colors = require('colors');
 
 var admin = {
 
 
   getSession: function(req, res, next) {
   
-   console.log(req.headers);
-   console.log(req.cookies);
+   //console.log(req.headers);
+   //console.log(req.cookies);
    res.json(req.cookies);
   },
 
+  test: function(req, res, next) {
+  
+   var creator= req.params['0'];
+
+   if(creator.indexOf('nscr')>-1 && creator.indexOf('user/')>-1){
+    var required= creator.lastIndexOf("user/");
+
+    
+   var dual=creator.substring(required+5);
+
+   var user_directory = dual.substring(0,dual.indexOf('/'));
+   var user_id = dual.substring(dual.indexOf('/')+1);
+    //console.log('required',user_directory,user_id);
+   }
+
+
+   next();
+  },
+
+
   roleverifier: function(ticket,cb){
     
-    console.log('roleverifier',ticket);
+    //console.log('roleverifier',ticket);
     
     var ticket= JSON.parse(ticket);
-    console.log(ticket.Ticket)
+    //console.log(ticket.Ticket)
     var ws = new WebSocket('ws://10.2.5.158/node/app/f083256e-3ea6-4a4b-97fa-ed72e5700554?reloadUri=http://10.2.5.158/node/dev-hub/engine-api-explorer&QlikTicket='+ticket.Ticket
     );
     var opendocIntegrated = {"method":"OpenDoc","params":['f083256e-3ea6-4a4b-97fa-ed72e5700554',"","","",false],"handle":-1,"id":1,"jsonrpc":"2.0"}
@@ -126,63 +146,49 @@ var admin = {
   },
 
   saveLogger: function(req, res, next){
-    console.log("params---- ", req.params);
-    var log_json = {
-        user_id:req.params.user_id,
-        user_directory:req.params.user_directory,
-        client_id:req.query.client_id,
-        scope:req.query.scope
-      }
-      console.log("log_json--- ", log_json);
-      var logger = new Logger(log_json);
-      logger.save(function(err, logData){
-        if(err){
-          console.log("in err-- ", err);
-          next();
-        }else{
-          console.log("log saved.");
-          next();
-        }
-      })
-    /*if(!req.params.user_id && !req.params.user_directory && !req.query.client_id){
-      console.log("in if---")
+
+    if(!req.params['0'] || !req.params.user_id || !req.query.client_id || !req.query.scope){
+      console.log("Log not saved.".bgRed.bold)
       next();
     }else{
       var log_json = {
-        user_id:req.params.user_id,
-        user_directory:req.params.user_directory,
+        user_id:req.params['0'],
+        user_directory:req.params.user_id,
         client_id:req.query.client_id,
-        scope:req.query.scope
+        scope:req.query.scope,
+        service_name:req.query.service_name
       }
-      let open_var = req.query.open;
-      open_var = open_var.split('?')[0];
-      let dashboard_name;
-      let application;
-      if(dashboardFinder.hasOwnProperty(open_var)){
-        dashboard_name = dashboardFinder[open_var][0];
-        application = dashboardFinder[open_var][1];
-      }else{
-        next();
+      if(req.query.open){
+        let open_var = req.query.open;
+        open_var = open_var.split('?')[0];
+        let dashboard_name;
+        let application;
+        if(dashboardFinder.hasOwnProperty(open_var)){
+          dashboard_name = dashboardFinder[open_var][0];
+          application = dashboardFinder[open_var][1];
+        }else{
+          next();
+        }
+        log_json.dashboard_name = dashboard_name;
+        log_json.application = application;
       }
-      log_json.dashboard_name = dashboard_name;
-      log_json.application = application;
       if(req.headers.origin){
         log_json.local_ip = req.headers.origin.substring('::ffff:'.length);
       }else if(req.connection.remoteAddress){
-        log_json.server_ip = req.connection.remoteAddress.substring('::ffff:'.length);;
+        log_json.server_ip = req.connection.remoteAddress.substring('::ffff:'.length);
       }
 
       var logger = new Logger(log_json);
       logger.save(function(err, logData){
         if(err){
-          console.log("in err-- ", err);
+          console.log("Error in saving logs-- ".underline.red, err);
           next();
         }else{
-          console.log("log saved.");
+          console.log("log saved.".inverse);
           next();
         }
       })
-    }*/
+    }
   }
 };
 module.exports = admin;

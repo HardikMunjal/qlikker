@@ -7,6 +7,7 @@ var fs = require('fs');
 var WebSocket = require('ws');
 var websocketUtility = require('../utility/websocket')
 var websocketSymUtility = require('../utility/websocket/symphony_ws')
+//var websocketMerlinUtility = require('../utility/websocket/merlin_ws')
 var qendpoint = require('../../config/endpoint')
 
 
@@ -16,7 +17,7 @@ var qlik = {
 checkSession: function(integerator, cb) {
 
   
-  request(qendpoint.qlik_pt+'scr/session/user/'+integerator.user_directory+'/'+integerator.user_id+'?client_id=merlin&scope=session', function (error, response, body) {
+  request(qendpoint.qlik_pt+'scr/session/user/'+integerator.user_directory+'/'+integerator.user_id+'?client_id='+integerator.client_id+'&scope=session&service_name='+integerator.scope, function (error, response, body) {
 
       if (!error && response.statusCode == 200) {
 
@@ -30,7 +31,7 @@ checkSession: function(integerator, cb) {
 
 
   checkTicket: function(integerator, cb) {
-  request(qendpoint.qlik_pt+'scr/ticket/user/'+integerator.user_directory+'/'+integerator.user_id+'?client_id=merlin&scope=ticket', function (error, response, body) {
+  request(qendpoint.qlik_pt+'scr/ticket/user/'+integerator.user_directory+'/'+integerator.user_id+'?client_id='+integerator.client_id+'&scope=ticket&service_name='+integerator.scope, function (error, response, body) {
 
       if (!error && response.statusCode == 200) {
 
@@ -43,14 +44,23 @@ checkSession: function(integerator, cb) {
   },
   getSocketData: function(data, cb) {
 
+
+    console.log('coming for websocket check');
     
     if(data.scope=='BI'){
-
-
       websocketUtility.extractBusinessInsightsData(data,function(err, bomb){
           return cb(err,bomb);
          })
       }
+    
+      
+   
+    // else if(data.scope=='sales'){
+    //   websocketMerlinUtility.extractSalesData(data,function(err, bomb){
+    //   return cb(err,bomb);
+    //   })
+    // }
+
 
     else if(data.scope=='NewBI'){
       websocketUtility.extractNewBIData(data,function(err, bomb){

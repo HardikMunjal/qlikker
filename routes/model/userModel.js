@@ -24,6 +24,10 @@ var logschema = new Schema({
 		type:String,
 		default:null
 	},
+	service_name:{
+		type:String,
+		default:null
+	},
 	local_ip:{
 		type:String,
 		default:null

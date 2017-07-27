@@ -6,6 +6,7 @@ var crypto = require('crypto');
 var util = require('util');
 var urljoin = require('url-join');
 var _ = require("underscore");
+//var date = new Date();
 
 var qendpoint = require('../../config/endpoint')
 
@@ -226,14 +227,15 @@ module.exports = {
 
     
             var session = JSON.parse(d.toString());
-            console.log(session);
+            //console.log(session);
 
             // console.log(session.Session.UserId + " is logged out from session " + session.Session.SessionId);
             // res.clearCookie('X-Qlik-Session');
             //console.log(session); 
             if(session.length>0){
             global.usersession = session[0].SessionId
-            console.log('***************** Session Returned successfully for '+session[0].UserId+'**********************')
+            var date = new Date();
+            console.log('Session Returned successfully for '+session[0].UserId+'at'+date)
 
              // if(req.query.user == 'hardi'){
 
@@ -252,7 +254,7 @@ module.exports = {
             return;
             }else{
 
-                console.log('Session does not exist for '+profile.UserId)            
+                //console.log('Session does not exist for '+profile.UserId)            
                 res.send('Session does not exist for the user');
                 return
             }

@@ -10,8 +10,9 @@ var qendpoint = require('../../config/endpoint');
 var s_object = require('../../config/symphony_object');
 var m_object = require('../../config/merlin_object');
 var e_function = require('../../config/engine_funct');
+var BookingTeamData;
 
-
+//var date = new Date();
 //************************************ BUSINESS INSIGHTS DATA SERVICE ***************************************************
 
 //************************************ NEW BUSINESS INSIGHTS DATA SERVICE ***************************************************
@@ -143,7 +144,7 @@ var Focus150HypercubePivot = {
   {
     "qTop": 0,
     "qLeft": 0,
-    "qHeight": 155,
+    "qHeight": 1000,
     "qWidth": 155
   }
   ]
@@ -152,47 +153,47 @@ var Focus150HypercubePivot = {
   "jsonrpc": "2.0",
   "outKey": -1
 }
-
-var getObjectLeaderboardBooking = {
-  "method": "GetObject",
+var TopAccountsGetObject = {
   "handle": 1,
-  "params": [
-  "tjuJQR"
-  ],
-  "id": 23,
+  "method": "GetObject",
+  "params": {
+    "qId": "zBxrvZ"
+  },
+  "outKey": -1,
   "jsonrpc": "2.0",
-  "outKey": -1
+  "id": 23
 }
-var getHypercubePivotLeaderboardBooking = {
+
+var TopAccountsHypercubePivot = {
   "method": "GetHyperCubePivotData",
   "handle": 5,
   "params": [
-  "/qHyperCubeDef",
-  [
-  {
-    "qTop": 0,
-    "qLeft": 0,
-    "qHeight": 155,
-    "qWidth": 155
-  }
-  ]
+    "/qHyperCubeDef",
+    [
+      {
+        "qTop": 0,
+        "qLeft": 0,
+        "qHeight": 1000,
+        "qWidth": 155
+      }
+    ]
   ],
   "id": 24,
   "jsonrpc": "2.0",
   "outKey": -1
 }
 
-var getObjectBookingTeam = {
+var getObjectLeaderboardBooking = {
   "method": "GetObject",
   "handle": 1,
   "params": [
-  "bQdtsmf"
+  "YPVNGZ"   //SKL
   ],
   "id": 25,
   "jsonrpc": "2.0",
   "outKey": -1
 }
-var getHypercubePivotBookingTeam = {
+var getHypercubePivotLeaderboardBooking = {
   "method": "GetHyperCubePivotData",
   "handle": 6,
   "params": [
@@ -211,17 +212,64 @@ var getHypercubePivotBookingTeam = {
   "outKey": -1
 }
 
+var getObjectBookingTeam = {
+  "method": "GetObject",
+  "handle": 1,
+  "params": [
+  "gxms"
+  ],
+  "id": 27,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
+var getHypercubePivotBookingTeam = {
+  "method": "GetHyperCubePivotData",
+  "handle": 7,
+  "params": [
+  "/qHyperCubeDef",
+  [
+  {
+    "qTop": 0,
+    "qLeft": 0,
+    "qHeight": 155,
+    "qWidth": 155
+  }
+  ]
+  ],
+  "id": 28,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
 
-var getobjectForBookingOppurtunity= {"method":"GetObject","handle":1,"params":["EsKpf"],"id":27,"jsonrpc":"2.0"};
-var gethypercubeForBookingOppurtunity = {"method":"GetHyperCubeData","handle":7,"params":["/qHyperCubeDef",[
-{"qTop":0,"qLeft":0,"qHeight":150,"qWidth":10}
-]],"id":28,"jsonrpc":"2.0"}
+var getObjectBookingTeamServiceLine = {"method":"GetObject","handle":1,"params":["ujPT"],"id":29,"jsonrpc":"2.0"};
+
+var gethypercubePivotBookingTeamServiceLine ={
+  "method": "GetHyperCubePivotData",
+  "handle": 8,
+  "params": [
+  "/qHyperCubeDef",
+  [
+  {
+    "qTop": 0,
+    "qLeft": 0,
+    "qHeight": 155,
+    "qWidth": 155
+  }
+  ]
+  ],
+  "id": 30,
+  "jsonrpc": "2.0",
+  "outKey": -1
+}
 
 
-var getobjectForWINSTeam= {"method":"GetObject","handle":1,"params":["PdCjsJY"],"id":29,"jsonrpc":"2.0"};
-var gethypercubeForWINSTeam = {"method":"GetHyperCubeData","handle":8,"params":["/qHyperCubeDef",[
+
+
+
+var getobjectForWINSTeam= {"method":"GetObject","handle":1,"params":["PdCjsJY"],"id":33,"jsonrpc":"2.0"};
+var gethypercubeForWINSTeam = {"method":"GetHyperCubeData","handle":10,"params":["/qHyperCubeDef",[
 {"qTop":0,"qLeft":0,"qHeight":100,"qWidth":100}
-]],"id":30,"jsonrpc":"2.0"}
+]],"id":34,"jsonrpc":"2.0"}
 
 
 var businessInsights = [];
@@ -233,7 +281,7 @@ var qlik = {
 
   extractBusinessInsightsData: function(data,cb) {
 
-//console.log(data);
+console.log('Inside Web Socket');
 
 if(data.target=='TICKET'){
 
@@ -255,6 +303,8 @@ else if(data.target=='SESSION'){
     );
 }
 
+console.log('Request is coming on Sales')
+
 var opendocSalesBI = e_function.opendoc(1,-1,'83dc76e7-6d76-455f-9052-e71da06a5c93');
 ws.on('open', function open() {
   ws.send(JSON.stringify(opendocSalesBI));
@@ -264,15 +314,28 @@ ws.on('message', function(data, flags) {
 
   var wsres = JSON.parse(data);
   if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
+
           //console.log('user is successfully logged in sales performance with session')
         }
+        console.log("wsre pre--- ", wsres);
         if(wsres.id==1){
+          if(wsres.error){
+                  var e={};
+                  var emessage = {};
+                  emessage.error_id = 403;
+                  emessage.error_message ='You do not have Sales access';
+                  e.status = 403;
+                  e.message = emessage;
+                  
+                  
+                  return cb(e)
+                }
           var handle = wsres.result.qReturn.qHandle;
           var getobjectSalesBI = e_function.getobject(2,handle,"wJscr");
           ws.send(JSON.stringify(getobjectSalesBI));
         }
         if(wsres.id==2){
-          console.log(wsres)
+          //console.log(wsres)
           var handle = wsres.result.qReturn.qHandle;
           var rows_height = 12;
           var cloumns_width = 9;
@@ -280,7 +343,7 @@ ws.on('message', function(data, flags) {
           ws.send(JSON.stringify(gethypercubeSalesBI));
         }
         if(wsres.id==3){
-
+          console.log("wsres---- ", wsres);
           if (!wsres.result) {
                   //console.log('no records');
                   var biarray = {};
@@ -313,6 +376,9 @@ ws.on('message', function(data, flags) {
                  businessInsights.push(biarray);
                  biarray={};
                }
+
+               var date = new Date();
+               console.log('Sales business insights ',date);
                cb(null,businessInsights);
                businessInsights=[];
              }
@@ -380,7 +446,7 @@ extractNewBIData: function(data,cb) {
                 }
 
                 for(var i=0;i<wsres.result.qDataPages[0].qMatrix.length;i++){
-                 console.log(wsres.result.qDataPages[0].qMatrix[i][6].qText)
+                 //console.log(wsres.result.qDataPages[0].qMatrix[i][6].qText)
                  var biarray = {};
                  biarray.biNo = wsres.result.qDataPages[0].qMatrix[i][0].qText;
                  biarray.category = wsres.result.qDataPages[0].qMatrix[i][2].qText;
@@ -391,6 +457,8 @@ extractNewBIData: function(data,cb) {
                  businessInsights.push(biarray);
                  biarray={};
                }
+               var date = new Date();
+               console.log('Symphony business insights ',date);
                cb(null,businessInsights);
                businessInsights=[];
                 //console.log('Performance Business insights from sesssion');
@@ -440,13 +508,15 @@ extractLeaderData: function(data,cb) {
       ws.on('message', function(data, flags) {
 
 
-
+        
         var wsres = JSON.parse(data);
               //console.log(wsres);
               if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
                 //console.log('user is successfully logged in sales performance with session')
               }
               if(wsres.id==1){
+                var date = new Date();
+                console.log('Session opened at ',date);
 
                 if(wsres.error && wsres.error.code==403){
                   var e={};
@@ -478,7 +548,7 @@ extractLeaderData: function(data,cb) {
 
                 var billing ={};
 
-                billing.FyYear = '2016';
+                billing.FyYear = wsres.result.qLayout.qHyperCube.qDimensionInfo[0].qMax;
                 billing.Type = 'BILLING';
                 billing.TargetValue = lbOpt[1].qText;
                 billing.TargetValueRaw = lbOpt[1].qNum;
@@ -491,7 +561,7 @@ extractLeaderData: function(data,cb) {
 
                 var booking ={};
 
-                booking.FyYear = '2016';
+                booking.FyYear = wsres.result.qLayout.qHyperCube.qDimensionInfo[0].qMax;
                 booking.Type = 'BOOKING';
                 booking.TargetValue = lbOpt[4].qText;
                 booking.TargetValueRaw = lbOpt[4].qNum;
@@ -527,6 +597,8 @@ extractLeaderData: function(data,cb) {
 
 
                }
+               var date = new Date();
+               console.log('Leaderboard booking data completed at ',date);
                ws.send(JSON.stringify(getobjectForLeaderboardPipeline));
 
              }
@@ -549,7 +621,9 @@ extractLeaderData: function(data,cb) {
               leaderData.FunnelSummary.FunnelSufficiency=lbPip[7].qText;
               leaderData.FunnelSummary.FunnelSufficiencyValue=lbPip[6].qText;
               leaderData.FunnelSummary.AsOnDate=lbPip[8].qText
-
+              
+              var date = new Date();
+              console.log('Leaderboard funnel summry completed at ',date);
               ws.send(JSON.stringify(getobjectForBillingFocusLeader));
 
 
@@ -624,6 +698,8 @@ extractLeaderData: function(data,cb) {
 
 
             }
+            var date = new Date();
+            console.log('Leaderboard bfocus acc for all 3 completed at ',date);
             ws.send(JSON.stringify(getobjectForBookingOppurtunityLeader));
 
           }
@@ -677,7 +753,8 @@ extractLeaderData: function(data,cb) {
 
                    
                  }
-
+                 var date = new Date();
+                 console.log('Leaderboard data completed at ',date);
                  cb(null,leaderData);
                  leaderData=[];
                 //return;
@@ -732,10 +809,13 @@ extractLeaderDeepdive: function(data,cb) {
       ws.on('message', function(data, flags) {
 
         var wsres = JSON.parse(data);
-
+        
         if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
         }
         if(wsres.id==1){
+          var date = new Date();
+          console.log('Leaderboard deepdive session opened at ',date);
+
 
           if(wsres.error && wsres.error.code==403){
             var e={};
@@ -904,9 +984,6 @@ extractLeaderDeepdive: function(data,cb) {
                   return cb(null,leaderData);
                 }
                 
-                
-
-
                 for(var i=0;i<wsres.result.qDataPages[0].qLeft.length;i++){
                   var TAccounts = {};
 
@@ -915,262 +992,273 @@ extractLeaderDeepdive: function(data,cb) {
                   TAccounts.AccValue = wsres.result.qDataPages[0].qData[i][0].qText;
                   TAccounts.DataList =[];
 
+                  for(var j = 1; j<=3; j++){
                   var stage={};
 
                   stage.Type = 'L'
-                  stage.TypeText = 'L3'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][1].qText;
+                  stage.TypeText = wsres.result.qDataPages[0].qTop[j].qText;
+                  stage.RawValue = wsres.result.qDataPages[0].qData[i][j].qText;
                   TAccounts.DataList.push(stage);
-                  stage={};
-
-                  stage.Type = 'L'
-                  stage.TypeText = 'L2'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][2].qText;
-                  TAccounts.DataList.push(stage);
-                  stage={};
-
-                  stage.Type = 'L'
-                  stage.TypeText = 'L1'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][3].qText;
-                  TAccounts.DataList.push(stage);
-                  stage={};
+                  }
+                  for(var j = 4; j<=6; j++){
+                  var stage={};
 
                   stage.Type = 'B'
-                  stage.TypeText = 'EE'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][4].qText;
+                  stage.TypeText = wsres.result.qDataPages[0].qTop[j].qText;
+                  stage.RawValue = wsres.result.qDataPages[0].qData[i][j].qText;
                   TAccounts.DataList.push(stage);
-                  stage={};
-
-
-                  stage.Type = 'B'
-                  stage.TypeText = 'EN'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][5].qText;
-                  TAccounts.DataList.push(stage);
-                  stage={};
-
-                  stage.Type = 'B'
-                  stage.TypeText = 'NN'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][6].qText;
-                  TAccounts.DataList.push(stage);
-                  stage={};
-
-                  stage.Type = 'S'
-                  stage.TypeText = 'INFRA'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][7].qText;
-                  TAccounts.DataList.push(stage);
-                  stage={};
-
-                  stage.Type = 'S'
-                  stage.TypeText = 'ERS'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][8].qText;
-                  TAccounts.DataList.push(stage);
-                  stage={};
-
-                  stage.Type = 'S'
-                  stage.TypeText = 'BPO'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][9].qText;
-                  TAccounts.DataList.push(stage);
-                  stage={};
-
-                  stage.Type = 'S'
-                  stage.TypeText = 'APPS'
-                  stage.RawValue = wsres.result.qDataPages[0].qData[i][10].qText;
-                  TAccounts.DataList.push(stage);
-                  stage={};
-
-
-
-
-
-
+                  }
 
                   leaderDeepDiveData.Funnel.TopAccounts.push(TAccounts);
 
                 }
                 //return cb(null,leaderDeepDiveData);
-                ws.send(JSON.stringify(getObjectLeaderboardBooking));
+                var date = new Date();
+                console.log('Leaderboard deepdive part1 completed at ',date);
+                ws.send(JSON.stringify(TopAccountsGetObject));
+                //ws.send(JSON.stringify(getObjectLeaderboardBooking)); // Abhishek
 
               }
 
-              if(wsres.id==23){
-
-                ws.send(JSON.stringify(getHypercubePivotLeaderboardBooking));
+              if(wsres.id==23){ // 23 Abhishek
+                ws.send(JSON.stringify(TopAccountsHypercubePivot));
+                //ws.send(JSON.stringify(getHypercubePivotLeaderboardBooking)); // Abhishek
               }
-              if(wsres.id==24){
+              if(wsres.id==24){ //24 Abhishek
 
-                console.log(wsres.result)
+                //console.log(wsres.result)
                 if (!wsres.result) {
                   return cb(null,leaderData);
                 }
+                var SlineLength = wsres.result.qDataPages[0].qTop.length;
+                for(var i=0; i<wsres.result.qDataPages[0].qLeft.length; i++){
+                  for(var j = 0; j<SlineLength; j++){
+                  
+                    var stage={};
+                    stage.Type = 'S'
+                    stage.TypeText = wsres.result.qDataPages[0].qTop[j].qText;
+                    stage.RawValue = wsres.result.qDataPages[0].qData[i][j].qText;
+                    leaderDeepDiveData.Funnel.TopAccounts[i].DataList.push(stage);
+                  }
+                }
+                ws.send(JSON.stringify(getObjectLeaderboardBooking));
+              }
+              if(wsres.id==25){ // 23 Abhishek
+                ws.send(JSON.stringify(getHypercubePivotLeaderboardBooking)); // Abhishek
+              }
+              if(wsres.id==26){ //24 Abhishek
 
+                //console.log(wsres.result)
+                if (!wsres.result) {
+                  return cb(null,leaderData);
+                }
+                
                 //leaderDeepDiveData={};
                 leaderDeepDiveData.Booking={};
                 leaderDeepDiveData.Booking.Performance=[];
-                var counter =0;
-                for(var i=1;i<wsres.result.qDataPages[0].qData.length;i++){
-
-                  if((i%4)!= 0){
-
-                    if(i<5){
-                      var j=i; 
-                    }else{
-                      var j= i-(4*counter);
-                    }
-
-                    var performance={};
-                    performance.BType= wsres.result.qDataPages[0].qLeft[0].qSubNodes[j].qText;
-
-                    if(counter<4){
-                      performance.Quarter= wsres.result.qDataPages[0].qLeft[counter].qText.substring(0,3);
-                    }
-                    performance.Actual= wsres.result.qDataPages[0].qData[i][0].qText;
-                    performance.Target= wsres.result.qDataPages[0].qData[i][4].qText;
-                    performance.TargetorActual = wsres.result.qDataPages[0].qData[i][10].qText;
-
-                    performance.DList=[];
-
-                    for(var m=0;m<4;m++){
-                      var serviceLine={};
-
-                      serviceLine.SLine= wsres.result.qDataPages[0].qTop[6+m].qText;
-                      serviceLine.Value= wsres.result.qDataPages[0].qData[i][6+m].qText;
-                      performance.DList.push(serviceLine);
-                    }
-
-                    leaderDeepDiveData.Booking.Performance.push(performance);
+                var SLinelengthJAS;
+                var SLinelengthOND;
+                var SLinelengthJFM;
+                var SLinelengthAMJ;
+                var Sline;
+                for(var i=0; i<=11; i++){
+                  var finalobj = {};
+                  var j,k;
+                  if(i<3){
+                    SLinelengthJAS = wsres.result.qDataPages[0].qLeft[0].qSubNodes.length;
+                    Sline = SLinelengthJAS;
+                    finalobj.Quarter = wsres.result.qDataPages[0].qLeft[0].qText.substring(0,3);
+                    finalobj.Actual = wsres.result.qDataPages[0].qData[0][i+1].qText;
+                    finalobj.Target = wsres.result.qDataPages[0].qData[0][i+17].qText;
+                    finalobj.TargetorActual = wsres.result.qDataPages[0].qData[0][i+29].qText;
+                    j=1;
+                  }if(i>=3 & i <= 5){
+                    SLinelengthOND = wsres.result.qDataPages[0].qLeft[1].qSubNodes.length;
+                    Sline = SLinelengthOND;
+                    finalobj.Quarter = wsres.result.qDataPages[0].qLeft[1].qText.substring(0,3);
+                    finalobj.Actual = wsres.result.qDataPages[0].qData[SLinelengthJAS][i-2].qText;
+                    finalobj.Target = wsres.result.qDataPages[0].qData[SLinelengthJAS][i+14].qText;
+                    finalobj.TargetorActual = wsres.result.qDataPages[0].qData[SLinelengthJAS][i+26].qText;
+                    j=1+SLinelengthJAS;
                   }
-                  else if((i%4)== 0){
-                    counter=counter+1;
+                  if(i>=6 & i <= 8){
+                    SLinelengthJFM = wsres.result.qDataPages[0].qLeft[2].qSubNodes.length;
+                    Sline = SLinelengthJFM;
+                    finalobj.Quarter = wsres.result.qDataPages[0].qLeft[2].qText.substring(0,3);
+                    finalobj.Actual = wsres.result.qDataPages[0].qData[SLinelengthJAS+SLinelengthOND][i-5].qText;
+                    finalobj.Target = wsres.result.qDataPages[0].qData[SLinelengthJAS+SLinelengthOND][i+11].qText;
+                    finalobj.TargetorActual = wsres.result.qDataPages[0].qData[SLinelengthJAS+SLinelengthOND][i+23].qText;
+                    j=1+SLinelengthJAS+SLinelengthOND;
+                  }
+                  if(i>=9 & i <= 11){
+                    SLinelengthAMJ = wsres.result.qDataPages[0].qLeft[3].qSubNodes.length;
+                    Sline = SLinelengthAMJ;
+                    finalobj.Quarter = wsres.result.qDataPages[0].qLeft[3].qText.substring(0,3);
+                    finalobj.Actual = wsres.result.qDataPages[0].qData[SLinelengthJAS+SLinelengthOND+SLinelengthAMJ][i-8].qText;
+                    finalobj.Target = wsres.result.qDataPages[0].qData[SLinelengthJAS+SLinelengthOND+SLinelengthAMJ][i+8].qText;
+                    finalobj.TargetorActual = wsres.result.qDataPages[0].qData[SLinelengthJAS+SLinelengthOND+SLinelengthAMJ][i+20].qText;
+                    j=1+SLinelengthJAS+SLinelengthOND+SLinelengthJFM;
+                  }
+                  switch(i%3){
+                    case 0:
+                    finalobj.BType = 'NN'
+                    k=1
+                    break;
+                    case 1:
+                    finalobj.BType = 'EN'
+                    k=2
+                    break;
+                    case 2:
+                    finalobj.BType = 'EE'
+                    k=3
+                    break;
+                  }
+                  var DList = [];
+                  var n = 1;
+
+                  for(var m=j; m<=j+Sline-2; m++){
+                   // console.log("n--- ", n, j, m, k);
+                    var obj = {};
+                    if(i<3){
+                      obj.SLine = wsres.result.qDataPages[0].qLeft[0].qSubNodes[n].qText;
+                    }
+                    if(i>=3 & i <= 5){
+                      obj.SLine = wsres.result.qDataPages[0].qLeft[1].qSubNodes[n].qText;
+                    }if(i>=6 & i <= 8){
+                      obj.SLine = wsres.result.qDataPages[0].qLeft[2].qSubNodes[n].qText;
+                    }if(i>=9 & i <= 11){
+                      obj.SLine = wsres.result.qDataPages[0].qLeft[3].qSubNodes[n].qText;
+                    }
+                    //obj.SLine = wsres.result.qDataPages[0].qLeft[0].qSubNodes[n].qText;
+                    obj.Value = wsres.result.qDataPages[0].qData[m][k].qText;
+
+                    DList.push(obj);
+                   // console.log("DList--- ", DList);
+                    n++;
                   }
                   
-
+                  finalobj.DList = DList;
+                  leaderDeepDiveData.Booking.Performance.push(finalobj);
                 }
                 //return cb(null,leaderDeepDiveData);
                 ws.send(JSON.stringify(getObjectBookingTeam));
 
               }
 
-              if(wsres.id==25){
+              if(wsres.id==27){
 
                 ws.send(JSON.stringify(getHypercubePivotBookingTeam));
               }
-              if(wsres.id==26){
+              if(wsres.id==28){
 
 
                 if (!wsres.result) {
                   return cb(null,leaderData);
                 }
+                BookingTeamData = wsres;
 
-                //leaderDeepDiveData={};
-                leaderDeepDiveData.Booking.PerformanceTeam=[];
-                var j=0;
-
-                var counter =1;
-                for(var i=0;i<wsres.result.qDataPages[0].qData.length;i++){
-
-//Remove l with i , no use of l
-                  var k= i;
-                  var l= i;
-                  if(i<90){
-                    var member={};
-                    var bilinker=1;
-
-                    for(i;i<k+3;i++){
-
-                      for(counter=1;counter< wsres.result.qDataPages[0].qLeft[j].qSubNodes.length;counter++){
-                        member.MemberName = wsres.result.qDataPages[0].qLeft[j].qText;
-
-                        if(bilinker<5){
-                          member.BType = wsres.result.qDataPages[0].qTop[0].qSubNodes[bilinker].qText
-                        }
-
-                        member.Actual = wsres.result.qDataPages[0].qData[l+counter][bilinker].qText
-                        member.Target = wsres.result.qDataPages[0].qData[l+counter][bilinker+4].qText
-                        member.TargetorActual = wsres.result.qDataPages[0].qData[l+counter][bilinker+28].qText
-                        console.log(l,counter,member.Actual)
-                        member.Quarter = wsres.result.qDataPages[0].qLeft[j].qSubNodes[counter].qText.substring(0,3);
-                        member.Dlist=[];
-                        var serviceLine = {};
-                        serviceLine.SLine = 'APPS'
-                        serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+12].qText
-                        member.Dlist.push(serviceLine);
-                        serviceLine = {};
-
-                        serviceLine.SLine = 'BPO'
-                        serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+16].qText
-                        member.Dlist.push(serviceLine);
-                        serviceLine = {};
-
-                        serviceLine.SLine = 'ERS'
-                        serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+20].qText
-                        member.Dlist.push(serviceLine);
-                        serviceLine = {};
-
-                        serviceLine.SLine = 'INFRA'
-                        serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+24].qText
-                        member.Dlist.push(serviceLine);
-                        serviceLine = {};
-
-
-
-
-                        leaderDeepDiveData.Booking.PerformanceTeam.push(member);
-                        member={};
-
-                      }
-                      bilinker=bilinker+1;
-                    }
-
-
-                    j=j+1;
-                    i=i+1;
-                  
-                  
-                }
-
+                ws.send(JSON.stringify(getObjectBookingTeamServiceLine))
               }
-              ws.send(JSON.stringify(getobjectForBookingOppurtunity));
-                //return cb(null,leaderDeepDiveData);
                 
+              if(wsres.id == 29){
+                  ws.send(JSON.stringify(gethypercubePivotBookingTeamServiceLine))
               }
-              if(wsres.id==27){
+              if(wsres.id == 30){
+                  //ServiceLineData = wsres;
+                  leaderDeepDiveData.Booking.PerformanceTeam=[];
+                  var j=0;
 
-                ws.send(JSON.stringify(gethypercubeForBookingOppurtunity));
+                  var counter =1;
+                  //return cb(null, wsres)
+                  for(var i=0;i<BookingTeamData.result.qDataPages[0].qData.length;i++){
+
+  //Remove l with i , no use of 
+                    var k= i;
+                    var l= i;
+                    //if(i<90){
+                      var member={};
+                      var bilinker=1;
+
+                      for(i;i<k+3;i++){
+
+                        for(counter=1;counter< BookingTeamData.result.qDataPages[0].qLeft[j].qSubNodes.length;counter++){
+                          member.MemberName = BookingTeamData.result.qDataPages[0].qLeft[j].qText;
+
+                          if(bilinker<5){
+                            member.BType = BookingTeamData.result.qDataPages[0].qTop[0].qSubNodes[bilinker].qText
+                          }
+
+                          member.Actual = BookingTeamData.result.qDataPages[0].qData[l+counter][bilinker].qText
+                          member.Target = BookingTeamData.result.qDataPages[0].qData[l+counter][bilinker+4].qText
+                          member.TargetorActual = BookingTeamData.result.qDataPages[0].qData[l+counter][bilinker+12].qText
+                          //console.log(l,counter,member.Actual)
+                          member.Quarter = BookingTeamData.result.qDataPages[0].qLeft[j].qSubNodes[counter].qText.substring(0,3);
+                          member.DList=[];
+                          for(var t = 0; t< wsres.result.qDataPages[0].qTop.length; t++){
+                            var serviceLine = {};
+                            //console.log("bilinker--- ", bilinker);
+                            serviceLine.SLine = wsres.result.qDataPages[0].qTop[t].qText;
+                            serviceLine.ActualValue = wsres.result.qDataPages[0].qData[l+counter][bilinker+t*4].qText;
+                            member.DList.push(serviceLine);
+                          }
+
+                          leaderDeepDiveData.Booking.PerformanceTeam.push(member);
+                          member={};
+
+                        }
+                        bilinker=bilinker+1;
+                      }
+
+
+                      j=j+1;
+                      i=i+1;                  
+                    
+                  //}
+
+                }
+               // return cb(null,leaderDeepDiveData);
+               var ObjectBookingOpportinity = e_function.getobject(31, 1, m_object.BookingOppurtunityLeaderDeepdive);
+              ws.send(JSON.stringify(ObjectBookingOpportinity));
+
+                }
+              if(wsres.id==31){
+                var DataBookingOpportunity = e_function.gethypercube(32, 9, 1000, 10, 0,0)
+                ws.send(JSON.stringify(DataBookingOpportunity));
 
               }
               
-              if(wsres.id==28){
+              if(wsres.id==32){
 
                 //leaderDeepDiveData={};
                 leaderDeepDiveData.Booking.WINS=[];
                 for(var i=0;i<wsres.result.qDataPages[0].qMatrix.length;i++){
 
-
                   var winarray = {};
 
-                  winarray.BType = wsres.result.qDataPages[0].qMatrix[i][0].qText;
+                 winarray.BType = wsres.result.qDataPages[0].qMatrix[i][0].qText;
                   winarray.Quarter = wsres.result.qDataPages[0].qMatrix[i][4].qText.substring(0,3);
                   winarray.OValue = wsres.result.qDataPages[0].qMatrix[i][6].qText;
-                  winarray.OName = wsres.result.qDataPages[0].qMatrix[i][2].qText;
-                  winarray.AccountGroup = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+                  winarray.OName = wsres.result.qDataPages[0].qMatrix[i][3].qText;
+                  winarray.AccountGroup = wsres.result.qDataPages[0].qMatrix[i][1].qText;
 
                   leaderDeepDiveData.Booking.WINS.push(winarray)
                   winarray={};
 
-
-
-                } 
+                }
+                
+                var date = new Date();
+                console.log('Leaderboard deepdive part2 completed at ',date);
                 ws.send(JSON.stringify(getobjectForWINSTeam));
                 //return cb(null,leaderDeepDiveData);
 
               }
-              if(wsres.id==29){
+              if(wsres.id==33){
 
                 ws.send(JSON.stringify(gethypercubeForWINSTeam));
 
               }
               
-              if(wsres.id==30){
+              if(wsres.id==34){
 
                 //leaderDeepDiveData={};
                 leaderDeepDiveData.Booking.WINTEAM=[];
@@ -1208,21 +1296,19 @@ extractLeaderDeepdive: function(data,cb) {
                   }
                   i = j+1;
                 }
-
+                var date = new Date();
+                console.log('Leaderboard deepdive part3 completed at ',date);
                 return cb(null,leaderDeepDiveData);
 
               }
               
-              
-
-
 
             });
 },
 
 extractSymphonydata: function(data,cb) {
 
-  console.log(data);
+  //console.log(data);
 
   if(data.target=='TICKET'){
 
