@@ -4,7 +4,7 @@ var colors = require('colors');
 
 
 module.exports.validateSession = function(req, res, next) {
-
+    
     var creator= req.params['0'];
 
    if(creator.indexOf('nscr')>-1 && creator.indexOf('fetch')>-1 && creator.indexOf('user/')>-1){
@@ -31,11 +31,15 @@ module.exports.validateSession = function(req, res, next) {
 	      'Content-Type': 'application/json'
 	    },
 	    uri: uri,
+      timeout:6000,
 	    method: 'GET'
 	  },  function (error, response, body){
 	  	console.log("Validation result ", body);
+      if(!body){
+        console.log("Time out for validation".underline.red)
+          return res.send({error_id:408, error_message:"Time out for validation checking."});
 
-	  	if(body.substr(2,7) === "DOCTYPE"){
+      }else if(body.substr(2,7) === "DOCTYPE"){
 	  		console.log('server error html'.underline.red)
         	return res.send({error_id:500 ,error_message:'Invalid format of validation service. server error!!'});
 	  	}
@@ -47,11 +51,12 @@ module.exports.validateSession = function(req, res, next) {
   	 		}else{
           var validateUrl = 'http://staging2.myhcl.com/MyApprovalsMobile2/Common/ValidateAdmin?username='+req.query.LC
   	 			request({url:validateUrl,
-            timeout:4000,
+            timeout:6000,
             method:'GET'
           }, function(error, response, body){
   	 				console.log("body--- ", body);
             if(!body){
+              console.log("Time out for IsValid checking".underline.red)
               return res.send({error_id:408, error_message:"Time out for validation checking."})
             }else{
               var body = JSON.parse(body);

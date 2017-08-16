@@ -17,6 +17,8 @@ var qlik = {
 
   proxyRedirectFromQlik: function(req, res, next) {
 
+
+  
     if(global.user_id && global.user_directory){
       var profile = {
        'UserDirectory': global.user_directory,
@@ -32,8 +34,7 @@ var qlik = {
 
   userExistingSession: function(req, res, next) {
 
-    console.log("Session service started");
-    console.log(req.params,req.query)
+   
     if(!req.params.user_id && !req.params.user_directory){
      res.send('User must have to pass directory and user_id', 400);
      return;
@@ -78,7 +79,8 @@ var qlik = {
     },
 
   userQlikTicket: function(req, res, next) {
-    console.log("Ticket service started.")
+
+
     var destination = qendpoint.qlik_proxy_pt+"hub/";
     
 
@@ -176,6 +178,7 @@ var qlik = {
         dynamicTicket=body;
         if (!error && response.statusCode == 200) {
           var bodyObject =JSON.parse(body);
+          console.log('req.params debugging',req.params)
           if(bodyObject.UserId.toUpperCase().trim() != req.params.user_id.toUpperCase().trim()){
            console.log('######################### coming at danger end ############################')
            //console.log(bodyObject);

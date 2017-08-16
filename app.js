@@ -40,9 +40,9 @@ io.on('connection', function(socket){
 app.use('/', ipsec.CrossOriginHeaders);
 
    
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ 
- 	limit: '10mb' 
+ 	limit: '10mb'
     })); 
 
 app.use(cookieParser());

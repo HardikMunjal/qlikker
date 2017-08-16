@@ -11,9 +11,6 @@ var connection = mysql.createPool({
 });
 
 
-
-console.log('coming here');
-
 connection.on('error', function(err) {
   console.log(err);
   //console.log(connection);

@@ -12,17 +12,6 @@ var WebSocket = require('ws');
 
 var qlik = {
 
-
-  qlikdata: function(req, res, next) {
-
-
-    if(!req.params.user_id && !req.params.user_directory){
-       res.send('User must have to pass directory and user_id', 400);
-       return;
-     }
-     ehelper.fetchDetails(req,res);
-  },
-
    qlikdataOptimized: function(req, res, next) {
 
 
@@ -35,33 +24,98 @@ var qlik = {
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'BI';
+     integerator.client_id = "merlin";
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
-        //console.log('result',result);
         res.json(result);
+      }else{
+        //qlikstatus=true;
+        return res.send(err.message);
       }
      })
   },
-    qlikNewBIData: function(req, res, next) {
+  /*qlikSalesdata: function(req, res, next) {
 
+
+  if(!req.params.user_id && !req.params.user_directory){
+   res.send('User must have to pass directory and user_id', 400);
+   return;
+  }
+
+  var integerator = {};
+  integerator.user_id = req.params.user_id;
+  integerator.user_directory = req.params.user_directory;
+  integerator.scope = 'sales';
+  integerator.client_id = "merlin";
+  einthelper.fetchDetails(integerator,function(err,result){
+  if(!err){
+    //console.log('result',result);
+    res.json(result);
+  }
+  })
+  },*/
+
+  qlikSalesdata: function(req, res, next) {
+
+
+    var emessage = {};
+       emessage.error_id = 400;
+       emessage.error_message ='Invalid User Name';
 
     if(!req.params.user_id && !req.params.user_directory){
-     res.send('User must have to pass directory and user_id', 400);
-     return;
-    }
+       res.send(emessage, 400);
+       return;
+     }
+     if(req.params.user_id == 'null' || req.params.user_directory == 'null'){
+       res.send(emessage, 400);
+       return;
+     }
 
-    var integerator = {};
-    integerator.user_id = req.params.user_id;
-    integerator.user_directory = req.params.user_directory;
-    integerator.scope = 'NewBI';
-    einthelper.fetchDetails(integerator,function(err,result){
-    if(!err){
-      //console.log('result',result);
-      res.json(result);
-    }
-    })
-    },
+     if(req.params.user_id == 'undefined' || req.params.user_directory == 'undefined'){
+       res.send(emessage, 400);
+       return;
+     }
+     var integerator = {};
+     var qlikstatus = false;
+     var responseStatus = false;
 
+     integerator.user_id = req.params.user_id;
+     integerator.user_directory = req.params.user_directory;
+     integerator.scope = 'sales';
+     integerator.client_id = "merlin";
+     
+     setTimeout(function(){
+       if(!qlikstatus){
+        
+        var e ={};
+        var emessage = {};
+        emessage.error_id = 403.1;
+        emessage.error_message ='Either you do not have license pass in qliksense or may be qlikservices are down';
+        res.status('403');
+        e.message = emessage;
+        responseStatus=true;
+        return res.send(e.message);
+       }
+
+     },19000)
+     einthelper.fetchDetails(integerator,function(err,result){
+      if(!err){
+
+        if(!responseStatus){
+          qlikstatus=true;
+          //console.log('result',result);
+          return res.json(result);
+        }
+        else{
+          console.log('*************** error captured in set timeout reqquired debugging ***************')
+        }
+      }
+      else{
+        qlikstatus=true;
+        return res.send(err.message);
+      }
+     })
+  },
   qlikLeaderData: function(req, res, next) {
 
 
@@ -89,6 +143,7 @@ var qlik = {
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'Leaderboard';
+     integerator.client_id = "merlin";
 
      setTimeout(function(){
        if(!qlikstatus){
@@ -103,7 +158,7 @@ var qlik = {
         return res.send(e.message);
        }
 
-     },12000)
+     },42000)
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
 
@@ -149,6 +204,7 @@ var qlik = {
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
      integerator.scope = 'Leaderdeepdive';
+     integerator.client_id = "merlin";
 
      setTimeout(function(){
        if(!qlikstatus){
@@ -163,7 +219,7 @@ var qlik = {
         return res.send(e.message);
        }
 
-     },15000)
+     },45000)
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
 
@@ -182,18 +238,33 @@ var qlik = {
       }
      })
   },
+  qlikLeaderBilling: function(req, res, next){
 
-    symphonytest: function(req, res, next) {
+    var emessage = {};
+       emessage.error_id = 400;
+       emessage.error_message ='Invalid User Name';
 
+    if(!req.params.user_id && !req.params.user_directory){
+       res.send(emessage, 400);
+       return;
+     }
+     if(req.params.user_id == 'null' || req.params.user_directory == 'null'){
+       res.send(emessage, 400);
+       return;
+     }
 
-    
+     if(req.params.user_id == 'undefined' || req.params.user_directory == 'undefined'){
+       res.send(emessage, 400);
+       return;
+     }
      var integerator = {};
      var qlikstatus = false;
      var responseStatus = false;
 
      integerator.user_id = req.params.user_id;
      integerator.user_directory = req.params.user_directory;
-     integerator.scope = 'symphony';
+     integerator.scope = 'LeaderboardBilling';
+     integerator.client_id = "merlin";
 
      setTimeout(function(){
        if(!qlikstatus){
@@ -208,7 +279,7 @@ var qlik = {
         return res.send(e.message);
        }
 
-     },15000)
+     },45000)
      einthelper.fetchDetails(integerator,function(err,result){
       if(!err){
 
@@ -227,8 +298,6 @@ var qlik = {
       }
      })
   }
-
-
 
 };
 module.exports = qlik;

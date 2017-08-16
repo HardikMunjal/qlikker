@@ -23,6 +23,11 @@ var engine_func = {
     var qleft=left || 0;
     var gpivot= {"method": "GetHyperCubePivotData","handle": handle,"params": ["/qHyperCubeDef",[{"qTop": qtop,"qLeft": qleft,"qHeight": height,"qWidth": width}]],"id": counter,"jsonrpc": "2.0"};
     return gpivot;
+  },
+
+  getLayout: function(counter,handle){
+    var glayout = {"method":"GetLayout","handle":handle,"params":[],"id":counter};
+    return glayout;
   }
 }
 

@@ -5,10 +5,10 @@ var request = require('request');
 var ejs = require('ejs');
 var fs = require('fs');
 var WebSocket = require('ws');
-var websocketUtility = require('../utility/websocket')
-var websocketSymUtility = require('../utility/websocket/symphony_ws')
-//var websocketMerlinUtility = require('../utility/websocket/merlin_ws')
-var qendpoint = require('../../config/endpoint')
+//var websocketUtility = require('../utility/websocket')
+var websocketSymUtility = require('../utility/websocket/symphony_ws');
+var websocketMerlinUtility = require('../utility/websocket/merlin_ws');
+var qendpoint = require('../../config/endpoint');
 
 
 var qlik = {
@@ -22,9 +22,6 @@ checkSession: function(integerator, cb) {
       if (!error && response.statusCode == 200) {
 
         cb(null,body);
-
-        
-
       }
     });
   },
@@ -36,72 +33,67 @@ checkSession: function(integerator, cb) {
       if (!error && response.statusCode == 200) {
 
         cb(null,body);
-
-        
-
       }
     });
   },
   getSocketData: function(data, cb) {
 
+    switch(data.scope){
 
-    console.log('coming for websocket check');
-    
-    if(data.scope=='BI'){
-      websocketUtility.extractBusinessInsightsData(data,function(err, bomb){
-          return cb(err,bomb);
-         })
-      }
-    
-      
-   
-    // else if(data.scope=='sales'){
-    //   websocketMerlinUtility.extractSalesData(data,function(err, bomb){
-    //   return cb(err,bomb);
-    //   })
-    // }
-
-
-    else if(data.scope=='NewBI'){
-      websocketUtility.extractNewBIData(data,function(err, bomb){
-      return cb(err,bomb);
+      case "BI":
+      websocketMerlinUtility.extractBusinessInsightsData(data,function(err, bomb){
+         return cb(err,bomb);
       })
-    }
+      break;
 
-    else if(data.scope=='Leaderboard'){
-      websocketUtility.extractLeaderData(data,function(err, bomb){
-          return cb(err,bomb);
-         })
-      }
-    else if(data.scope=='Leaderdeepdive'){
-      websocketUtility.extractLeaderDeepdive(data,function(err, bomb){
-          return cb(err,bomb);
-         })
-      }
+      case "sales":
+      websocketMerlinUtility.extractSalesData(data,function(err, bomb){
+        return cb(err,bomb);
+      })
+      break;
 
-    else if(data.scope=='symphony'){
-      websocketUtility.extractSymphonydata(data,function(err, bomb){
-          return cb(err,bomb);
-         })
-      }
+      case "NewBI":
+      websocketSymUtility.extractNewBIData(data,function(err, bomb){
+        return cb(err,bomb);
+      })
+      break;
 
-    else if(data.scope=='financedata'){
+      case "Leaderboard":
+      websocketMerlinUtility.extractLeaderData(data,function(err, bomb){
+          return cb(err,bomb);
+      })
+      break;
+
+      case "Leaderdeepdive":
+      websocketMerlinUtility.extractLeaderDeepdive(data,function(err, bomb){
+          return cb(err,bomb);
+      })
+      break;
+
+      case "symphony":
+      websocketSymUtility.extractSymphonydata(data,function(err, bomb){
+          return cb(err,bomb);
+      })
+      break;
+
+      case "financedata":
       websocketSymUtility.extractFinanceData(data,function(err, bomb){
           return cb(err,bomb);
-         })
-      }
+      })
+      break;
 
-      else if(data.scope=='valuedata'){
+      case "valuedata":
       websocketSymUtility.extractValueData(data,function(err, bomb){
           return cb(err,bomb);
-         })
-      }
+      })
+      break;
 
-    else if(data.scope=='CARD'){
-      websocketUtility.extractCardData(data,function(err, bomb){
-          return 
-         })
-      }
+      case "LeaderboardBilling":
+      websocketMerlinUtility.extractLeaderBillingData(data,function(err, bomb){
+          return cb(err,bomb);
+      })
+      break;
+    }
    }
 };
 module.exports = qlik;

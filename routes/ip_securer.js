@@ -33,8 +33,8 @@ var ipsec = {
       var date = new Date();
       console.log("**************"+req.path+"*************"+req.connection.remoteAddress);
       console.log(date);
-      //console.log('Allowing coming IP(req.headers.origin)',  req.headers.origin);
-      //console.log('Client Remote Address(req.connection.remoteAddress)', req.connection.remoteAddress);
+      console.log('Allowing coming IP(req.headers.origin)',  req.headers.origin);
+      console.log('Client Remote Address(req.connection.remoteAddress)', req.connection.remoteAddress);
       
       var modulator='*';
 

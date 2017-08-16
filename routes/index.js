@@ -8,7 +8,8 @@ var ipsec = require('./ip_securer');
 var shared = require('./shared');
 var delivery = require('./delivery');
 var mjob = require('./cronjob/merlin_sales_bulkdata');
-var extractor = require('./controller/S_deliveryController');
+var s_extractor = require('./controller/S_deliveryController');
+var m_extractor = require('./controller/M_salesController');
 var admin = require('./controller/adminController');
 var sessionAuthenticator = require('./sessionAuthenticator');
 
@@ -18,16 +19,16 @@ module.exports = function (app) {
 //global wrapper services
 app.all('*', sessionAuthenticator.validateSession);
 app.use('/*/:user_directory/:user_id', admin.saveLogger);
+app.get('/getLogCount/:filter', admin.getLogCount);
+app.get('/topTwentyLogs', admin.topTwentyLogs);
+app.get('/userApplicationCount/:client_id', admin.userApplicationCount);
 
 
 app.get('/nscr/delivery',delivery.integration_point);
 
 // ************** Node js redirection API ************************
-
-//app.all('*',admin.test)
 app.get('/authenticate', qlik.proxyRedirectFromQlik);
 //app.all('/scr/*',ipsec.whitelistIp);
-
 
 //************* Merlin/HCLIVE AUTH Service ***********************
 app.get('/scr/session/user/:user_directory/:user_id', qlik.userExistingSession);
@@ -58,25 +59,30 @@ app.get('/get/mashup_object',admin.mashupDynamiser);
 app.get('/admin/realtimeplayer',function(req,res){res.render('realtimeplayer.html')})
 
 //***************** Scheduler Services *********************************************
-//bulk data job
-app.get('/fetch/business/insights', mjob.extractBI);
-app.get('/symphony/data/:user_directory/:user_id', extractor.symphonytest);
-app.get('/nscr/qlikdata/user/:user_directory/:user_id',extractor.qlikdata);
+app.get('/fetch/business/insights', mjob.extractBI);//bulk data job
+app.get('/symphony/data/:user_directory/:user_id', s_extractor.symphonytest);
 
 //************* Optimized merlin web socket services***************************************
-app.get('/nscr/qlikoptdata/user/:user_directory/:user_id', extractor.qlikdataOptimized);
-app.get('/nscr/fetch/leaderbd/user/:user_directory/:user_id', extractor.qlikLeaderData);
-app.get('/nscr/fetch/leaderdeepdive/user/:user_directory/:user_id', extractor.qlikLeaderDeepdive);
-//app.get('/nscr/fetch/salesBI/user/:user_directory/:user_id', extractor.qlikSalesdata);
+app.get('/nscr/qlikoptdata/user/:user_directory/:user_id', m_extractor.qlikdataOptimized);
+app.get('/nscr/fetch/salesdata/user/:user_directory/:user_id', m_extractor.qlikSalesdata);
+app.get('/nscr/fetch/leaderbd/user/:user_directory/:user_id', m_extractor.qlikLeaderData);
+app.get('/nscr/fetch/leaderdeepdive/user/:user_directory/:user_id', m_extractor.qlikLeaderDeepdive);
+app.get('/nscr/billingdata/user/:user_directory/:user_id', m_extractor.qlikLeaderBilling);
 //************* Optimized Symphony web socket services***************************************
-app.get('/nscr/symphonyBIdata/user/:user_directory/:user_id', extractor.qlikNewBIData);
-
-app.get('/nscr/finance/user/:user_directory/:user_id', extractor.financeData);
-app.get('/nscr/value/user/:user_directory/:user_id', extractor.valueData);
+app.get('/nscr/symphonyBIdata/user/:user_directory/:user_id', s_extractor.qlikNewBIData);
+app.get('/nscr/finance/user/:user_directory/:user_id', s_extractor.financeData);
+app.get('/nscr/value/user/:user_directory/:user_id', s_extractor.valueData);
 
 
 //******************** Symphony AUTH Service *************************
 app.post('/nscr/qlikauth/user/:user_directory/:user_id',delivery.secure_redirection);
+
+
+//Error handling
+app.use(function (err, req, res, next) {
+  console.error("ERROR------- ".underline.red, err.stack)
+  return res.send({error_id:500 ,error_message:'Something went wrong. Try again in a few moments!!'});
+})
 
 };
 //I hope this is how comments work in js. Hello Hardik! What's up!!!!

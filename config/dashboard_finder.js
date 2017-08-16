@@ -13,21 +13,21 @@ var dashboards = {
 ["OpportunitiesClosingSoon"	,"SALES PIPELINE"],
 "http://10.2.5.158/node/extensions/UpcomingRFPSubmission/UpcomingRFPSubmission.html":
 ["UpcomingRFPSubmission"	,"SALES PIPELINE"],
-"http://10.2.5.158/node/extensions/FinanceBI/FinanceBI.html?toggle=1":
+"http://10.2.5.158/node/extensions/FinanceBI/FinanceBI.html":
 	["FinanceBI"	,"SYMPHONY"],
 "http://10.2.5.158/node/extensions/IdeasImplemented/IdeasImplemented.html":
 	["IdeasImplemented"	,"SYMPHONY"],
 "http://10.2.5.158/node/extensions/IdeasUnderReview/IdeasUnderReview.html":
 	["IdeasUnderReview"	,"SYMPHONY"],
-"http://10.2.5.158/node/extensions/FinanceSummaryCD3/FinanceSummaryCD3.html?view=YTD":
+"http://10.2.5.158/node/extensions/FinanceSummaryCD3/FinanceSummaryCD3.html":
 	["FinanceSummary"	,"SYMPHONY"],
 "http://10.2.5.158/node/extensions/ExpenseResourceCD3/ExpenseResourceCD3.html":
 	["ExpenseResource"	,"SYMPHONY"],
-"http://10.2.5.158/node/extensions/ValueCreationCD3/ValueCreationCD3.html?view=YTD":
+"http://10.2.5.158/node/extensions/ValueCreationCD3/ValueCreationCD3.html":
 	["ValueCreation"	,"SYMPHONY"],
-"http://10.2.5.158/node/extensions/HumanResourceCD3/HumanResourceCD3.html?toggle=1":
+"http://10.2.5.158/node/extensions/HumanResourceCD3/HumanResourceCD3.html":
 	["HumanResource"	,"SYMPHONY"],
-"http://10.2.5.158/node/extensions/PCIRAGStatus/PCIRAGStatus.html?toggle=ALL":
+"http://10.2.5.158/node/extensions/PCIRAGStatus/PCIRAGStatus.html":
 	["PCIRAGStatus"	,"SYMPHONY"],
 "http://10.2.5.158/node/sense/app/314889d1-1873-423f-8f6c-57b854f599fb/sheet/KHPDd/state/analysis":
 	["PCSAT-sheet",
