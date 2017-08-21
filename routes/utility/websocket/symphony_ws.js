@@ -278,10 +278,22 @@ var qlik = {
       //console.log('user is successfully logged in sales performance with session')
     }
     if(wsres.id==1){
+      if(wsres.error){
+                  var e={};
+                  var emessage = {};
+                  emessage.error_id = 403;
+                  emessage.error_message ='You do not have Symphony BI access';
+                  e.status = 403;
+                  e.message = emessage;
+                  
+                  
+                  return cb(e)
+                }
       var getNewObject = e_function.getobject(2,getObjectHandle,s_object.newBIObjID);
       ws.send(JSON.stringify(getNewObject));
     }
     if(wsres.id==2){
+      
       var handle = wsres.result.qReturn.qHandle;
       var rows_height = 12;
       var cloumns_width =9;

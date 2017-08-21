@@ -28,8 +28,12 @@ integerator.client_id = "delivery";
 einthelper.fetchDetails(integerator,function(err,result){
 if(!err){
   //console.log('result',result);
-  res.json(result);
+  return res.json(result);
 }
+else{
+  
+        return res.send(err.message);
+      }
 })
 },
 
