@@ -8,16 +8,89 @@ var WebSocket = require('ws');
 var Logger = require('../model/userModel');
 var dashboardFinder = require('../../config/dashboard_finder');
 var colors = require('colors');
+var Converter = require("csvtojson").Converter;
+var nodemailer = require('nodemailer');
+
 
 var admin = {
 
 
   getSession: function(req, res, next) {
   
-   //console.log(req.headers);
-   //console.log(req.cookies);
-   res.json(req.cookies);
+    var updator = req.cookies;
+   if(!updator['X-Qlik-Session-Node']){
+    console.log('injection applied');
+    updator['X-Qlik-Session-Node'] = updator['X-Qlik-Session'];
+   }
+   res.json(updator);
+
   },
+
+  userAccessView: function(req, res, next){
+
+    //DO VALIDATION STUFF
+    res.render('userAccess.html');
+
+  },
+
+  getUser: function(req, res, next){
+    
+    var bulkdata =[];
+    console.log('start scheduling job');
+    var counter = 40;
+    var usrList= [];
+    var csvFileName="./UserList.csv";
+    var csvConverter= new Converter({});
+
+    //end_parsed will be emitted once parsing finished
+    csvConverter.on("end_parsed",function(jsonObj){
+        console.log(jsonObj); //here is your result json object
+        usrList = jsonObj;
+        fetchDetails();
+        if(counter == 0){
+         res.json(bulkdata);
+       }
+    });
+
+    //read from file
+    fs.createReadStream(csvFileName).pipe(csvConverter);
+
+
+
+     function fetchDetails(){
+        
+        request(qendpoint.qlik_pt+'nscr/qlikoptdata/user/'+usrList[counter].ADDomain+'/'+usrList[counter].USERNAME, function (error, response, body) {
+          var dynamicTicket=body;
+        
+          if (!error && response.statusCode == 200) {
+
+            var bodyObject =JSON.parse(body);
+
+            var userBody = {};
+            userBody.user_id = usrList[counter].USERNAME;
+            userBody.user_directory = usrList[counter].ADDomain;
+            userBody.qlikData = bodyObject;
+            bulkdata.push(userBody);
+          
+            counter--;
+            if (counter > -1) {
+
+              console.log('requestt initiated');
+              setTimeout(fetchDetails, 100);    
+           }
+           if(counter == -1){
+             res.json(bulkdata);
+           }
+
+          }
+      
+    });
+  }
+      
+
+    
+  },
+
 
 
   roleverifier: function(ticket,cb){
@@ -133,7 +206,7 @@ var admin = {
     }else{
       var log_json = {
         user_id:req.params['0'],
-        user_directory:req.params.user_id,
+        user_directory:req.params.user_id.toLowerCase(),
         client_id:req.query.client_id,
         scope:req.query.scope,
         service_name:req.query.service_name
@@ -207,7 +280,8 @@ var admin = {
           if(err){
             return res.json({code:500, message: "Internal server error."})
           }else{
-             var uniqueUserIds = new Array();
+
+            var uniqueUserIds = new Array();
             for (var i = 0; i < result.length; i++) {
               for(var j = 0; j< result[i].uniqueUserIds.length; j++){
                 if (result[i].uniqueUserIds[j] !== null) {
@@ -281,11 +355,43 @@ var admin = {
           return res.json({code:200, data:result, message:message})
         }
       })
+  },
+  mailshoot: function(req, res){
+    var smtpTransport =   nodemailer.createTransport({
+        host: "CL.COM", // hostname
+        secureConnection: false, // TLS requires secureConnection to be false
+        port: 25, // port for secure SMTP
+        tls: {
+           ciphers:'SSLv3'
+        },
+        auth: {
+            user: 'hclqlikservice@hcl.com',
+            pass: 'Comnet@123'
+        }
+    });
+
+// setup e-mail data, even with unicode symbols
+    var mailOptions = {
+        from: 'hclqlikservice@hcl.com', // sender address (who sends)
+        to: 'abhishek-a@hcl.com', // list of receivers (who receives)
+        subject: 'Hello ', // Subject line
+        text: 'Hello world ', // plaintext body
+        html: '<b>Hello world </b><br> This is the first email sent with Nodemailer in Node.js' // html body
+    };
+
+    // send mail with defined transport object
+    smtpTransport.sendMail(mailOptions, function(error, info){
+        if(error){
+            return console.log("error in nodemailer--- ",error);
+        }
+
+        console.log('Message sent: ' + info.response);
+    });
   }
 
 };
 
-function getDate(date, type) {
+/*function getDate(date, type) {
 
   var now = date? new Date(date) : new Date();
 
@@ -295,7 +401,20 @@ function getDate(date, type) {
     now.setDate(01);
   }
   var monday = new Date(now);
-  monday.setDate(monday.getDate() - monday.getDay() + 2);
+  monday.setDate(monday.getDate() - monday.getDay() + 1);
+
+  return monday;
+}*/
+
+function getDate(date, type) {
+  var now = date? new Date(date) : new Date();
+  if(type === "month"){
+      return new Date(now.getFullYear(), now.getMonth(), 1);
+    }
+  now.setHours(0,0,0,0)
+  var day = now.getDay(),
+      diff = now.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+  return new Date(now.setDate(diff));
 
   return monday;
 }

@@ -23,7 +23,7 @@ var qlik = {
     var counter = 40;
     var usrList= [];
     var csvFileName="./UserList.csv";
-    var csvConverter=new Converter({});
+    var csvConverter= new Converter({});
 
     //end_parsed will be emitted once parsing finished
     csvConverter.on("end_parsed",function(jsonObj){

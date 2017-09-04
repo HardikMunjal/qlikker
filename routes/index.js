@@ -16,12 +16,17 @@ var sessionAuthenticator = require('./sessionAuthenticator');
 
 module.exports = function (app) {
 
+
 //global wrapper services
 app.all('*', sessionAuthenticator.validateSession);
 app.use('/*/:user_directory/:user_id', admin.saveLogger);
 app.get('/getLogCount/:filter', admin.getLogCount);
 app.get('/topTwentyLogs', admin.topTwentyLogs);
 app.get('/userApplicationCount/:client_id', admin.userApplicationCount);
+//app.get('/mailshoot', admin.mailshoot);
+//License Allocator
+app.get('/admin/license/allocator',admin.userAccessView)
+app.post('/fetch/userlist',admin.getUser)
 
 
 app.get('/nscr/delivery',delivery.integration_point);

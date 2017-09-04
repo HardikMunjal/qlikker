@@ -28,6 +28,11 @@ var engine_func = {
   getLayout: function(counter,handle){
     var glayout = {"method":"GetLayout","handle":handle,"params":[],"id":counter};
     return glayout;
+  },
+  
+  clearFilter: function(){
+    var clearFilter = {"handle": 1, "method": "ClearAll", "params": { "qLockedAlso": false,"qStateName": ""},"id": 501};
+    return clearFilter;
   }
 }
 

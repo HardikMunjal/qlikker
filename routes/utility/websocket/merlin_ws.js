@@ -152,6 +152,7 @@ ws.on('open', function open() {
 ws.on('message', function(data, flags) {
 
   var wsres = JSON.parse(data);
+  console.log(wsres);
   if(wsres.params && wsres.params.logoutUri == qendpoint.ws_logout+'qps/user'){
 
           //console.log('user is successfully logged in sales performance with session')
@@ -168,9 +169,15 @@ ws.on('message', function(data, flags) {
                   
                   return cb(e)
                 }
-          var getobjectSalesBI = e_function.getobject(2,getObjectHandle,m_object.extractBusinessInsightsObjID);
-          ws.send(JSON.stringify(getobjectSalesBI));
+
+                ws.send(JSON.stringify(e_function.clearFilter()));
+                
+          
         }
+        if(wsres.id==501){
+                var getobjectSalesBI = e_function.getobject(2,getObjectHandle,m_object.extractBusinessInsightsObjID);
+                ws.send(JSON.stringify(getobjectSalesBI));
+        } 
         if(wsres.id==2){
           //console.log(wsres)
           handle = wsres.result.qReturn.qHandle;
@@ -195,7 +202,7 @@ ws.on('message', function(data, flags) {
                   salesData.FYDate = null;
                   salesData.FSValue= null;
                   salesData.FSColor= null;
-                  salesData.FSType= null;
+                  salesData.FSKey= null;
                   salesData.PipelineLastReload= null;
                   salesData.BillingURL=null;
                   salesData.BookingURL=null;
@@ -211,6 +218,7 @@ ws.on('message', function(data, flags) {
                 var businessInsightsArray=[];
                 var salesData={};
 
+               
                 for(var i=0;i<wsres.result.qDataPages[0].qMatrix.length;i++){
                   
                   //console.log(businessInsightsArray)
@@ -221,16 +229,33 @@ ws.on('message', function(data, flags) {
                      biarray.BIUrl = proxyUrl+wsres.result.qDataPages[0].qMatrix[i][10].qText ||'-';
                      biarray.BItitle = wsres.result.qDataPages[0].qMatrix[i][4].qText ||'-';
                      biarray.IsDataModified = null;
-                     biarray.ItemKey1 = wsres.result.qDataPages[0].qMatrix[i][5].qText ||'-';
-                     biarray.ItemKey2 = wsres.result.qDataPages[0].qMatrix[i][6].qText ||'-';
                      biarray.ItemValue1 = wsres.result.qDataPages[0].qMatrix[i][7].qText ||'-';
                      biarray.ItemValue2 = wsres.result.qDataPages[0].qMatrix[i][8].qText ||'-';
+
+
+                     
+                     if(biarray.ItemValue1!='-'){
+                     biarray.ItemKey1 = wsres.result.qDataPages[0].qMatrix[i][5].qText ||'-';
+                     }else{
+                      
+                      biarray.ItemKey1='-'
+                     }
+
+                     if(biarray.ItemValue2!='-'){
+                     biarray.ItemKey2 = wsres.result.qDataPages[0].qMatrix[i][6].qText ||'-';
+                     }else{
+                      
+                      biarray.ItemKey2='-'
+                     }
+
+                     
                      biarray.objid = '';
                      //biarray.category = wsres.result.qDataPages[0].qMatrix[i][3].qText;
                      //biarray.status = wsres.result.qDataPages[0].qMatrix[i][7].qText;
-                     
-                     businessInsightsArray.push(biarray);
-                     biarray={};
+                     if(biarray.ItemValue1 !='-' || biarray.ItemValue2 !='-'){
+                       businessInsightsArray.push(biarray);
+                     }
+                       biarray={};
                    }
 
                    // else if(wsres.result.qDataPages[0].qMatrix[i][0].qText>=6){
@@ -239,6 +264,7 @@ ws.on('message', function(data, flags) {
 
                   
                 }
+
 
               var tqf= parseInt(wsres.result.qDataPages[0].qMatrix[6][7].qText);
               var uqf= parseInt(wsres.result.qDataPages[0].qMatrix[7][7].qText);
@@ -256,11 +282,11 @@ ws.on('message', function(data, flags) {
               salesData.FYDate = wsres.result.qDataPages[0].qMatrix[9][8].qText ||'-';
               salesData.FSValue= wsres.result.qDataPages[0].qMatrix[10][8].qText ||'-';
               salesData.FSColor= wsres.result.qDataPages[0].qMatrix[10][7].qText ||'-';
-              salesData.FSType= wsres.result.qDataPages[0].qMatrix[10][9].qText ||'-';
+              salesData.FSKey= wsres.result.qDataPages[0].qMatrix[10][9].qText ||'-';
               salesData.PipelineLastReload= wsres.result.qDataPages[0].qMatrix[11][8].qText ||'-';
               salesData.BillingURL='http://10.2.5.158:4011/scr/ticket/user/'+user_directory+'/'+user_id+'?client_id=merlin&scope=ticket&open=http://10.2.5.158/node/extensions/Billing/Billing.html';
-              salesData.BookingURL='http://10.2.5.158:4011/scr/ticket/user/'+data.user_directory+'/'+data.user_id+'?client_id=merlin&scope=ticket&open=http://10.2.5.158/node/extensions/Booking/Booking.html';
-              salesData.PipeLineURL='http://10.2.5.158:4011/scr/ticket/user/'+data.user_directory+'/'+data.user_id+'?client_id=merlin&scope=ticket&open=http://10.2.5.158/node/sense/app/856f4e5b-4d75-40be-a0f0-2a17aa8f3875';
+              salesData.BookingURL='http://10.2.5.158:4011/scr/ticket/user/'+user_directory+'/'+user_id+'?client_id=merlin&scope=ticket&open=http://10.2.5.158/node/extensions/Booking/Booking.html';
+              salesData.PipeLineURL='http://10.2.5.158:4011/scr/ticket/user/'+user_directory+'/'+user_id+'?client_id=merlin&scope=ticket&open=http://10.2.5.158/node/sense/app/856f4e5b-4d75-40be-a0f0-2a17aa8f3875';
 
               salesData.QlikInsightData=businessInsightsArray;
                                
@@ -333,6 +359,11 @@ extractLeaderData: function(data,cb) {
                   
                   return cb(e)
                 }
+
+                
+                ws.send(JSON.stringify(e_function.clearFilter()));
+              }
+              if(wsres.id==501){
                 var getobjectForLeaderboard = e_function.getobject(2,getObjectHandle,m_object.extractLeaderDataObjID);
                 ws.send(JSON.stringify(getobjectForLeaderboard));
               }
@@ -632,9 +663,13 @@ extractLeaderDeepdive: function(data,cb) {
 
             return cb(e)
           }
+           ws.send(JSON.stringify(e_function.clearFilter()));
+        }
+        if(wsres.id==501){
           var oppurtunityDeepdiveObject = e_function.getobject(17,getObjectHandle,m_object.extractOppurtunityLeaderDeepdiveObjID);
           ws.send(JSON.stringify(oppurtunityDeepdiveObject));
         }
+
         if(wsres.id==17){
                 //console.log(wsres);
                 handle = wsres.result.qReturn.qHandle;
@@ -1192,7 +1227,7 @@ extractLeaderBillingData: function(data, cb){
           console.log('Leaderboard billing session opened at ',date);
 
 
-          if(wsres.error && wsres.error.code==403){
+          if(wsres.error){
             var e={};
             var emessage = {};
             emessage.error_id = 403;
@@ -1203,6 +1238,9 @@ extractLeaderBillingData: function(data, cb){
 
             return cb(e)
           }
+          ws.send(JSON.stringify(e_function.clearFilter()));
+        }
+        if(wsres.id==501){
           var getLeaderboardBillingPerformance = e_function.getobject(2,getObjectHandle,m_object.leaderBoardBillingPerformanceObjID);
           ws.send(JSON.stringify(getLeaderboardBillingPerformance));
         }

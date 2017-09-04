@@ -1,0 +1,5 @@
+http://10.2.5.158:4011/getLogCount/<today OR week OR month>
+
+http://10.2.5.158:4011/topTwentyLogs
+
+http://10.2.5.158:4011/userApplicationCount/:<delivery OR merlin OR hcllive>?from_date=1502871263973&to_date: 1502871293922

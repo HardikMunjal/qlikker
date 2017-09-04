@@ -230,6 +230,13 @@ var qlik = {
               //   }
               // })
             }
+            if(req.query.stream_check =='true' && req.query.open){
+              console.log('stream checking')
+              dynamicTicket = JSON.parse(dynamicTicket);
+              dynamicTicket.stream_check = true;
+              dynamicTicket =JSON.stringify(dynamicTicket)
+              return res.render('qlikhub.ejs',{data:dynamicTicket});
+            }
             // else if(req.query.stream_access && req.query.stream_access='enable' && req.query.open){
             //   dynamicTicket = JSON.parse(dynamicTicket);
             //   dynamicTicket.stream_access = true;

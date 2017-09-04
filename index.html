@@ -1,0 +1,159 @@
+<!doctype html>
+<html class="no-js" ng-app="myApp">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>QLIK LOGS</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/asPieProgress.css">
+	<script src="js/main.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>  
+	var socket = io.connect('http://10.2.5.158:4011');
+	socket.on('connect', function(data) {
+	});
+	</script> 
+</head>
+<body>
+  <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+ 
+	<div class="heading"><a class="homeButton" href="">Back to Home</a>QLIK LOGS STATISTICS</div>
+	<section class="circle">
+      <div class="row" ng-controller="progressCtrl">
+        <div class="pie_progress" role="progressbar" id="one" data-goal="33">
+          <div class="pie_progress__number">0 hits</div>
+          <div class="pie_progress__label">Merlin</div>
+        </div>
+		<div class="pie_progress" role="progressbar" id="two" data-goal="21">
+          <div class="pie_progress__number">0 hits</div>
+          <div class="pie_progress__label">Symphony</div>
+        </div>
+		<div class="pie_progress" role="progressbar" id="three" data-goal="50">
+          <div class="pie_progress__number">0 hits</div>
+          <div class="pie_progress__label">HCL Live</div>
+        </div>
+      </div>
+    </section>
+	<div class="heading logsHeading">TOP 20 LIVE LOGS</div>
+	<div class="parent">
+		<section class="hits" id="total" ng-controller="topHits">
+		<table width="100%">
+			<tr>
+				<th>User ID</th>
+				<th>User Dir</th>
+				<th>Service Name</th>
+				<th>Server IP</th>
+				<th>Scope</th>
+				<th>Dashboard Name</th>
+				<th>Created Date_time</th>
+				<th>Client ID</th>
+				<th>Application</th>
+			</tr>
+			<tr ng-repeat="topHitData in topHitsData">
+				<td>{{topHitData.user_id}}</td>
+				<td>{{topHitData.user_directory}}</td>
+				<td>{{topHitData.service_name}}</td>
+				<td>{{topHitData.server_ip}}</td>
+				<td>{{topHitData.scope}}</td>
+				<td>{{topHitData.dashboard_name}}</td>
+				<td>{{topHitData.createdAt | date:'MMM d, y h:mm:ss a'}}</td>
+				<td>{{topHitData.client_id}}</td>
+				<td>{{topHitData.application}}</td>
+			</tr>
+		</table>
+		</section>
+		<section class="hits" id="hitOne" style="display:none"  ng-controller="merHits">
+		<table width="100%">
+			<tr>
+				<th>User ID</th>
+				<th>Application</th>
+				<th>Total Count</th>
+			</tr>
+			<tr ng-repeat="data in merData">
+				<td>{{data._id.user_id}}</td>
+				<td>{{data._id.application}}</td>
+				<td>{{data.total}}</td>
+			</tr>
+		</table>
+		</section>
+		<section class="hits" id="hitTwo" style="display:none" ng-controller="symHits">
+		<table width="100%">
+			<tr>
+				<th>User ID</th>
+				<th>Application</th>
+				<th>Total Count</th>
+			</tr>
+			<tr ng-repeat="data in symData">
+				<td>{{data._id.user_id}}</td>
+				<td>{{data._id.application}}</td>
+				<td>{{data.total}}</td>
+			</tr>
+		</table>
+		</section>
+		<section class="hits" id="hitThree" style="display:none" ng-controller="hclliveHits">
+		<table width="100%">
+			<tr>
+				<th>User ID</th>
+				<th>Application</th>
+				<th>Total Count</th>
+			</tr>
+			<tr ng-repeat="data in hclliveData">
+				<td>{{data._id.user_id}}</td>
+				<td>{{data._id.application}}</td>
+				<td>{{data.total}}</td>
+			</tr>
+		</table>
+		</section>
+	</div>
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jquery-asPieProgress.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+	$(".homeButton").click(function(){
+		$(".logsHeading").html("TOP 20 LIVE LOGS");
+		$(".hits").css("display","none");
+		$("#total").css("display","block");
+	});
+	$("#one").click(function(){
+		$(".logsHeading").html("Merlin logs");
+	$(".hits").css("display","none");
+	$("#hitOne").css("display","block");
+	});
+	$("#two").click(function(){
+		$(".logsHeading").html("Symphony logs");
+	$(".hits").css("display","none");
+	$("#hitTwo").css("display","block");
+	});
+	$("#three").click(function(){
+		$(".logsHeading").html("HCL_Live logs");
+	$(".hits").css("display","none");
+	$("#hitThree").css("display","block");
+	});
+	$('.pie_progress').asPieProgress({
+	namespace: 'pie_progress'
+	});
+	// Example with grater loading time - loads longer
+	$('.pie_progress--slow').asPieProgress({
+	namespace: 'pie_progress',
+	goal: 1000,
+	min: 0,
+	max: 1000,
+	speed: 200,
+	easing: 'linear'
+	});
+	// Example with grater loading time - loads longer
+	$('.pie_progress').asPieProgress('start');
+});
+  </script>
+
+
+ 
+
+</body>
+</html>

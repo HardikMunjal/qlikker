@@ -9,9 +9,9 @@ var ipsec = require('./routes/ip_securer')
 var mysql = require('mysql');
 var mongoose = require('mongoose');
 var colors = require('colors');
+var path=require('path');
 mongoose.Promise = Promise;
 mongoose.connect('mongodb://localhost/QlikDatabase');
-
 // var con = mysql.createConnection({
 //   host: '10.98.10.13',
 //     user: 'Insightsappuser',
@@ -28,6 +28,14 @@ mongoose.connect('mongodb://localhost/QlikDatabase');
 //   	console.log("Connected!")
 //   };
 // });
+
+//qlikdashboard
+app.get('/qlikLogsDash', function (req, res) {
+    res.sendfile(__dirname + '/index.html');
+});
+
+app.use(express.static(path.join(__dirname, 'qlikDash')));
+//qlikdashboard code ends here
 
 
 var http = require('http').Server(app);

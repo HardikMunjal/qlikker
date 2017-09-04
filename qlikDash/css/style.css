@@ -1,0 +1,79 @@
+body,html{
+padding:0;
+margin:0;height:100%;font-family:calibri;
+}
+.row {
+display: inline-block;
+margin: 0 auto;
+text-align: center;
+}
+.circle{
+text-align:center;margin: 20px 0;
+}
+.heading{
+background-color: #595959;
+color: #fff;
+text-align: center;
+box-sizing: border-box;
+padding: 10px;text-transform: uppercase;
+}
+.heading a.homeButton {
+    background-color: #629688;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+    padding: 10px;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+.pie_progress {
+width: 160px;    height: 160px;
+margin: 10px auto;display: inline-block;
+margin: 0 90px;cursor: pointer;
+}
+section.hits {
+box-sizing: border-box;
+}
+.hits ul li {
+list-style-type: circle;
+list-style-position: inside;
+}
+.hits ul{margin:0;padding:0}
+.parent{
+height: -webkit-calc(100% - 278px);
+height: -moz-calc(100% - 278px);
+height: -o-calc(100% - 278px);
+height: calc(100% - 278px);    overflow-y: auto;
+}
+table,tr,td,th{ 
+    border-collapse: collapse;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+}
+th{
+	background-color: #629688;
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: normal;
+    padding: 8px;
+}
+    tr:nth-child(even) {
+    background-color: #eaeaea;
+}
+@media all and (max-width: 1024px) {
+	.pie_progress {
+	width: 70px;height: 70px;
+	margin: 10px auto;
+	display: inline-block;
+	margin: 0 20px;
+	}
+	.pie_progress__content, .pie_progress__number, .pie_progress__label, .pie_progress__icon {
+	top: 40%; font-size: 25px;
+	}
+	.pie_progress__label {
+	margin-top: 18px;
+	font-size: 10px;
+	}
+}

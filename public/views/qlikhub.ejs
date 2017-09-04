@@ -7,18 +7,23 @@
 	
    	var rows =<%- JSON.stringify(data) %>;
     var row = JSON.parse(rows);
-    console.log(row);
-    if(row.stream_access){
-      var xhttp = new XMLHttpRequest();
-	  xhttp.onreadystatechange=function() {
-	    if (this.readyState == 4 && this.status == 200) {
-	      document.getElementById("demo").innerHTML = this.responseText;
-	    }
-	  };
-	  xhttp.open("GET", "demo_get.asp?t=" + Math.random(), true);
-	  xhttp.send();
+    console.log('stream',row);
+    
+    if(row.stream_check){
+
+    	var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		       // Typical action to be performed when the document is ready:
+		       alert('done')
+		       console.log(xhttp.responseText);
+		    }
+		};
+		xhttp.open("GET", "http://10.2.5.158/node/api/hub/v0/streams?QlikTicket="+row.Ticket, true);
+		xhttp.send();
+
     }
-    if(row.roleflag){
+    else if(row.roleflag){
 	  //alert('ROLES NEED TO CHECK')
 	  var ws = new WebSocket('ws://10.2.5.158/node/app/f083256e-3ea6-4a4b-97fa-ed72e5700554?reloadUri=http://10.2.5.158/node/dev-hub/engine-api-explorer&QlikTicket='+row.Ticket
 	  );
